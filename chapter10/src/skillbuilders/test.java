@@ -1,10 +1,13 @@
+// Tester for testing issues with anything.
+
 package skillbuilders;
+
+import EasyKit.Text; // Ease of use for Ui's that i made for a long time.
 
 public class test {
 
 	public static void main(String[] args) {
-		System.out.println("Testing Git Hub");
-		System.out.println("Second Save Test");
+		EasyKit.Text.print("Test");
 	}
 
 }
