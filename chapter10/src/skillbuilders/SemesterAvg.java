@@ -14,6 +14,7 @@ import javax.swing.JList;
 import javax.swing.JTextField;
 import java.awt.Panel;
 import java.awt.TextField;
+import java.awt.color.ICC_ColorSpace;
 import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -30,6 +31,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JButton;
 
 public class SemesterAvg {
 
@@ -68,92 +70,78 @@ public class SemesterAvg {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Average Grade Calculator");
-		lblNewLabel.setBounds(0, 0, 306, 22);
-		lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		lblNewLabel.setBackground(new Color(255, 128, 128));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel Title = new JLabel("Average Grade Calculator");
+		Title.setBounds(30, 0, 306, 22);
+		Title.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		Title.setBackground(new Color(255, 128, 128));
+		Title.setHorizontalAlignment(SwingConstants.CENTER);
+		frame.getContentPane().add(Title);
 		
 		Panel Semesters = new Panel();
-		Semesters.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				System.out.println("Test");
-			}
-		});
+	
 		Semesters.setBackground(Color.GRAY);
 		Semesters.setForeground(new Color(255, 128, 128));
 		Semesters.setBounds(30, 47, 306, 383);
 		frame.getContentPane().add(Semesters);
 		Semesters.setLayout(null);
 		
-		// Key Pressed Event (Checks if the user has inputted an int, if not remove the char).
+		JButton Calculate = new JButton("Calculate");
+		Calculate.setEnabled(false);
+		Calculate.setBounds(76, 297, 146, 35);
+		Semesters.add(Calculate);
+		
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setToolTipText("Calculate Average");
+		progressBar.setForeground(Color.DARK_GRAY);
+		progressBar.setBackground(Color.LIGHT_GRAY);
+		progressBar.setBounds(76, 297, 146, 35);
+		Semesters.add(progressBar);
 		
 		TextField FirstSemester = new TextField();
-		FirstSemester.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				String Text2 = FirstSemester.getText();
-				Text.print("Test");
-			}
-		});
-		
-		FirstSemester.setSelectionStart(5);
-		FirstSemester.setForeground(new Color(0, 0, 0));
-		FirstSemester.setText("Semester 1");
-		FirstSemester.setBackground(Color.WHITE);
-		FirstSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
-		FirstSemester.setBounds(89, 50, 194, 25);
-		Semesters.add(FirstSemester);
+
+        FirstSemester.setSelectionStart(5);
+        FirstSemester.setForeground(new Color(0, 0, 0));
+        FirstSemester.setBackground(Color.WHITE);
+        FirstSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
+        FirstSemester.setBounds(89, 48, 194, 25);
+        Semesters.add(FirstSemester);
 		
 		TextField SecondSemester = new TextField();
 		SecondSemester.setSelectionStart(5);
-		SecondSemester.setText("Semester 2");
 		SecondSemester.setForeground(Color.BLACK);
 		SecondSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
 		SecondSemester.setBackground(Color.WHITE);
-		SecondSemester.setBounds(89, 91, 194, 25);
+		SecondSemester.setBounds(89, 90, 194, 25);
 		Semesters.add(SecondSemester);
 		
 		TextField ThirdSemester = new TextField();
 		ThirdSemester.setSelectionStart(5);
-		ThirdSemester.setText("Semester 3");
 		ThirdSemester.setForeground(Color.BLACK);
 		ThirdSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
 		ThirdSemester.setBackground(Color.WHITE);
 		ThirdSemester.setBounds(89, 133, 194, 25);
 		Semesters.add(ThirdSemester);
 		
-		JProgressBar progressBar = new JProgressBar();
-		progressBar.setToolTipText("Calculate Average");
-		progressBar.setForeground(Color.DARK_GRAY);
-		progressBar.setBackground(Color.LIGHT_GRAY);
-		progressBar.setBounds(84, 358, 146, 14);
-		Semesters.add(progressBar);
-		
-		Box verticalBox = Box.createVerticalBox();
-		verticalBox.setBounds(10, 50, 80, 108);
-		Semesters.add(verticalBox);
-		
 		JLabel Semester1 = new JLabel("Semester 1");
 		Semester1.setHorizontalAlignment(SwingConstants.CENTER);
 		Semester1.setForeground(Color.WHITE);
-		Semester1.setFont(new Font("Tw Cen MT", Font.BOLD, 13));
-		verticalBox.add(Semester1);
+		Semester1.setFont(new Font("Dialog", Font.BOLD, 13));
+		Semester1.setBounds(10, 50, 73, 25);
+		Semesters.add(Semester1);
 		
 		JLabel Semester2 = new JLabel("Semester 2");
 		Semester2.setHorizontalAlignment(SwingConstants.CENTER);
 		Semester2.setForeground(Color.WHITE);
-		Semester2.setFont(new Font("Tw Cen MT", Font.BOLD, 13));
-		verticalBox.add(Semester2);
+		Semester2.setFont(new Font("Dialog", Font.BOLD, 13));
+		Semester2.setBounds(10, 94, 73, 22);
+		Semesters.add(Semester2);
 		
 		JLabel Semester3 = new JLabel("Semester 3");
 		Semester3.setHorizontalAlignment(SwingConstants.CENTER);
 		Semester3.setForeground(Color.WHITE);
-		Semester3.setFont(new Font("Tw Cen MT", Font.BOLD, 13));
-		verticalBox.add(Semester3);
-		verticalBox.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{Semester1, Semester3, Semester2}));
+		Semester3.setFont(new Font("Dialog", Font.BOLD, 13));
+		Semester3.setBounds(10, 133, 71, 25);
+		Semesters.add(Semester3);
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
