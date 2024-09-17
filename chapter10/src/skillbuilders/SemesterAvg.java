@@ -111,18 +111,31 @@ public class SemesterAvg {
 				int x = 0;
 				try 
 				{
-				    x = Integer.parseInt(FirstSemester.getText() + e.getKeyChar());
+				    if (!FirstSemester.getText().equals("")) 
+				    {
+				    	char FirstChar = FirstSemester.getText().charAt(0);
+				    	
+				    	if (FirstChar != '0') 
+					    {
+				    		x = Integer.parseInt(FirstSemester.getText() + e.getKeyChar());
+						    
+						    if (x >= 0 && x <= 100) 
+						    {
+						    	Text.print("Just Right");
+						    	SemesterAvg_Data.changeSem(1);
+						    }
+						    else 
+						    {
+						    	e.consume();
+						    	Text.print("Above 100%");
+						    }
+					    }
+					    else 
+					    {
+					    	FirstSemester.setText("");
+					    }
+				    }
 				    
-				    if (x >= 0 && x <= 100) 
-				    {
-				    	Text.print("Just Right");
-				    	SemesterAvg_Data.changeSem(1);
-				    }
-				    else 
-				    {
-				    	e.consume();
-				    	Text.print("Above 100%");
-				    }
 				} 
 				catch (NumberFormatException n) 
 				{
@@ -156,18 +169,31 @@ public class SemesterAvg {
 				int x = 0;
 				try 
 				{
-				    x = Integer.parseInt(SecondSemester.getText() + e.getKeyChar());
+				    if (!SecondSemester.getText().equals("")) 
+				    {
+				    	char FirstChar = SecondSemester.getText().charAt(0);
+				    	
+				    	if (FirstChar != '0') 
+					    {
+				    		x = Integer.parseInt(SecondSemester.getText() + e.getKeyChar());
+						    
+						    if (x >= 0 && x <= 100) 
+						    {
+						    	Text.print("Just Right");
+						    	SemesterAvg_Data.changeSem(1);
+						    }
+						    else 
+						    {
+						    	e.consume();
+						    	Text.print("Above 100%");
+						    }
+					    }
+					    else 
+					    {
+					    	SecondSemester.setText("");
+					    }
+				    }
 				    
-				    if (x >= 0 && x <= 100) 
-				    {
-				    	Text.print("Just Right");
-				    	SemesterAvg_Data.changeSem(2);
-				    }
-				    else 
-				    {
-				    	e.consume();
-				    	Text.print("Above 100%");
-				    }
 				} 
 				catch (NumberFormatException n) 
 				{
@@ -200,18 +226,31 @@ public class SemesterAvg {
 				int x = 0;
 				try 
 				{
-				    x = Integer.parseInt(ThirdSemester.getText() + e.getKeyChar());
+				    if (!ThirdSemester.getText().equals("")) 
+				    {
+				    	char FirstChar = ThirdSemester.getText().charAt(0);
+				    	
+				    	if (FirstChar != '0') 
+					    {
+				    		x = Integer.parseInt(ThirdSemester.getText() + e.getKeyChar());
+						    
+						    if (x >= 0 && x <= 100) 
+						    {
+						    	Text.print("Just Right");
+						    	SemesterAvg_Data.changeSem(1);
+						    }
+						    else 
+						    {
+						    	e.consume();
+						    	Text.print("Above 100%");
+						    }
+					    }
+					    else 
+					    {
+					    	ThirdSemester.setText("");
+					    }
+				    }
 				    
-				    if (x >= 0 && x <= 100) 
-				    {
-				    	Text.print("Just Right");
-				    	SemesterAvg_Data.changeSem(3);
-				    }
-				    else 
-				    {
-				    	e.consume();
-				    	Text.print("Above 100%");
-				    }
 				} 
 				catch (NumberFormatException n) 
 				{
