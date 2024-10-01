@@ -40,6 +40,8 @@ import java.awt.ComponentOrientation;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
 
 public class SemesterAvg {
 
@@ -97,216 +99,205 @@ public class SemesterAvg {
 		Semesters.setForeground(new Color(255, 128, 128));
 		Semesters.setBounds(30, 47, 306, 383);
 		frame.getContentPane().add(Semesters);
-		Semesters.setLayout(null);
 		
 		JButton Calculate = new JButton("Calculate");
+		Calculate.setBounds(89, 337, 146, 35);
 		Calculate.setToolTipText("Calulates your avarage");
 		Calculate.setBackground(Color.DARK_GRAY);
 		Calculate.setForeground(Color.LIGHT_GRAY);
-		Calculate.setBounds(89, 337, 146, 35);
 		Calculate.setVisible(false);
+		Semesters.setLayout(null);
 		Semesters.add(Calculate);
 		
 		TextField FirstSemester = new TextField();
-		FirstSemester.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) 
+		FirstSemester.setFocusTraversalKeysEnabled(false);
+		FirstSemester.setName("FirstSemester");
+		FirstSemester.setText("Enter First Grade");
+		FirstSemester.setBounds(89, 53, 140, 22);
+        FirstSemester.setSelectionStart(5);
+        FirstSemester.setForeground(Color.GRAY);
+        FirstSemester.setBackground(Color.WHITE);
+        FirstSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
+        Semesters.add(FirstSemester);
+        
+        FirstSemester.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) 
 			{
-				Object check = checkChar(FirstSemester, e);
+				Object check = checkChar(FirstSemester, e.getKeyChar());
 				
 				if (check != null) 
 				{
-					if (check.equals(' ')) 
+					if ((char) check == ' ') 
 					{
 						e.consume();
-						EasyKit.Text.print("0 Already there. No changes made.");
 					}
-					EasyKit.Text.print("Worked");
+					else 
+					{
+						System.out.println("Key pressed: [" + e.getKeyChar() + "]");
+					}
 				}
 				else 
 				{
 					e.consume();
-					EasyKit.Text.print("Failed");
 				}
-				
-				if (SemesterAvg_Data.getSem() == 3) 
-		    	{
-					Calculate.setVisible(true);
-		    	}
-		    	else 
-		    	{
-		    		Calculate.setVisible(false);
-		    	}
 			}
 		});
-
-        FirstSemester.setSelectionStart(5);
-        FirstSemester.setForeground(new Color(0, 0, 0));
-        FirstSemester.setBackground(Color.WHITE);
-        FirstSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
-        FirstSemester.setBounds(89, 48, 194, 25);
-        Semesters.add(FirstSemester);
+        
+        FirstSemester.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) 
+			{
+				toggleTipText(FirstSemester);
+			}
+        	@Override
+        	public void focusLost(FocusEvent e) 
+        	{
+        		toggleTipText(FirstSemester);
+        	}
+		});
 		
 		TextField SecondSemester = new TextField();
+		SecondSemester.setFocusTraversalKeysEnabled(false);
+		SecondSemester.setText("Enter Second Grade");
+		SecondSemester.setName("SecondSemester");
+		SecondSemester.setBounds(89, 105, 140, 22);
+		SecondSemester.setForeground(Color.GRAY);
+		SecondSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
+		SecondSemester.setBackground(Color.WHITE);
+		Semesters.add(SecondSemester);
+		
 		SecondSemester.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
-				int x = 0;
-				try 
+				Object check = checkChar(SecondSemester, e.getKeyChar());
+				
+				if (check != null) 
 				{
-				    if (!SecondSemester.getText().equals("")) 
-				    {
-				    	char FirstChar = SecondSemester.getText().charAt(0);
-				    	
-				    	if (FirstChar != '0') 
-					    {
-				    		x = Integer.parseInt(SecondSemester.getText() + e.getKeyChar());
-						    
-						    if (x >= 0 && x <= 100) 
-						    {
-						    	Text.print("Just Right");
-						    	SemesterAvg_Data.changeSem(1);
-						    }
-						    else 
-						    {
-						    	e.consume();
-						    	Text.print("Above 100%");
-						    }
-					    }
-					    else 
-					    {
-					    	SecondSemester.setText("");
-					    }
-				    }
-				    
-				} 
-				catch (NumberFormatException n) 
+					if ((char) check == ' ') 
+					{
+						e.consume();
+					}
+					else 
+					{
+						System.out.println("Key pressed: [" + e.getKeyChar() + "]");
+					}
+				}
+				else 
 				{
 					e.consume();
-				    System.out.println("Not a number");
 				}
-				
-				if (SemesterAvg_Data.getSem() == 3) 
-		    	{
-					Calculate.setVisible(true);
-		    	}
-		    	else 
-		    	{
-		    		Calculate.setVisible(false);
-		    	}
 			}
 		});
-		SecondSemester.setSelectionStart(5);
-		SecondSemester.setForeground(Color.BLACK);
-		SecondSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
-		SecondSemester.setBackground(Color.WHITE);
-		SecondSemester.setBounds(89, 101, 194, 25);
-		Semesters.add(SecondSemester);
+		
+		SecondSemester.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) 
+			{
+				toggleTipText(SecondSemester);
+			}
+        	@Override
+        	public void focusLost(FocusEvent e) 
+        	{
+        		toggleTipText(SecondSemester);
+        	}
+		});
 		
 		TextField ThirdSemester = new TextField();
+		ThirdSemester.setFocusTraversalKeysEnabled(false);
+		ThirdSemester.setText("Enter Third Grade");
+		ThirdSemester.setName("ThirdSemester");
+		ThirdSemester.setBounds(89, 160, 140, 22);
+		ThirdSemester.setForeground(Color.GRAY);
+		ThirdSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
+		ThirdSemester.setBackground(Color.WHITE);
+		Semesters.add(ThirdSemester);
+		
 		ThirdSemester.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
-				int x = 0;
-				try 
+				Object check = checkChar(ThirdSemester, e.getKeyChar());
+				
+				if (check != null) 
 				{
-				    if (!ThirdSemester.getText().equals("")) 
-				    {
-				    	char FirstChar = ThirdSemester.getText().charAt(0);
-				    	
-				    	if (FirstChar != '0') 
-					    {
-				    		x = Integer.parseInt(ThirdSemester.getText() + e.getKeyChar());
-						    
-						    if (x >= 0 && x <= 100) 
-						    {
-						    	Text.print("Just Right");
-						    	SemesterAvg_Data.changeSem(1);
-						    }
-						    else 
-						    {
-						    	e.consume();
-						    	Text.print("Above 100%");
-						    }
-					    }
-					    else 
-					    {
-					    	ThirdSemester.setText("");
-					    }
-				    }
-				    
-				} 
-				catch (NumberFormatException n) 
+					if ((char) check == ' ') 
+					{
+						e.consume();
+					}
+					else 
+					{
+						System.out.println("Key pressed: [" + e.getKeyChar() + "]");
+					}
+				}
+				else 
 				{
 					e.consume();
-				    System.out.println("Not a number");
 				}
-				
-				if (SemesterAvg_Data.getSem() == 3) 
-		    	{
-					Calculate.setVisible(true);
-		    	}
-		    	else 
-		    	{
-		    		Calculate.setVisible(false);
-		    	}
 			}
 		});
-		ThirdSemester.setSelectionStart(5);
-		ThirdSemester.setForeground(Color.BLACK);
-		ThirdSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
-		ThirdSemester.setBackground(Color.WHITE);
-		ThirdSemester.setBounds(89, 160, 194, 25);
-		Semesters.add(ThirdSemester);
+		
+		ThirdSemester.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) 
+			{
+				toggleTipText(ThirdSemester);
+			}
+        	@Override
+        	public void focusLost(FocusEvent e) 
+        	{
+        		toggleTipText(ThirdSemester);
+        	}
+		});
 		
 		JLabel Semester1 = new JLabel("Semester 1");
+		Semester1.setBounds(10, 50, 73, 25);
 		Semester1.setBackground(Color.DARK_GRAY);
 		Semester1.setHorizontalAlignment(SwingConstants.CENTER);
 		Semester1.setForeground(Color.DARK_GRAY);
 		Semester1.setFont(new Font("Dialog", Font.BOLD, 13));
-		Semester1.setBounds(10, 50, 73, 25);
 		Semesters.add(Semester1);
 		
 		JLabel Semester2 = new JLabel("Semester 2");
+		Semester2.setBounds(10, 105, 73, 22);
 		Semester2.setBackground(Color.DARK_GRAY);
 		Semester2.setHorizontalAlignment(SwingConstants.CENTER);
 		Semester2.setForeground(Color.DARK_GRAY);
 		Semester2.setFont(new Font("Dialog", Font.BOLD, 13));
-		Semester2.setBounds(10, 105, 73, 22);
 		Semesters.add(Semester2);
 		
 		JLabel Semester3 = new JLabel("Semester 3");
+		Semester3.setBounds(10, 160, 71, 25);
 		Semester3.setBackground(Color.DARK_GRAY);
 		Semester3.setHorizontalAlignment(SwingConstants.CENTER);
 		Semester3.setForeground(Color.DARK_GRAY);
 		Semester3.setFont(new Font("Dialog", Font.BOLD, 13));
-		Semester3.setBounds(10, 160, 71, 25);
 		Semesters.add(Semester3);
 		
 		JLabel Sem1_ErrorMessage = new JLabel("");
+		Sem1_ErrorMessage.setBounds(89, 70, 194, 25);
 		Sem1_ErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
 		Sem1_ErrorMessage.setForeground(Color.DARK_GRAY);
 		Sem1_ErrorMessage.setFont(new Font("Dialog", Font.BOLD, 13));
 		Sem1_ErrorMessage.setBackground(Color.DARK_GRAY);
-		Sem1_ErrorMessage.setBounds(89, 70, 194, 25);
 		Semesters.add(Sem1_ErrorMessage);
 		
 		JLabel Sem2_ErrorMessage = new JLabel("");
+		Sem2_ErrorMessage.setBounds(89, 129, 194, 25);
 		Sem2_ErrorMessage.setEnabled(false);
 		Sem2_ErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
 		Sem2_ErrorMessage.setForeground(Color.DARK_GRAY);
 		Sem2_ErrorMessage.setFont(new Font("Dialog", Font.BOLD, 13));
 		Sem2_ErrorMessage.setBackground(Color.DARK_GRAY);
-		Sem2_ErrorMessage.setBounds(89, 129, 194, 25);
 		Semesters.add(Sem2_ErrorMessage);
 		
 		JLabel Sem3_ErrorMessage = new JLabel("");
+		Sem3_ErrorMessage.setBounds(89, 185, 194, 25);
 		Sem3_ErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
 		Sem3_ErrorMessage.setForeground(Color.DARK_GRAY);
 		Sem3_ErrorMessage.setFont(new Font("Dialog", Font.BOLD, 13));
 		Sem3_ErrorMessage.setBackground(Color.DARK_GRAY);
-		Sem3_ErrorMessage.setBounds(89, 185, 194, 25);
 		Semesters.add(Sem3_ErrorMessage);
 	}
 	@SuppressWarnings("unused")
@@ -328,45 +319,57 @@ public class SemesterAvg {
 		});
 	}
 	
-	public static <c> Object checkChar(TextField semester, ActionEvent e) 
+	public static <c> Object checkChar(TextField semester, char Character) 
 	{
-		List<Character> blockedCharacters = new ArrayList<>();
+		String fullText = semester.getText() + Character;
 		
-		String fullText = semester.getText() + e.getKeyChar();
-		
-		System.out.println("");
+		System.out.println("Testing: " + Character);
 		
 		try 
 		{
-		    if (!semester.getText().equals(""))
+		    if (!(semester.getText() + Character).equals(""))
 		    {
 		    	char FirstChar = fullText.charAt(0);
-		    	System.out.println("FirstChar = [ " + e.getKeyChar() + " ]");
+		    	int x = Integer.parseInt(fullText);
+		    	
+		    	System.out.println("FirstChar = [ " + x + " ]");
 		    	
 		    	if (FirstChar != '0') 
 			    {
-		    		int x = Integer.parseInt(fullText);
 				    
 				    if (x >= 0 && x <= 100) 
 				    {
-				    	Text.print("Just Right");
-				    	return e.getKeyChar();
+				    	return Character;
 				    }
 				    else 
 				    {
-				    	Text.print("Above 100%");
 				    	return null;
 				    }
 			    }
 			    else 
 			    {
-			    	EasyKit.Text.print("Replace Nothing");
-			    	return ' ';
+			    	if (!semester.getText().equals("")) 
+			    	{
+			    		if (Character == '0') 
+				    	{
+				    		return ' '; // Stops the input.
+				    	}
+				    	else 
+				    	{
+				    		semester.setText("" + Character);
+				    		semester.setCaretPosition(1);
+				    		return ' ';
+				    	}
+			    	}
+			    	else 
+			    	{
+			    		return Character;
+			    	}
 			    }
 		    }
 		    else 
 		    {
-		    	return e.getKeyChar();
+		    	return Character;
 		    }
 		    
 		} 
@@ -375,5 +378,53 @@ public class SemesterAvg {
 		    System.out.println("Not a number");
 		    return null; // Stops the input.
 		}
+	}
+	
+	public static void toggleTipText(TextField semester) 
+	{
+		String text = semester.getText();
+		boolean focused = semester.hasFocus();
+		
+		if (focused) 
+		{
+			if (text.equals("Enter First Grade") || text.equals("Enter Second Grade") || text.equals("Enter Third Grade") || text.equals("Null")) 
+			{
+				semester.setText("");
+			}
+			
+			semester.setBounds(semester.getBounds().x, semester.getBounds().y, 29, semester.getBounds().height);
+			semester.setForeground(Color.black);
+		}
+		else 
+		{
+			if (text.equals("")) 
+			{
+				if (semester.getName() == "FirstSemester") 
+				{
+					semester.setText("Enter First Grade");
+				}
+				else if (semester.getName() == "SecondSemester")
+				{
+					semester.setText("Enter Second Grade");
+				}
+				else if (semester.getName() == "ThirdSemester")
+				{
+					semester.setText("Enter Third Grade");
+				}
+				else 
+				{
+					semester.setText("Null");
+				}
+				
+				semester.setBounds(semester.getBounds().x, semester.getBounds().y, 140, semester.getBounds().height);
+			}
+			else 
+			{
+				semester.setBounds(semester.getBounds().x, semester.getBounds().y, 29, semester.getBounds().height);
+			}
+			
+			semester.setForeground(Color.gray);
+		}
+		
 	}
 }
