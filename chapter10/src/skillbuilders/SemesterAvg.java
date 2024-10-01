@@ -17,6 +17,7 @@ import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.color.ICC_ColorSpace;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JProgressBar;
@@ -36,6 +37,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import java.awt.ComponentOrientation;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SemesterAvg {
 
@@ -108,39 +111,21 @@ public class SemesterAvg {
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
-				int x = 0;
-				try 
+				Object check = checkChar(FirstSemester, e);
+				
+				if (check != null) 
 				{
-				    if (!FirstSemester.getText().equals("")) 
-				    {
-				    	char FirstChar = FirstSemester.getText().charAt(0);
-				    	
-				    	if (FirstChar != '0') 
-					    {
-				    		x = Integer.parseInt(FirstSemester.getText() + e.getKeyChar());
-						    
-						    if (x >= 0 && x <= 100) 
-						    {
-						    	Text.print("Just Right");
-						    	SemesterAvg_Data.changeSem(1);
-						    }
-						    else 
-						    {
-						    	e.consume();
-						    	Text.print("Above 100%");
-						    }
-					    }
-					    else 
-					    {
-					    	FirstSemester.setText("");
-					    }
-				    }
-				    
-				} 
-				catch (NumberFormatException n) 
+					if (check.equals(' ')) 
+					{
+						e.consume();
+						EasyKit.Text.print("0 Already there. No changes made.");
+					}
+					EasyKit.Text.print("Worked");
+				}
+				else 
 				{
 					e.consume();
-				    System.out.println("Not a number");
+					EasyKit.Text.print("Failed");
 				}
 				
 				if (SemesterAvg_Data.getSem() == 3) 
@@ -341,5 +326,61 @@ public class SemesterAvg {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
+	}
+	
+	public static <c> Object checkChar(TextField semester, KeyEvent e) 
+	{
+		List<Character> blockedCharacters = new ArrayList<>();
+		blockedCharacters.add('+');
+		blockedCharacters.add('-');
+		blockedCharacters.add('*');
+		blockedCharacters.add('/');
+		blockedCharacters.add('_');
+		blockedCharacters.add('(');
+		blockedCharacters.add(')');
+		
+		String fullText = semester.getText() + e.getKeyChar();
+		
+		System.out.println("");
+		
+		try 
+		{
+		    if (!semester.getText().equals(""))
+		    {
+		    	char FirstChar = fullText.charAt(0);
+		    	System.out.println("FirstChar = [ " + e.getKeyChar() + " ]");
+		    	
+		    	if (FirstChar != '0') 
+			    {
+		    		int x = Integer.parseInt(fullText);
+				    
+				    if (x >= 0 && x <= 100) 
+				    {
+				    	Text.print("Just Right");
+				    	return e.getKeyChar();
+				    }
+				    else 
+				    {
+				    	Text.print("Above 100%");
+				    	return null;
+				    }
+			    }
+			    else 
+			    {
+			    	EasyKit.Text.print("Replace Nothing");
+			    	return ' ';
+			    }
+		    }
+		    else 
+		    {
+		    	return e.getKeyChar();
+		    }
+		    
+		} 
+		catch (NumberFormatException n) 
+		{
+		    System.out.println("Not a number");
+		    return null;
+		}
 	}
 }
