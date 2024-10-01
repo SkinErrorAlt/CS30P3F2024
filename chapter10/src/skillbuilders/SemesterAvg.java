@@ -39,6 +39,7 @@ import javax.swing.JComboBox;
 import java.awt.ComponentOrientation;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.ActionEvent;
 
 public class SemesterAvg {
 
@@ -107,9 +108,8 @@ public class SemesterAvg {
 		Semesters.add(Calculate);
 		
 		TextField FirstSemester = new TextField();
-		FirstSemester.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) 
+		FirstSemester.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
 			{
 				Object check = checkChar(FirstSemester, e);
 				
@@ -328,16 +328,9 @@ public class SemesterAvg {
 		});
 	}
 	
-	public static <c> Object checkChar(TextField semester, KeyEvent e) 
+	public static <c> Object checkChar(TextField semester, ActionEvent e) 
 	{
 		List<Character> blockedCharacters = new ArrayList<>();
-		blockedCharacters.add('+');
-		blockedCharacters.add('-');
-		blockedCharacters.add('*');
-		blockedCharacters.add('/');
-		blockedCharacters.add('_');
-		blockedCharacters.add('(');
-		blockedCharacters.add(')');
 		
 		String fullText = semester.getText() + e.getKeyChar();
 		
@@ -380,7 +373,7 @@ public class SemesterAvg {
 		catch (NumberFormatException n) 
 		{
 		    System.out.println("Not a number");
-		    return null;
+		    return null; // Stops the input.
 		}
 	}
 }
