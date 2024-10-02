@@ -81,10 +81,6 @@ public class SemesterAvg {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 10, 10);
-		frame.getContentPane().add(panel);
-		
 		JLabel Title = new JLabel("Average Grade Calculator");
 		Title.setForeground(Color.WHITE);
 		Title.setBounds(30, 11, 306, 22);
@@ -97,17 +93,9 @@ public class SemesterAvg {
 	
 		Semesters.setBackground(Color.LIGHT_GRAY);
 		Semesters.setForeground(new Color(255, 128, 128));
-		Semesters.setBounds(30, 47, 306, 383);
+		Semesters.setBounds(30, 46, 306, 383);
 		frame.getContentPane().add(Semesters);
-		
-		JButton Calculate = new JButton("Calculate");
-		Calculate.setBounds(89, 337, 146, 35);
-		Calculate.setToolTipText("Calulates your avarage");
-		Calculate.setBackground(Color.DARK_GRAY);
-		Calculate.setForeground(Color.LIGHT_GRAY);
-		Calculate.setVisible(false);
 		Semesters.setLayout(null);
-		Semesters.add(Calculate);
 		
 		TextField FirstSemester = new TextField();
 		FirstSemester.setFocusTraversalKeysEnabled(false);
@@ -179,7 +167,7 @@ public class SemesterAvg {
 					{
 						e.consume();
 					}
-					else 
+					else
 					{
 						System.out.println("Key pressed: [" + e.getKeyChar() + "]");
 					}
@@ -275,30 +263,11 @@ public class SemesterAvg {
 		Semester3.setFont(new Font("Dialog", Font.BOLD, 13));
 		Semesters.add(Semester3);
 		
-		JLabel Sem1_ErrorMessage = new JLabel("");
-		Sem1_ErrorMessage.setBounds(89, 70, 194, 25);
-		Sem1_ErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		Sem1_ErrorMessage.setForeground(Color.DARK_GRAY);
-		Sem1_ErrorMessage.setFont(new Font("Dialog", Font.BOLD, 13));
-		Sem1_ErrorMessage.setBackground(Color.DARK_GRAY);
-		Semesters.add(Sem1_ErrorMessage);
-		
-		JLabel Sem2_ErrorMessage = new JLabel("");
-		Sem2_ErrorMessage.setBounds(89, 129, 194, 25);
-		Sem2_ErrorMessage.setEnabled(false);
-		Sem2_ErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		Sem2_ErrorMessage.setForeground(Color.DARK_GRAY);
-		Sem2_ErrorMessage.setFont(new Font("Dialog", Font.BOLD, 13));
-		Sem2_ErrorMessage.setBackground(Color.DARK_GRAY);
-		Semesters.add(Sem2_ErrorMessage);
-		
-		JLabel Sem3_ErrorMessage = new JLabel("");
-		Sem3_ErrorMessage.setBounds(89, 185, 194, 25);
-		Sem3_ErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		Sem3_ErrorMessage.setForeground(Color.DARK_GRAY);
-		Sem3_ErrorMessage.setFont(new Font("Dialog", Font.BOLD, 13));
-		Sem3_ErrorMessage.setBackground(Color.DARK_GRAY);
-		Semesters.add(Sem3_ErrorMessage);
+		JLabel lblNewLabel = new JLabel("Average Grade: 0");
+		lblNewLabel.setBackground(Color.GRAY);
+		lblNewLabel.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel.setBounds(63, 298, 166, 25);
+		Semesters.add(lblNewLabel);
 	}
 	@SuppressWarnings("unused")
 	private static void addPopup(Component component, final JPopupMenu popup) {
@@ -336,9 +305,17 @@ public class SemesterAvg {
 		    	
 		    	if (FirstChar != '0') 
 			    {
-				    
 				    if (x >= 0 && x <= 100) 
 				    {
+				    	if (fullText.length() > 1) 
+						{
+							semester.setBounds(semester.getBounds().x, semester.getBounds().y, 11 * fullText.length(), semester.getBounds().height);
+						}
+						else 
+						{
+							semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
+						}
+				    	
 				    	return Character;
 				    }
 				    else 
@@ -363,6 +340,7 @@ public class SemesterAvg {
 			    	}
 			    	else 
 			    	{
+			    		semester.setBounds(semester.getBounds().x, semester.getBounds().y, 14, semester.getBounds().height);
 			    		return Character;
 			    	}
 			    }
@@ -376,6 +354,28 @@ public class SemesterAvg {
 		catch (NumberFormatException n) 
 		{
 		    System.out.println("Not a number");
+		    
+		    if (Character == '') 
+		    {
+		    	if (fullText.length() > 0) 
+				{
+		    		if (semester.getText().equals("0")) 
+					{
+						semester.setBounds(semester.getBounds().x, semester.getBounds().y, 14, semester.getBounds().height);
+					}
+					else 
+					{
+						semester.setBounds(semester.getBounds().x, semester.getBounds().y, 9 * fullText.length(), semester.getBounds().height);
+					}
+				}
+				else 
+				{
+					semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
+				}
+		    	
+		    	return null; // Stops the input.
+		    }
+		    
 		    return null; // Stops the input.
 		}
 	}
@@ -392,7 +392,22 @@ public class SemesterAvg {
 				semester.setText("");
 			}
 			
-			semester.setBounds(semester.getBounds().x, semester.getBounds().y, 29, semester.getBounds().height);
+			if (semester.getText().length() > 1) 
+			{
+				semester.setBounds(semester.getBounds().x, semester.getBounds().y, 11 * semester.getText().length(), semester.getBounds().height);
+			}
+			else 
+			{
+				if (semester.getText().equals("0")) 
+				{
+					semester.setBounds(semester.getBounds().x, semester.getBounds().y, 14, semester.getBounds().height);
+				}
+				else 
+				{
+					semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
+				}
+			}
+			
 			semester.setForeground(Color.black);
 		}
 		else 
@@ -420,7 +435,21 @@ public class SemesterAvg {
 			}
 			else 
 			{
-				semester.setBounds(semester.getBounds().x, semester.getBounds().y, 29, semester.getBounds().height);
+				if (semester.getText().length() > 1) 
+				{
+					semester.setBounds(semester.getBounds().x, semester.getBounds().y, 11 * semester.getText().length(), semester.getBounds().height);
+				}
+				else 
+				{
+					if (semester.getText().equals("0")) 
+					{
+						semester.setBounds(semester.getBounds().x, semester.getBounds().y, 14, semester.getBounds().height);
+					}
+					else 
+					{
+						semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
+					}
+				}
 			}
 			
 			semester.setForeground(Color.gray);

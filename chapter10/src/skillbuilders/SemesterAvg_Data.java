@@ -1,5 +1,9 @@
 package skillbuilders;
 
+import java.awt.TextField;
+import java.util.ArrayList;
+import java.util.List;
+
 import skillbuilders.SemesterAvg;
 
 public class SemesterAvg_Data {
@@ -8,46 +12,14 @@ public class SemesterAvg_Data {
 	static boolean sem2 = false;
 	static boolean sem3 = false;
 	
-	public static void changeSem(int sem) 
+	public static void checkSemester(TextField semester) 
 	{
-		if (sem == 1) 
-		{
-			sem1 = true;
-		}
-		else if (sem == 2) 
-		{
-			sem2 = true;
-		}
-		else if (sem == 3) 
-		{
-			sem3 = true;
-		}
+		
+		calculateAvg();
 	}
 	
-	public static int getSem() 
+	public static void calculateAvg() 
 	{
-		int total = 0;
-		
-		if (sem1) 
-		{
-			total++;
-			System.out.println("Sem1 " + sem1);
-		}
-		
-		if (sem2) 
-		{
-			total++;
-			System.out.println("Sem2 " + sem2);
-		}
-		
-		if (sem3) 
-		{
-			total++;
-			System.out.println("Sem3 " + sem3);
-		}
-		
-		System.out.println(total);
-		
-		return total;
+		List<String> totalInside = new ArrayList<>();
 	}
 }
