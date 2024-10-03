@@ -2,7 +2,7 @@ package skillbuilders;
 
 import java.awt.EventQueue;
 import EasyKit.Text;
-import skillbuilders.SemesterAvg_Data;
+import skillbuilderData.SemesterAvg_Data;
 
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
@@ -30,7 +30,6 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.Box;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
@@ -42,6 +41,7 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
+@SuppressWarnings("unused")
 
 public class SemesterAvg {
 
@@ -70,6 +70,8 @@ public class SemesterAvg {
 		initialize();
 	}
 
+	private static JLabel AvgGrade = new JLabel("Average Grade: 0");
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -262,12 +264,11 @@ public class SemesterAvg {
 		Semester3.setForeground(Color.DARK_GRAY);
 		Semester3.setFont(new Font("Dialog", Font.BOLD, 13));
 		Semesters.add(Semester3);
-		
-		JLabel lblNewLabel = new JLabel("Average Grade: 0");
-		lblNewLabel.setBackground(Color.GRAY);
-		lblNewLabel.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel.setBounds(63, 298, 166, 25);
-		Semesters.add(lblNewLabel);
+
+		AvgGrade.setBackground(Color.GRAY);
+		AvgGrade.setFont(new Font("Verdana", Font.PLAIN, 13));
+		AvgGrade.setBounds(63, 298, 166, 25);
+		Semesters.add(AvgGrade);
 	}
 	@SuppressWarnings("unused")
 	private static void addPopup(Component component, final JPopupMenu popup) {
@@ -316,6 +317,9 @@ public class SemesterAvg {
 							semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
 						}
 				    	
+				    	SemesterAvg_Data.UpdateRating(semester);
+				    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
+				    	
 				    	return Character;
 				    }
 				    else 
@@ -333,6 +337,9 @@ public class SemesterAvg {
 				    	}
 				    	else 
 				    	{
+				    		SemesterAvg_Data.UpdateRating(semester);
+					    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
+					    	
 				    		semester.setText("" + Character);
 				    		semester.setCaretPosition(1);
 				    		return ' ';
