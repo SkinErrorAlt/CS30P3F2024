@@ -95,14 +95,15 @@ public class SemesterAvg {
 		frame.getContentPane().add(Title);
 		
 		Panel Semesters = new Panel();
-	
+		Ui.UiSetup(Semesters);
+		
 		Semesters.setBackground(Color.PINK);
 		Semesters.setForeground(new Color(255, 128, 128));
 		Semesters.setBounds(30, 46, 306, 383);
 		frame.getContentPane().add(Semesters);
 		Semesters.setLayout(null);
 		
-		TextField FirstSemester = new TextField();
+		JTextField FirstSemester = new JTextField();
 		FirstSemester.setFocusTraversalKeysEnabled(false);
 		FirstSemester.setName("FirstSemester");
 		FirstSemester.setText("Enter First Grade");
@@ -113,50 +114,22 @@ public class SemesterAvg {
         FirstSemester.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
         Semesters.add(FirstSemester);
         
-        FirstSemester.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) 
-			{
-				Object check = checkChar(FirstSemester, e.getKeyChar());
-				
-				if (check != null) 
-				{
-					if ((char) check == ' ') 
-					{
-						e.consume();
-					}
-					else 
-					{
-						int x = Integer.parseInt(FirstSemester.getText() + e.getKeyChar());
-						System.out.println(x);
-						if (x >= 0 && x <= 100) 
-					    {
-							SemesterAvg_Data.UpdateRating(FirstSemester, x);
-					    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
-					    }
-					}
-				}
-				else 
-				{
-					e.consume();
-				}
-			}
-		});
+        Ui.TextFieldSetup(FirstSemester, Ui.textFieldType.NumberRange, Color.black, true);
         
         FirstSemester.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
-				Ui.toggleTipText(FirstSemester, "First Semester");
+				Ui.toggleTipText(FirstSemester);
 			}
         	@Override
         	public void focusLost(FocusEvent e) 
         	{
-        		Ui.toggleTipText(FirstSemester, "First Semester"); 
+        		Ui.toggleTipText(FirstSemester);
         	}
 		});
 		
-		TextField SecondSemester = new TextField();
+        JTextField SecondSemester = new JTextField();
 		SecondSemester.setFocusTraversalKeysEnabled(false);
 		SecondSemester.setText("Enter Second Grade");
 		SecondSemester.setName("SecondSemester");
@@ -166,50 +139,22 @@ public class SemesterAvg {
 		SecondSemester.setBackground(Color.WHITE);
 		Semesters.add(SecondSemester);
 		
-		SecondSemester.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) 
-			{
-				Object check = checkChar(SecondSemester, e.getKeyChar());
-				
-				if (check != null) 
-				{
-					if ((char) check == ' ') 
-					{
-						e.consume();
-					}
-					else 
-					{
-						int x = Integer.parseInt(SecondSemester.getText() + e.getKeyChar());
-						System.out.println(x);
-						if (x >= 0 && x <= 100) 
-					    {
-							SemesterAvg_Data.UpdateRating(SecondSemester, x);
-					    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
-					    }
-					}
-				}
-				else 
-				{
-					e.consume();
-				}
-			}
-		});
+		Ui.TextFieldSetup(SecondSemester, Ui.textFieldType.NumberRange, Color.black, true);
 		
 		SecondSemester.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
-				toggleTipText(SecondSemester);
+				Ui.toggleTipText(SecondSemester);
 			}
         	@Override
         	public void focusLost(FocusEvent e) 
         	{
-        		toggleTipText(SecondSemester);
+        		Ui.toggleTipText(SecondSemester);
         	}
 		});
 		
-		TextField ThirdSemester = new TextField();
+		JTextField ThirdSemester = new JTextField();
 		ThirdSemester.setFocusTraversalKeysEnabled(false);
 		ThirdSemester.setText("Enter Third Grade");
 		ThirdSemester.setName("ThirdSemester");
@@ -219,46 +164,18 @@ public class SemesterAvg {
 		ThirdSemester.setBackground(Color.WHITE);
 		Semesters.add(ThirdSemester);
 		
-		ThirdSemester.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) 
-			{
-				Object check = checkChar(ThirdSemester, e.getKeyChar());
-				
-				if (check != null) 
-				{
-					if ((char) check == ' ') 
-					{
-						e.consume();
-					}
-					else 
-					{
-						int x = Integer.parseInt(ThirdSemester.getText() + e.getKeyChar());
-						System.out.println(x);
-						if (x >= 0 && x <= 100) 
-					    {
-							SemesterAvg_Data.UpdateRating(ThirdSemester, x);
-					    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
-					    }
-					}
-				}
-				else 
-				{
-					e.consume();
-				}
-			}
-		});
+		Ui.TextFieldSetup(ThirdSemester, Ui.textFieldType.NumberRange, Color.black, true);
 		
 		ThirdSemester.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
-				toggleTipText(ThirdSemester);
+				Ui.toggleTipText(ThirdSemester);
 			}
         	@Override
         	public void focusLost(FocusEvent e) 
         	{
-        		toggleTipText(ThirdSemester);
+        		Ui.toggleTipText(ThirdSemester);
         	}
 		});
 		
@@ -291,6 +208,122 @@ public class SemesterAvg {
 		AvgGrade.setFont(new Font("Verdana", Font.BOLD, 15));
 		AvgGrade.setBounds(44, 298, 209, 25);
 		Semesters.add(AvgGrade);
+		
+		Ui.focusChange(null);
+		
+		FirstSemester.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				Object check = checkChar(FirstSemester, e.getKeyChar());
+				
+				if (check != null) 
+				{
+					if ((char) check == ' ') 
+					{
+						e.consume();
+					}
+					else 
+					{
+						int x = Integer.parseInt(FirstSemester.getText() + e.getKeyChar());
+						System.out.println(x);
+						if (x >= 0 && x <= 100) 
+					    {
+							SemesterAvg_Data.UpdateRating(FirstSemester, x);
+					    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
+					    }
+					}
+				}
+				else 
+				{
+					e.consume();
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) // Checks if the user pressed Enter.
+				{
+					Ui.focusChange(SecondSemester);
+				}
+			}
+		});
+		
+		SecondSemester.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				Object check = checkChar(SecondSemester, e.getKeyChar());
+				
+				if (check != null) 
+				{
+					if ((char) check == ' ') 
+					{
+						e.consume();
+					}
+					else 
+					{
+						int x = Integer.parseInt(SecondSemester.getText() + e.getKeyChar());
+						System.out.println(x);
+						if (x >= 0 && x <= 100) 
+					    {
+							SemesterAvg_Data.UpdateRating(SecondSemester, x);
+					    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
+					    }
+					}
+				}
+				else 
+				{
+					e.consume();
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) // Checks if the user pressed Enter.
+				{
+					Ui.focusChange(ThirdSemester);
+				}
+			}
+		});
+		
+		ThirdSemester.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				Object check = checkChar(ThirdSemester, e.getKeyChar());
+				
+				if (check != null) 
+				{
+					if ((char) check == ' ') 
+					{
+						e.consume();
+					}
+					else 
+					{
+						int x = Integer.parseInt(ThirdSemester.getText() + e.getKeyChar());
+						System.out.println(x);
+						if (x >= 0 && x <= 100) 
+					    {
+							SemesterAvg_Data.UpdateRating(ThirdSemester, x);
+					    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
+					    }
+					}
+				}
+				else 
+				{
+					e.consume();
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) // Checks if the user pressed Enter.
+				{
+					Ui.focusChange(FirstSemester);
+				}
+			}
+		});
 	}
 	@SuppressWarnings("unused")
 	private static void addPopup(Component component, final JPopupMenu popup) {
@@ -311,17 +344,17 @@ public class SemesterAvg {
 		});
 	}
 	
-	public static <c> Object checkChar(TextField semester, char Character) 
+	public static <c> Object checkChar(JTextField secondSemester, char Character) 
 	{
-		String fullText = semester.getText() + Character;
+		String fullText = secondSemester.getText() + Character;
 	
 		try 
 		{
 			char FirstChar = fullText.charAt(0);
 	    	int x = Integer.parseInt(fullText);
-	    	String fullNumberText = semester.getText() + x;
+	    	String fullNumberText = secondSemester.getText() + x;
 	    	
-		    if (!(semester.getText() + Character).equals(""))
+		    if (!(secondSemester.getText() + Character).equals(""))
 		    {
 		    	if (FirstChar != '0') 
 			    {
@@ -330,11 +363,11 @@ public class SemesterAvg {
 				    	
 				    	if (fullText.length() > 1) 
 						{
-							semester.setBounds(semester.getBounds().x, semester.getBounds().y, 11 * fullText.length(), semester.getBounds().height);
+							secondSemester.setBounds(secondSemester.getBounds().x, secondSemester.getBounds().y, 11 * fullText.length(), secondSemester.getBounds().height);
 						}
 						else 
 						{
-							semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
+							secondSemester.setBounds(secondSemester.getBounds().x, secondSemester.getBounds().y, 15, secondSemester.getBounds().height);
 						}
 				    					    	
 				    	return Character;
@@ -346,7 +379,7 @@ public class SemesterAvg {
 			    }
 			    else 
 			    {
-			    	if (!semester.getText().equals("")) 
+			    	if (!secondSemester.getText().equals("")) 
 			    	{
 			    		if (Character == '0') 
 				    	{
@@ -354,17 +387,17 @@ public class SemesterAvg {
 				    	}
 				    	else 
 				    	{	
-				    		SemesterAvg_Data.UpdateRating(semester, x);
+				    		SemesterAvg_Data.UpdateRating(secondSemester, x);
 					    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
 					    	
-				    		semester.setText("" + Character);
-				    		semester.setCaretPosition(1);
+				    		secondSemester.setText("" + Character);
+				    		secondSemester.setCaretPosition(1);
 				    		return ' ';
 				    	}
 			    	}
 			    	else 
 			    	{
-			    		semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
+			    		secondSemester.setBounds(secondSemester.getBounds().x, secondSemester.getBounds().y, 15, secondSemester.getBounds().height);
 			    		return Character;
 			    	}
 			    }
@@ -372,7 +405,7 @@ public class SemesterAvg {
 		    else 
 		    {
 		    	System.out.println("Test");
-		    	SemesterAvg_Data.UpdateRating(semester, x);
+		    	SemesterAvg_Data.UpdateRating(secondSemester, x);
 		    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
 		    	
 		    	return Character;
@@ -387,27 +420,27 @@ public class SemesterAvg {
 				{
 		    		if (fullText.length() > 1) 
 		    		{
-		    			SemesterAvg_Data.UpdateRating(semester, Integer.parseInt(semester.getText()));
+		    			SemesterAvg_Data.UpdateRating(secondSemester, Integer.parseInt(secondSemester.getText()));
 				    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
 		    		}
 		    		else 
 		    		{
-		    			SemesterAvg_Data.UpdateRating(semester, -1);
+		    			SemesterAvg_Data.UpdateRating(secondSemester, -1);
 				    	AvgGrade.setText("Average Grade: " + SemesterAvg_Data.GetAvg());
 		    		}
 			    	
-		    		if (semester.getText().equals("0")) 
+		    		if (secondSemester.getText().equals("0")) 
 					{
-						semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
+						secondSemester.setBounds(secondSemester.getBounds().x, secondSemester.getBounds().y, 15, secondSemester.getBounds().height);
 					}
 					else 
 					{
-						semester.setBounds(semester.getBounds().x, semester.getBounds().y, 9 * fullText.length(), semester.getBounds().height);
+						secondSemester.setBounds(secondSemester.getBounds().x, secondSemester.getBounds().y, 9 * fullText.length(), secondSemester.getBounds().height);
 					}
 				}
 				else 
 				{
-					semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
+					secondSemester.setBounds(secondSemester.getBounds().x, secondSemester.getBounds().y, 15, secondSemester.getBounds().height);
 				}
 		    	
 		    	return null; // Stops the input.
