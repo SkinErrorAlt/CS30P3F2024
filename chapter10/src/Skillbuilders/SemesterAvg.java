@@ -36,11 +36,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import java.awt.ComponentOrientation;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
+import java.util.ArrayList;
+import java.util.List;
+import EasyKit.Ui;
 @SuppressWarnings("unused")
 
 public class SemesterAvg {
@@ -66,6 +67,7 @@ public class SemesterAvg {
 	/**
 	 * Create the application.
 	 */
+	
 	public SemesterAvg() {
 		initialize();
 	}
@@ -75,6 +77,7 @@ public class SemesterAvg {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
 	public void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
@@ -144,12 +147,12 @@ public class SemesterAvg {
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
-				toggleTipText(FirstSemester);
+				Ui.toggleTipText(FirstSemester, "First Semester");
 			}
         	@Override
         	public void focusLost(FocusEvent e) 
         	{
-        		toggleTipText(FirstSemester);
+        		Ui.toggleTipText(FirstSemester, "First Semester"); 
         	}
 		});
 		
@@ -412,82 +415,5 @@ public class SemesterAvg {
 	    	
 		    return null; // Stops the input.
 		}
-	}
-	
-	public static void toggleTipText(TextField semester) 
-	{
-		String text = semester.getText();
-		boolean focused = semester.hasFocus();
-		
-		if (focused) 
-		{
-			if (text.equals("Enter First Grade") || text.equals("Enter Second Grade") || text.equals("Enter Third Grade") || text.equals("Null")) 
-			{
-				semester.setText("");
-			}
-			
-			if (semester.getText().length() > 1) 
-			{
-				semester.setBounds(semester.getBounds().x, semester.getBounds().y, 11 * semester.getText().length(), semester.getBounds().height);
-			}
-			else 
-			{
-				if (semester.getText().equals("0")) 
-				{
-					semester.setBounds(semester.getBounds().x, semester.getBounds().y, 14, semester.getBounds().height);
-				}
-				else 
-				{
-					semester.setBounds(semester.getBounds().x, semester.getBounds().y, 9, semester.getBounds().height);
-				}
-			}
-			
-			semester.setForeground(Color.black);
-		}
-		else 
-		{
-			if (text.equals("")) 
-			{
-				if (semester.getName() == "FirstSemester") 
-				{
-					semester.setText("Enter First Grade");
-				}
-				else if (semester.getName() == "SecondSemester")
-				{
-					semester.setText("Enter Second Grade");
-				}
-				else if (semester.getName() == "ThirdSemester")
-				{
-					semester.setText("Enter Third Grade");
-				}
-				else 
-				{
-					semester.setText("Null");
-				}
-				
-				semester.setBounds(semester.getBounds().x, semester.getBounds().y, 140, semester.getBounds().height);
-			}
-			else 
-			{
-				if (semester.getText().length() > 1) 
-				{
-					semester.setBounds(semester.getBounds().x, semester.getBounds().y, 11 * semester.getText().length(), semester.getBounds().height);
-				}
-				else 
-				{
-					if (semester.getText().equals("0")) 
-					{
-						semester.setBounds(semester.getBounds().x, semester.getBounds().y, 14, semester.getBounds().height);
-					}
-					else 
-					{
-						semester.setBounds(semester.getBounds().x, semester.getBounds().y, 15, semester.getBounds().height);
-					}
-				}
-			}
-			
-			semester.setForeground(Color.gray);
-		}
-		
 	}
 }

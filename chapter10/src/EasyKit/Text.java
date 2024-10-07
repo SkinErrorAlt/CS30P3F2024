@@ -326,10 +326,16 @@ public class Text
         }
 	}
 	
-	public static double RandomNumber(double Min, double Max) // Quickly gives a random number between a min and a max.
+	public static double DoubleRandomNumber(double Min, double Max) // Quickly gives a random number between a min and a max.
 	{
 		double GenRandomNumber = (Max * Math.random() + Min); // Generates a Random Number.
 		return GenRandomNumber; // returns the random number.
+	}
+	
+	public static int IntRandomNumber(int Min, int Max) // Quickly gives a random number between a min and a max.
+	{
+		double GenRandomNumber = (Max * Math.random() + Min); // Generates a Random Number.
+		return (int) GenRandomNumber; // returns the random number.
 	}
 
 	public static String GetTime() // Returns the users time.
