@@ -17,6 +17,8 @@ import javax.swing.border.EtchedBorder;
 
 import EasyKit.Text;
 import EasyKit.Ui;
+import MasteryData.LocalBankGUI_Data;
+import MasteryData.LocalBankGUI_Data.NewAccount;
 
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -45,6 +47,8 @@ public class LocalBankGUI {
 	private JTextField EnterUsername_SignUp;
 	private JTextField EnterPassword_SignUp;
 	private JTextField ConfirmPassword;
+	@SuppressWarnings("unused")
+	public static MasteryData.LocalBankGUI_Data.NewAccount currentAccount;
 
 	/**
 	 * Launch the application.
@@ -132,7 +136,10 @@ public class LocalBankGUI {
 		EnterPassword_SignUp = new JTextField();
 		EnterPassword_SignUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (EnterPassword_SignUp.)
+				if (!EnterPassword.getText().equals("") && !EnterPassword.getText().equals(Ui.getTextFieldSettings(EnterPassword))) 
+				{
+					
+				}
 			}
 		});
 		EnterPassword_SignUp.setText("Enter Password");
@@ -169,7 +176,6 @@ public class LocalBankGUI {
 		SignUpScreen.add(SignUpButton);
 		
 		ConfirmPassword = new JTextField();
-		ConfirmPassword.setVisible(false);
 		ConfirmPassword.setText("Confirm Password");
 		ConfirmPassword.setSelectedTextColor(new Color(255, 159, 159));
 		ConfirmPassword.setForeground(Color.GRAY);
@@ -177,8 +183,10 @@ public class LocalBankGUI {
 		ConfirmPassword.setColumns(10);
 		ConfirmPassword.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		ConfirmPassword.setBackground(new Color(255, 206, 198));
-		ConfirmPassword.setBounds(162, 239, 367, 27);
+		ConfirmPassword.setBounds(162, 244, 367, 27);
+		
 		SignUpScreen.add(ConfirmPassword);
+		
 		LoginScreen.setBackground(Color.PINK);
 		LoginScreen.setBounds(0, 0, 650, 422);
 		frame.getContentPane().add(LoginScreen);
@@ -315,5 +323,92 @@ public class LocalBankGUI {
 				}
 			}
 		});
+		
+		// (SignUp) EnterPassword Events
+		EnterPassword_SignUp.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				Ui.toggleTipText(EnterPassword_SignUp);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				Ui.toggleTipText(EnterPassword_SignUp);
+			}
+		});
+		EnterPassword_SignUp.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
+					Ui.focusChange(EnterPassword_SignUp);
+				}
+			}
+		});
+		
+		// (SignUp) EnterPassword Events
+		EnterUsername_SignUp.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				Ui.toggleTipText(EnterUsername_SignUp);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				Ui.toggleTipText(EnterUsername_SignUp);
+			}
+		});
+		EnterUsername_SignUp.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
+					Ui.focusChange(EnterUsername_SignUp);
+				}
+			}
+		});
+		
+		// (SignUp) EnterPassword Events
+		EnterPassword.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				Ui.toggleTipText(EnterUsername_SignUp);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				Ui.toggleTipText(EnterUsername_SignUp);
+			}
+		});
+		EnterUsername_SignUp.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
+					Ui.focusChange(EnterUsername_SignUp);
+				}
+			}
+		});
+		
+		// (SignUp) ConfirmPassword Events
+		ConfirmPassword.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				Ui.toggleTipText(ConfirmPassword);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				Ui.toggleTipText(ConfirmPassword);
+			}
+		});
+		ConfirmPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
+					Ui.focusChange(ConfirmPassword);
+				}
+			}
+		});
+		
+				
+		MasteryData.LocalBankGUI_Data.createAccount("Test", "123");
 	}
 }

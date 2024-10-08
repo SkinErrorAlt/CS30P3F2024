@@ -76,18 +76,23 @@ public class Ui {
     }
     
     // New method to set text limit for TextLimit type
-    public static void SetTextLimit(JTextField TextUi, int maxLength) {
-        for (TextFieldSettings settings : TextFields) {
-            if (settings.selectedTextField == TextUi && settings.currentType == textFieldType.TextLimit) {
+    public static void SetTextLimit(JTextField TextUi, int maxLength) 
+    {
+        for (TextFieldSettings settings : TextFields) 
+        {
+            if (settings.selectedTextField == TextUi && settings.currentType == textFieldType.TextLimit) 
+            {
                 settings.MaxLength = maxLength;
                 return;
             }
         }
+        
         System.out.println("TextField not found or not of TextLimit type.");
     }
     
     // New method to set number range for NumberRange type
-    public static void SetNumberRange(JTextField TextUi, double minValue, double maxValue) {
+    public static void SetNumberRange(JTextField TextUi, double minValue, double maxValue) 
+    {
         for (TextFieldSettings settings : TextFields) 
         {
             if (settings.selectedTextField == TextUi && settings.currentType == textFieldType.NumberRange) 
@@ -101,14 +106,14 @@ public class Ui {
         System.out.println("TextField not found or not a NumberRange type.");
     }
     
-    public static void focusChange(JComponent UiObject) {
+    public static void focusChange(JComponent UiObject) 
+    {
         if (UiObject != null) 
         {
             UiObject.requestFocusInWindow();
         } 
         else 
         {
-            System.out.println("Unfocused");
             Main.requestFocusInWindow();
         }
     }
@@ -144,7 +149,8 @@ public class Ui {
         }
     }
     
-    private static void handleFocusedState(JTextField TextUi, TextFieldSettings GotTextUi, String text) {
+    private static void handleFocusedState(JTextField TextUi, TextFieldSettings GotTextUi, String text) 
+    {
         if (text.equals(GotTextUi.DefaultText) || text.equals("Null")) 
         {
             TextUi.setText("");
@@ -169,7 +175,8 @@ public class Ui {
         }
     }
     
-    private static void handleUnfocusedState(JTextField TextUi, TextFieldSettings GotTextUi, String text) {
+    private static void handleUnfocusedState(JTextField TextUi, TextFieldSettings GotTextUi, String text) 
+    {
         if (text.equals("")) 
         {
             TextUi.setText(GotTextUi.DefaultText);
@@ -182,7 +189,8 @@ public class Ui {
         TextUi.setForeground(GotTextUi.UnselectedTextColor);
     }
     
-    private static void resizeTextField(JTextField TextUi, TextFieldSettings GotTextUi) {
+    private static void resizeTextField(JTextField TextUi, TextFieldSettings GotTextUi) 
+    {
         if (GotTextUi.AllowResize) 
         {
             int width;
@@ -236,9 +244,13 @@ public class Ui {
         }
     }
     
-    public static void getTextFieldSettings(JTextField TextUi) 
+    public static TextFieldSettings getTextFieldSettings(JTextField TextUi) 
     {
+    	for (TextFieldSettings settings : TextFields) // gets the Text Field
+    	{
+    		return settings;
+    	}
     	
-    	return null;
+		return null;
     }
 }
