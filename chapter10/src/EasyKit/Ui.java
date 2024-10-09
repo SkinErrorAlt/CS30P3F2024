@@ -3,11 +3,17 @@ package EasyKit;
 import java.awt.Color;
 import java.awt.Panel;
 import java.awt.Rectangle;
+import java.awt.TextField;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import java.util.*;
+import java.lang.*;
 
 // Easy UI effects.
 public class Ui {
@@ -63,9 +69,9 @@ public class Ui {
     
     public static List<TextFieldSettings> TextFields = new ArrayList<>();
     
-    public static void UiSetup(Panel MainFrame) 
+    public static void UiSetupJPanel(Panel loginScreen) 
     {
-        Main = MainFrame;
+        Main = loginScreen;
         Main.requestFocusInWindow();
     }
     
@@ -106,7 +112,19 @@ public class Ui {
         System.out.println("TextField not found or not a NumberRange type.");
     }
     
-    public static void focusChange(JComponent UiObject) 
+    public static void focusChangeJComponent(JComponent UiObject) 
+    {
+        if (UiObject != null) 
+        {
+            UiObject.requestFocusInWindow();
+        } 
+        else 
+        {
+            Main.requestFocusInWindow();
+        }
+    }
+    
+    public static void focusChangePanel(Panel UiObject) 
     {
         if (UiObject != null) 
         {
@@ -132,7 +150,7 @@ public class Ui {
         
         if (GotTextUi == null) 
         {
-            System.out.println("Not in system.");
+            System.out.println("Not in array.");
             return;
         }
         
@@ -253,4 +271,82 @@ public class Ui {
     	
 		return null;
     }
+
+	public static void focusChange(TextField UiObject) {
+		if (UiObject != null) 
+        {
+            UiObject.requestFocusInWindow();
+        } 
+        else 
+        {
+            Main.requestFocusInWindow();
+        }
+	}
+	
+	public static boolean ValidCharacters(String str, int n)
+    {
+        if (str == null || str == "") 
+        {
+            return false;
+        }
+        
+        ArrayList<Character> alphabets = new ArrayList<Character>();
+        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        
+        for (int i = 0; i < alpha.length(); i++)
+        {
+            alphabets.add(alpha.charAt(i));
+        }
+
+        for (int i = 0; i < n; i++) 
+        {
+            if (!alphabets.contains(str.charAt(i))) 
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+	
+	public static String handleTextInput(JTextField textField, KeyEvent e) {
+	    String currentText = textField.getText();
+	    int keyCode = e.getKeyCode();
+
+	    if (keyCode == KeyEvent.VK_BACK_SPACE) 
+	    {
+	        // Handle backspace
+	        if (!currentText.isEmpty()) 
+	        {
+	            return currentText.substring(0, currentText.length() - 1);
+	        }
+	    } 
+	    else 
+	    {
+	        char keyChar = e.getKeyChar();
+	        if (Character.isLetterOrDigit(keyChar) || Character.isWhitespace(keyChar)) 
+	        {
+	            // Valid character, append to current text
+	            return currentText + keyChar;
+	        }
+	    }
+
+	    // If no changes were made, return the original text
+	    return currentText;
+	}
+	
+	public static boolean UiBeingUsed(JTextField TextUi, KeyEvent e) 
+	{
+		for (TextFieldSettings settings : TextFields) // gets the Text Field
+    	{
+			int length = settings.selectedTextField.getText().length();
+			
+			if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) 
+			{
+				System.out.println("Backspaced");
+			}
+    	}
+		
+		return false;
+	}
 }

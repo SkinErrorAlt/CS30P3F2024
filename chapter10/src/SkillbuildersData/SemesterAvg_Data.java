@@ -1,25 +1,20 @@
 package SkillbuildersData;
-
 import java.awt.TextField;
-
-import javax.swing.JTextField;
-
 import Skillbuilders.SemesterAvg;
 @SuppressWarnings("unused")
-
 public class SemesterAvg_Data {
-
+	
 	public static int Semester_1 = -1;
 	public static int Semester_2 = -1;
 	public static int Semester_3 = -1;
 	
-	public static void UpdateRating(JTextField firstSemester, int number) 
+	public static void UpdateRating(TextField semester, int number) 
 	{
-		String fullText = firstSemester.getText() + number;
+		String fullText = semester.getText() + number;
 		
-		if (firstSemester.getName().equals("FirstSemester")) 
+		if (semester.getName().equals("FirstSemester")) 
 		{
-			if (fullText.equals("") || firstSemester.getText().equals("Enter First Grade") || firstSemester.getText().equals("Enter Second Grade") || firstSemester.getText().equals("Enter Third Grade")) 
+			if (fullText.equals("") || semester.getText().equals("Enter First Grade") || semester.getText().equals("Enter Second Grade") || semester.getText().equals("Enter Third Grade")) 
 			{
 				Semester_1 = -1;
 			}
@@ -28,9 +23,9 @@ public class SemesterAvg_Data {
 				Semester_1 = number;
 			}
 		}
-		else if (firstSemester.getName().equals("SecondSemester")) 
+		else if (semester.getName().equals("SecondSemester")) 
 		{
-			if (fullText.equals("") || firstSemester.getText().equals("Enter First Grade") || firstSemester.getText().equals("Enter Second Grade") || firstSemester.getText().equals("Enter Third Grade")) 
+			if (fullText.equals("") || semester.getText().equals("Enter First Grade") || semester.getText().equals("Enter Second Grade") || semester.getText().equals("Enter Third Grade")) 
 			{
 				Semester_2 = -1;
 			}
@@ -39,9 +34,9 @@ public class SemesterAvg_Data {
 				Semester_2 = number;
 			}
 		}
-		else if (firstSemester.getName().equals("ThirdSemester")) 
+		else if (semester.getName().equals("ThirdSemester")) 
 		{
-			if (fullText.equals("") || firstSemester.getText().equals("Enter First Grade") || firstSemester.getText().equals("Enter Second Grade") || firstSemester.getText().equals("Enter Third Grade")) 
+			if (fullText.equals("") || semester.getText().equals("Enter First Grade") || semester.getText().equals("Enter Second Grade") || semester.getText().equals("Enter Third Grade")) 
 			{
 				Semester_3 = -1;
 			}
@@ -49,10 +44,6 @@ public class SemesterAvg_Data {
 			{
 				Semester_3 = number;
 			} 
-		}
-		else 
-		{
-			System.out.println("Failed to get semester.");
 		}
 	}
 	
@@ -83,8 +74,6 @@ public class SemesterAvg_Data {
 		{
 			return "0";
 		}
-		
-		System.out.println(vailedSemesters + " | " + total);
 		
 		return "" + total / vailedSemesters;
 	}

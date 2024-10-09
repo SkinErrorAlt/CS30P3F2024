@@ -25,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.ComponentOrientation;
 import java.awt.event.KeyAdapter;
@@ -83,13 +84,8 @@ public class LocalBankGUI {
 		frame.getContentPane().setLayout(null);
 		
 		Panel LoginScreen = new Panel();
-		Ui.UiSetup(LoginScreen);
-		LoginScreen.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Ui.focusChange(null);
-			}
-		});
+		Ui.UiSetupJPanel(LoginScreen);
+		Ui.focusChange(null);
 		
 		Panel SignUpScreen = new Panel();
 		SignUpScreen.setVisible(false);
@@ -99,6 +95,7 @@ public class LocalBankGUI {
 		frame.getContentPane().add(SignUpScreen);
 		
 		JButton GoToLogin = new JButton();
+		GoToLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		GoToLogin.setHorizontalAlignment(SwingConstants.LEFT);
 		GoToLogin.setText("login");
 		GoToLogin.setForeground(Color.BLUE);
@@ -134,14 +131,6 @@ public class LocalBankGUI {
 		Ui.TextFieldSetup(EnterUsername_SignUp, Ui.textFieldType.Text, Color.DARK_GRAY, false);
 		
 		EnterPassword_SignUp = new JTextField();
-		EnterPassword_SignUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!EnterPassword.getText().equals("") && !EnterPassword.getText().equals(Ui.getTextFieldSettings(EnterPassword))) 
-				{
-					
-				}
-			}
-		});
 		EnterPassword_SignUp.setText("Enter Password");
 		EnterPassword_SignUp.setSelectedTextColor(new Color(255, 159, 159));
 		EnterPassword_SignUp.setForeground(Color.GRAY);
@@ -298,7 +287,7 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChange(EnterPassword);
+					Ui.focusChangeJComponent(EnterPassword);
 				}
 			}
 		});
@@ -319,7 +308,7 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChange(EnterPassword);
+					Ui.focusChangeJComponent(EnterPassword);
 				}
 			}
 		});
@@ -340,7 +329,7 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChange(EnterPassword_SignUp);
+					Ui.focusChangeJComponent(EnterPassword_SignUp);
 				}
 			}
 		});
@@ -361,8 +350,10 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChange(EnterUsername_SignUp);
+					Ui.focusChangeJComponent(EnterUsername_SignUp);
 				}
+				
+				Ui.UiBeingUsed(ConfirmPassword, e);
 			}
 		});
 		
@@ -382,7 +373,16 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChange(EnterUsername_SignUp);
+					Ui.focusChangeJComponent(ConfirmPassword);
+				}
+				
+				if (!ConfirmPassword.getText().equals("") && !ConfirmPassword.getText().equals(Ui.getTextFieldSettings(ConfirmPassword))) 
+				{
+					System.out.println("being used");
+				}
+				else 
+				{
+					System.out.println("Not being used");
 				}
 			}
 		});
@@ -403,7 +403,16 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChange(ConfirmPassword);
+					Ui.focusChangeJComponent(ConfirmPassword);
+				}
+				
+				if (!ConfirmPassword.getText().equals("") && !ConfirmPassword.getText().equals(Ui.getTextFieldSettings(ConfirmPassword))) 
+				{
+					System.out.println("being used");
+				}
+				else 
+				{
+					System.out.println("Not being used");
 				}
 			}
 		});
