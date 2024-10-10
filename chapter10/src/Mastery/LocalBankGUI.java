@@ -308,7 +308,7 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChangeJComponent(EnterPassword);
+					Ui.focusChangeJComponent(ConfirmPassword);
 				}
 			}
 		});
@@ -331,6 +331,8 @@ public class LocalBankGUI {
 				{
 					Ui.focusChangeJComponent(EnterPassword_SignUp);
 				}
+				
+				Ui.UiBeingUsed(EnterPassword_SignUp, e);
 			}
 		});
 		
@@ -353,7 +355,7 @@ public class LocalBankGUI {
 					Ui.focusChangeJComponent(EnterUsername_SignUp);
 				}
 				
-				Ui.UiBeingUsed(ConfirmPassword, e);
+				Ui.UiBeingUsed(EnterUsername_SignUp, e);
 			}
 		});
 		
@@ -373,16 +375,7 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChangeJComponent(ConfirmPassword);
-				}
-				
-				if (!ConfirmPassword.getText().equals("") && !ConfirmPassword.getText().equals(Ui.getTextFieldSettings(ConfirmPassword))) 
-				{
-					System.out.println("being used");
-				}
-				else 
-				{
-					System.out.println("Not being used");
+					Ui.focusChangeJComponent(EnterPassword_SignUp);
 				}
 			}
 		});
@@ -404,15 +397,6 @@ public class LocalBankGUI {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
 					Ui.focusChangeJComponent(ConfirmPassword);
-				}
-				
-				if (!ConfirmPassword.getText().equals("") && !ConfirmPassword.getText().equals(Ui.getTextFieldSettings(ConfirmPassword))) 
-				{
-					System.out.println("being used");
-				}
-				else 
-				{
-					System.out.println("Not being used");
 				}
 			}
 		});

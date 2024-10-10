@@ -283,7 +283,7 @@ public class Ui {
         }
 	}
 	
-	public static boolean ValidCharacters(String str, int n)
+	public static boolean ValidCharacters(String str)
     {
         if (str == null || str == "") 
         {
@@ -298,7 +298,7 @@ public class Ui {
             alphabets.add(alpha.charAt(i));
         }
 
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < str.length(); i++) 
         {
             if (!alphabets.contains(str.charAt(i))) 
             {
@@ -309,7 +309,8 @@ public class Ui {
         return true;
     }
 	
-	public static String handleTextInput(JTextField textField, KeyEvent e) {
+	public static String handleTextInput(JTextField textField, KeyEvent e) 
+	{
 	    String currentText = textField.getText();
 	    int keyCode = e.getKeyCode();
 
@@ -335,18 +336,112 @@ public class Ui {
 	    return currentText;
 	}
 	
+	public static boolean checkIfStringHas(String Text, String checkingChar, int amountNeeded) 
+	{
+		boolean DebugMode = true;
+		boolean vailed = false;
+		int vaildedChecks = 0;
+		
+		ArrayList<Character> checkingCharList = new ArrayList<Character>();
+		
+		for (int i = 0; i < checkingChar.length(); i++)
+        {
+			checkingCharList.add(checkingChar.charAt(i));
+        }
+		
+		for (int i = 0; i < checkingCharList.size(); i++) 
+		{
+			vaildedChecks++;
+		}
+		
+		for (int i = 0; i < Text.length(); i++) 
+        {
+			boolean Val = false;
+            if (checkingCharList.contains(Text.charAt(i))) 
+            {
+               Val = true;
+            }
+            
+            if (Val) 
+            {
+            	vaildedChecks++;
+            }
+        }
+		
+		if (vaildedChecks >= amountNeeded) 
+		{
+			vailed = true;
+		}
+		
+		if (DebugMode) 
+		{
+			System.out.println("Valided Checks: " + vaildedChecks);
+		}
+		
+		return vailed;
+	}
+	
 	public static boolean UiBeingUsed(JTextField TextUi, KeyEvent e) 
 	{
 		for (TextFieldSettings settings : TextFields) // gets the Text Field
     	{
-			int length = settings.selectedTextField.getText().length();
-			
-			if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) 
+			if (settings.selectedTextField == TextUi) 
 			{
-				System.out.println("Backspaced");
+				boolean validCharacter = ValidCharacters(settings.selectedTextField.getText() + e.getKeyChar());
+				
+				String realText = "";
+						
+				int length = settings.selectedTextField.getText().length();
+			
+				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) 
+				{
+					char[] Allcharacters = settings.selectedTextField.getText().toCharArray();
+					
+					if (Allcharacters.length > 0) 
+					{
+						for (int i = 0; i < Allcharacters.length - 1; i++) 
+						{
+							realText += Allcharacters[i];
+						}
+					}
+
+					System.out.println("Backspace: [" + realText + "] : " + validCharacter);
+				}
+				else if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
+					
+				}
+				else
+				{
+					boolean hasValid = checkIfStringHas(settings.selectedTextField.getText(), "t", 25);
+					
+					if (hasValid) 
+					{
+						char[] Allcharacters = (settings.selectedTextField.getText() + e.getKeyChar()).toCharArray();
+						
+						if (Allcharacters.length > 0) 
+						{
+							for (int i = 0; i < Allcharacters.length; i++) 
+							{
+								realText += Allcharacters[i];
+							}
+						}
+						
+						System.out.println("Setup: [" + realText + "] : " + validCharacter);
+					}
+					else 
+					{
+						System.out.println("Missing character.");
+					}
+				}
 			}
     	}
 		
 		return false;
+	}
+
+	private static void toCharArray() {
+		// TODO Auto-generated method stub
+		
 	}
 }
