@@ -369,7 +369,7 @@ public class Ui {
 	
 	// This is todo: Make this function so it takes in a class that will contain the char looking for and the amount and then it will fire a different function
 	// Looking to see if the string has the char and the amount.
-	// If it does then it will 
+	// If it does then it will return true.
 	public static boolean hasChar(Character _char, int amount) // Check if it has a certain amount of a character.
 {
 		boolean hasValid = checkIfStringHas(settings.selectedTextField.getText(), checkingChars, 5);
