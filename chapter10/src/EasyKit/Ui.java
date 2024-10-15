@@ -336,37 +336,22 @@ public class Ui {
 	    return currentText;
 	}
 	
-	public static boolean checkIfStringHas(String Text, String checkingChar, int amountNeeded) 
+	public static boolean checkIfStringHas(String Text, List<Character> checkingChars, int amountNeeded) 
 	{
 		boolean DebugMode = true;
 		boolean vailed = false;
 		int vaildedChecks = 0;
 		
-		ArrayList<Character> checkingCharList = new ArrayList<Character>();
-		
-		for (int i = 0; i < checkingChar.length(); i++)
-        {
-			checkingCharList.add(checkingChar.charAt(i));
-        }
-		
-		for (int i = 0; i < checkingCharList.size(); i++) 
-		{
-			vaildedChecks++;
-		}
-		
 		for (int i = 0; i < Text.length(); i++) 
-        {
-			boolean Val = false;
-            if (checkingCharList.contains(Text.charAt(i))) 
-            {
-               Val = true;
-            }
-            
-            if (Val) 
-            {
-            	vaildedChecks++;
-            }
-        }
+		{
+			for (int x = 0; x < checkingChars.size(); x++) 
+			{
+				if (Text.charAt(i) == checkingChars.get(x)) 
+				{
+					vaildedChecks++;
+				}
+			}
+		}
 		
 		if (vaildedChecks >= amountNeeded) 
 		{
@@ -381,17 +366,57 @@ public class Ui {
 		return vailed;
 	}
 	
+	
+	// This is todo: Make this function so it takes in a class that will contain the char looking for and the amount and then it will fire a different function
+	// Looking to see if the string has the char and the amount.
+	// If it does then it will 
+	public static boolean hasChar(Character _char, int amount) // Check if it has a certain amount of a character.
+{
+		boolean hasValid = checkIfStringHas(settings.selectedTextField.getText(), checkingChars, 5);
+		
+		if (hasValid) 
+		{
+			
+		}
+		else 
+		{
+			//System.out.println("Missing character.");
+		}
+		
+		char[] Allcharacters = (settings.selectedTextField.getText() + e.getKeyChar()).toCharArray();
+		
+		if (Allcharacters.length > 0) 
+		{
+			for (int i = 0; i < Allcharacters.length; i++) 
+			{
+				realText += Allcharacters[i];
+			}
+		}
+		
+		System.out.println("Setup: [" + realText + "] : " + validCharacter);
+		
+		if (realText.isEmpty()) 
+		{
+			return false;
+		}
+		else 
+		{
+			return true;
+		}
+	}
+	
 	public static boolean UiBeingUsed(JTextField TextUi, KeyEvent e) 
 	{
 		for (TextFieldSettings settings : TextFields) // gets the Text Field
     	{
+			
+			
 			if (settings.selectedTextField == TextUi) 
 			{
-				boolean validCharacter = ValidCharacters(settings.selectedTextField.getText() + e.getKeyChar());
-				
 				String realText = "";
+				boolean validCharacter = ValidCharacters(settings.selectedTextField.getText() + e.getKeyChar());
 						
-				int length = settings.selectedTextField.getText().length();
+				//int length = settings.selectedTextField.getText().length();
 			
 				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) 
 				{
@@ -406,6 +431,15 @@ public class Ui {
 					}
 
 					System.out.println("Backspace: [" + realText + "] : " + validCharacter);
+					
+					if (realText.isEmpty()) 
+					{
+						return false;
+					}
+					else 
+					{
+						return true;
+					}
 				}
 				else if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
@@ -413,35 +447,45 @@ public class Ui {
 				}
 				else
 				{
-					boolean hasValid = checkIfStringHas(settings.selectedTextField.getText(), "t", 25);
+					List<Character> checkingChars = new ArrayList<>();
+					checkingChars.add('@');
+					
+					
+					boolean hasValid = checkIfStringHas(settings.selectedTextField.getText(), checkingChars, 5);
 					
 					if (hasValid) 
 					{
-						char[] Allcharacters = (settings.selectedTextField.getText() + e.getKeyChar()).toCharArray();
 						
-						if (Allcharacters.length > 0) 
-						{
-							for (int i = 0; i < Allcharacters.length; i++) 
-							{
-								realText += Allcharacters[i];
-							}
-						}
-						
-						System.out.println("Setup: [" + realText + "] : " + validCharacter);
 					}
 					else 
 					{
-						System.out.println("Missing character.");
+						//System.out.println("Missing character.");
+					}
+					
+					char[] Allcharacters = (settings.selectedTextField.getText() + e.getKeyChar()).toCharArray();
+					
+					if (Allcharacters.length > 0) 
+					{
+						for (int i = 0; i < Allcharacters.length; i++) 
+						{
+							realText += Allcharacters[i];
+						}
+					}
+					
+					System.out.println("Setup: [" + realText + "] : " + validCharacter);
+					
+					if (realText.isEmpty()) 
+					{
+						return false;
+					}
+					else 
+					{
+						return true;
 					}
 				}
 			}
     	}
 		
 		return false;
-	}
-
-	private static void toCharArray() {
-		// TODO Auto-generated method stub
-		
 	}
 }

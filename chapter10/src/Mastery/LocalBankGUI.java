@@ -23,6 +23,8 @@ import MasteryData.LocalBankGUI_Data.NewAccount;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.InputMethodListener;
@@ -327,12 +329,27 @@ public class LocalBankGUI {
 		EnterPassword_SignUp.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				boolean beingUsed = Ui.UiBeingUsed(EnterPassword_SignUp, e);
+				
+				if (beingUsed) 
 				{
-					Ui.focusChangeJComponent(EnterPassword_SignUp);
+					System.out.println("Being used");
+				}
+				else 
+				{
+					System.out.println("Not Being used");
 				}
 				
-				Ui.UiBeingUsed(EnterPassword_SignUp, e);
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
+					if (beingUsed) // Allows to go to next enter because password is valid and entered.
+					{
+						Ui.focusChangeJComponent(EnterPassword_SignUp);
+					}
+					
+				}
+				
+				
 			}
 		});
 		
@@ -401,7 +418,14 @@ public class LocalBankGUI {
 			}
 		});
 		
+		// (SignUp) Sign Up Button Events
+		SignUpButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
 				
+			}
+		});
+		
 		MasteryData.LocalBankGUI_Data.createAccount("Test", "123");
 	}
 }
