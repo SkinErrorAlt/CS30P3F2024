@@ -8,9 +8,13 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import EasyKit.*;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import MasteryData.LocalBankGUI_Data.NewAccount;
 
 import java.util.*;
 import java.lang.*;
@@ -110,30 +114,6 @@ public class Ui {
         }
         
         System.out.println("TextField not found or not a NumberRange type.");
-    }
-    
-    public static void focusChangeJComponent(JComponent UiObject) 
-    {
-        if (UiObject != null) 
-        {
-            UiObject.requestFocusInWindow();
-        } 
-        else 
-        {
-            Main.requestFocusInWindow();
-        }
-    }
-    
-    public static void focusChangePanel(Panel UiObject) 
-    {
-        if (UiObject != null) 
-        {
-            UiObject.requestFocusInWindow();
-        } 
-        else 
-        {
-            Main.requestFocusInWindow();
-        }
     }
     
     public static void toggleTipText(JTextField TextUi) 
@@ -271,17 +251,6 @@ public class Ui {
     	
 		return null;
     }
-
-	public static void focusChange(TextField UiObject) {
-		if (UiObject != null) 
-        {
-            UiObject.requestFocusInWindow();
-        } 
-        else 
-        {
-            Main.requestFocusInWindow();
-        }
-	}
 	
 	public static boolean ValidCharacters(String str)
     {
@@ -291,7 +260,7 @@ public class Ui {
         }
         
         ArrayList<Character> alphabets = new ArrayList<Character>();
-        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+{}|:/?>.<,~`";
         
         for (int i = 0; i < alpha.length(); i++)
         {
@@ -366,56 +335,87 @@ public class Ui {
 		return vailed;
 	}
 	
-	
 	// This is todo: Make this function so it takes in a class that will contain the char looking for and the amount and then it will fire a different function
 	// Looking to see if the string has the char and the amount.
 	// If it does then it will return true.
-	public static boolean hasChar(Character _char, int amount) // Check if it has a certain amount of a character.
-{
-		boolean hasValid = checkIfStringHas(settings.selectedTextField.getText(), checkingChars, 5);
+	public static <b> Object hasVaildChars(JTextField TextField, List<OtherSystems.lookingForChar> checkingChars) // Check if it has a certain amount of a character.
+	{
+		char[] TotalCharacters = TextField.getText().toCharArray();
 		
-		if (hasValid) 
+		for (int i = 0; i <= TotalCharacters.length; i++) 
 		{
-			
-		}
-		else 
-		{
-			//System.out.println("Missing character.");
-		}
-		
-		char[] Allcharacters = (settings.selectedTextField.getText() + e.getKeyChar()).toCharArray();
-		
-		if (Allcharacters.length > 0) 
-		{
-			for (int i = 0; i < Allcharacters.length; i++) 
+			for (int x = 0; x <= checkingChars.size(); x++) 
 			{
-				realText += Allcharacters[i];
+				if (TotalCharacters[i] == checkingChars.get(x).Character) 
+				{
+					checkingChars.get(x).FoundAmount++;
+					if (checkingChars.get(x).FoundAmount >= checkingChars.get(x).Amount) 
+					{
+						checkingChars.get(x).GotAmount = true;
+						break;
+					}
+				}
 			}
 		}
 		
-		System.out.println("Setup: [" + realText + "] : " + validCharacter);
-		
-		if (realText.isEmpty()) 
+		for (int x = 0; x <= checkingChars.size(); x++) 
 		{
-			return false;
+			if (!checkingChars.get(x).GotAmount) 
+			{	
+				return false;
+			}
 		}
-		else 
+		
+		return true;
+	}
+	
+	public static <b> Object hasVaildCharsUnStricted(JTextField TextField, List<OtherSystems.lookingForChar> checkingChars, int AmountNeeded) // Check if it has a certain amount of a character.
+	{
+		char[] TotalCharacters = TextField.getText().toCharArray();
+		
+		for (int i = 0; i <= TotalCharacters.length; i++) 
+		{
+			for (int x = 0; x <= checkingChars.size(); x++) 
+			{
+				if (TotalCharacters[i] == checkingChars.get(x).Character) 
+				{
+					checkingChars.get(x).FoundAmount++;
+					if (checkingChars.get(x).FoundAmount >= checkingChars.get(x).Amount) 
+					{
+						checkingChars.get(x).GotAmount = true;
+						break;
+					}
+				}
+			}
+		}
+		
+		int AmountGot = 0;
+		
+		for (int x = 0; x <= checkingChars.size(); x++) 
+		{
+			if (checkingChars.get(x).GotAmount) 
+			{	
+				AmountGot++;
+			}
+		}
+		
+		if (AmountGot >= AmountNeeded) 
 		{
 			return true;
 		}
+		
+		return false;
 	}
 	
 	public static boolean UiBeingUsed(JTextField TextUi, KeyEvent e) 
 	{
 		for (TextFieldSettings settings : TextFields) // gets the Text Field
     	{
-			
-			
 			if (settings.selectedTextField == TextUi) 
 			{
 				String realText = "";
 				boolean validCharacter = ValidCharacters(settings.selectedTextField.getText() + e.getKeyChar());
-						
+				
 				//int length = settings.selectedTextField.getText().length();
 			
 				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) 
@@ -447,21 +447,6 @@ public class Ui {
 				}
 				else
 				{
-					List<Character> checkingChars = new ArrayList<>();
-					checkingChars.add('@');
-					
-					
-					boolean hasValid = checkIfStringHas(settings.selectedTextField.getText(), checkingChars, 5);
-					
-					if (hasValid) 
-					{
-						
-					}
-					else 
-					{
-						//System.out.println("Missing character.");
-					}
-					
 					char[] Allcharacters = (settings.selectedTextField.getText() + e.getKeyChar()).toCharArray();
 					
 					if (Allcharacters.length > 0) 

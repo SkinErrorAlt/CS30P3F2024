@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import java.awt.Cursor;
 import javax.swing.border.EtchedBorder;
 
+import EasyKit.InputHandler;
 import EasyKit.Text;
 import EasyKit.Ui;
 import MasteryData.LocalBankGUI_Data;
@@ -310,7 +311,7 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChangeJComponent(ConfirmPassword);
+					InputHandler.focusChange(ConfirmPassword);
 				}
 			}
 		});
@@ -348,8 +349,6 @@ public class LocalBankGUI {
 					}
 					
 				}
-				
-				
 			}
 		});
 		
