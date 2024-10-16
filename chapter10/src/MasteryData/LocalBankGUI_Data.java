@@ -42,6 +42,8 @@ public class LocalBankGUI_Data {
 		}
 	}
 	
+	// broken and doesn't function correctly
+	// Todo: Finish up making it check if the account exists or not.
 	public static boolean createAccount(String Name, String Password) 
 	{
 		NewAccount GotAccount = null ;
