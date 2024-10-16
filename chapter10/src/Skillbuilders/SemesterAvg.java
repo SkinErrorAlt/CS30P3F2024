@@ -3,6 +3,7 @@ package Skillbuilders;
 import java.awt.EventQueue;
 import EasyKit.Text;
 import EasyKit.Ui;
+import EasyKit.IH;
 import SkillbuildersData.SemesterAvg_Data;
 
 import javax.swing.JFrame;
@@ -95,7 +96,7 @@ public class SemesterAvg {
 		frame.getContentPane().add(Title);
 		
 		Panel Semesters = new Panel();
-		Ui.UiSetupJPanel(Semesters);
+		IH.UiSetupJPanel(Semesters);
 	
 		Semesters.setBackground(Color.PINK);
 		Semesters.setForeground(new Color(255, 128, 128));
@@ -299,7 +300,7 @@ public class SemesterAvg {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChange(SecondSemester);
+					IH.ChangeFocus(SecondSemester);
 				}
 			}
 		});
@@ -309,7 +310,7 @@ public class SemesterAvg {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChange(ThirdSemester);
+					IH.ChangeFocus(ThirdSemester);
 				}
 			}
 		});
@@ -319,7 +320,7 @@ public class SemesterAvg {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChangePanel(Semesters);
+					IH.ChangeFocus(Semesters);
 				}
 			}
 		});

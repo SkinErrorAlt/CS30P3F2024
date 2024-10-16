@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import EasyKit.*;
+import EasyKit.OtherSystems.lookingForChar;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -72,13 +73,7 @@ public class Ui {
     }
     
     public static List<TextFieldSettings> TextFields = new ArrayList<>();
-    
-    public static void UiSetupJPanel(Panel loginScreen) 
-    {
-        Main = loginScreen;
-        Main.requestFocusInWindow();
-    }
-    
+
     public static void TextFieldSetup(JTextField TextUi, textFieldType Type, Color SelectedTextColor, boolean AllowResize) 
     {
         TextFieldSettings NewTextUi = new TextFieldSettings(TextUi, Type, SelectedTextColor, AllowResize);
@@ -344,14 +339,14 @@ public class Ui {
 		
 		for (int i = 0; i <= TotalCharacters.length; i++) 
 		{
-			for (int x = 0; x <= checkingChars.size(); x++) 
+			for (lookingForChar checkingChar : checkingChars) 
 			{
-				if (TotalCharacters[i] == checkingChars.get(x).Character) 
+				if (TotalCharacters[i] == checkingChar.Character) 
 				{
-					checkingChars.get(x).FoundAmount++;
-					if (checkingChars.get(x).FoundAmount >= checkingChars.get(x).Amount) 
+					checkingChar.FoundAmount++;
+					if (checkingChar.FoundAmount >= checkingChar.Amount) 
 					{
-						checkingChars.get(x).GotAmount = true;
+						checkingChar.GotAmount = true;
 						break;
 					}
 				}
@@ -375,14 +370,15 @@ public class Ui {
 		
 		for (int i = 0; i <= TotalCharacters.length; i++) 
 		{
-			for (int x = 0; x <= checkingChars.size(); x++) 
+			for (lookingForChar checkingChar : checkingChars)
 			{
-				if (TotalCharacters[i] == checkingChars.get(x).Character) 
+				if (TotalCharacters[i] == checkingChar.Character) 
 				{
-					checkingChars.get(x).FoundAmount++;
-					if (checkingChars.get(x).FoundAmount >= checkingChars.get(x).Amount) 
+					checkingChar.FoundAmount++;
+					
+					if (checkingChar.FoundAmount >= checkingChar.Amount) 
 					{
-						checkingChars.get(x).GotAmount = true;
+						checkingChar.GotAmount = true;
 						break;
 					}
 				}
@@ -414,10 +410,8 @@ public class Ui {
 			if (settings.selectedTextField == TextUi) 
 			{
 				String realText = "";
-				boolean validCharacter = ValidCharacters(settings.selectedTextField.getText() + e.getKeyChar());
+				//boolean validCharacter = ValidCharacters(settings.selectedTextField.getText() + e.getKeyChar());
 				
-				//int length = settings.selectedTextField.getText().length();
-			
 				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) 
 				{
 					char[] Allcharacters = settings.selectedTextField.getText().toCharArray();
@@ -430,7 +424,7 @@ public class Ui {
 						}
 					}
 
-					System.out.println("Backspace: [" + realText + "] : " + validCharacter);
+					//System.out.println("Backspace: [" + realText + "] : " + validCharacter);
 					
 					if (realText.isEmpty()) 
 					{
@@ -457,7 +451,7 @@ public class Ui {
 						}
 					}
 					
-					System.out.println("Setup: [" + realText + "] : " + validCharacter);
+					//System.out.println("Setup: [" + realText + "] : " + validCharacter);
 					
 					if (realText.isEmpty()) 
 					{

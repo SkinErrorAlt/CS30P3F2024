@@ -15,7 +15,8 @@ import javax.swing.JTextField;
 import java.awt.Cursor;
 import javax.swing.border.EtchedBorder;
 
-import EasyKit.InputHandler;
+import EasyKit.Console;
+import EasyKit.IH;
 import EasyKit.Text;
 import EasyKit.Ui;
 import MasteryData.LocalBankGUI_Data;
@@ -87,8 +88,8 @@ public class LocalBankGUI {
 		frame.getContentPane().setLayout(null);
 		
 		Panel LoginScreen = new Panel();
-		Ui.UiSetupJPanel(LoginScreen);
-		Ui.focusChange(null);
+		IH.UiSetupJPanel(LoginScreen);
+		IH.ChangeFocus(null);
 		
 		Panel SignUpScreen = new Panel();
 		SignUpScreen.setVisible(false);
@@ -202,7 +203,7 @@ public class LocalBankGUI {
 			public void actionPerformed(ActionEvent e) {
 				LoginScreen.setVisible(true);
 				SignUpScreen.setVisible(false);
-				Ui.focusChange(null);
+				IH.ChangeFocus(null);
 			}
 		});
 		
@@ -211,7 +212,7 @@ public class LocalBankGUI {
 			{
 				SignUpScreen.setVisible(true);
 				LoginScreen.setVisible(false);
-				Ui.focusChange(null);
+				IH.ChangeFocus(null);
 			}
 		});
 		
@@ -290,7 +291,7 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChangeJComponent(EnterPassword);
+					IH.ChangeFocus(EnterPassword);
 				}
 			}
 		});
@@ -311,8 +312,31 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					InputHandler.focusChange(ConfirmPassword);
+					IH.ChangeFocus(ConfirmPassword);
 				}
+			}
+		});
+		
+		// (SignUp) EnterUsername Events
+		EnterUsername_SignUp.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				Ui.toggleTipText(EnterUsername_SignUp);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				Ui.toggleTipText(EnterUsername_SignUp);
+			}
+		});
+		EnterUsername_SignUp.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
+					IH.ChangeFocus(EnterPassword_SignUp);
+				}
+				
+				Ui.UiBeingUsed(EnterUsername_SignUp, e);
 			}
 		});
 		
@@ -345,33 +369,9 @@ public class LocalBankGUI {
 				{
 					if (beingUsed) // Allows to go to next enter because password is valid and entered.
 					{
-						Ui.focusChangeJComponent(EnterPassword_SignUp);
+						IH.ChangeFocus(EnterPassword_SignUp);
 					}
-					
 				}
-			}
-		});
-		
-		// (SignUp) EnterPassword Events
-		EnterUsername_SignUp.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				Ui.toggleTipText(EnterUsername_SignUp);
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				Ui.toggleTipText(EnterUsername_SignUp);
-			}
-		});
-		EnterUsername_SignUp.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
-				{
-					Ui.focusChangeJComponent(EnterUsername_SignUp);
-				}
-				
-				Ui.UiBeingUsed(EnterUsername_SignUp, e);
 			}
 		});
 		
@@ -386,12 +386,12 @@ public class LocalBankGUI {
 				Ui.toggleTipText(EnterUsername_SignUp);
 			}
 		});
-		EnterUsername_SignUp.addKeyListener(new KeyAdapter() {
+		EnterPassword.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChangeJComponent(EnterPassword_SignUp);
+					IH.ChangeFocus(EnterPassword_SignUp);
 				}
 			}
 		});
@@ -412,8 +412,15 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					Ui.focusChangeJComponent(ConfirmPassword);
+					IH.ChangeFocus(ConfirmPassword);
 				}
+			}
+		});
+		
+		LoginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				
 			}
 		});
 		
@@ -421,10 +428,27 @@ public class LocalBankGUI {
 		SignUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
+				boolean AccountExists = MasteryData.LocalBankGUI_Data.createAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
+				
+				if (AccountExists) 
+				{
+					Console.print("Sign Up Button", "Account already Exists.");
+				}
+				else 
+				{
+					MasteryData.LocalBankGUI_Data.NewAccount gotAccount = MasteryData.LocalBankGUI_Data.getAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
+					
+					if (gotAccount != null) 
+					{
+						Console.print("Sign Up Button", "Created Account: " + gotAccount);
+					}
+					else 
+					{
+						Console.error("Sign Up Button", "Created account: " + gotAccount);
+					}
+				}
 				
 			}
 		});
-		
-		MasteryData.LocalBankGUI_Data.createAccount("Test", "123");
 	}
 }

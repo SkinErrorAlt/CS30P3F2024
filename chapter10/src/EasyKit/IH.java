@@ -5,11 +5,10 @@ import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JComponent;
-import javax.swing.JTextField;
-import 
+import javax.swing.*;
 
-public class InputHandler {
+public class IH {
+	// InputHandler, it will handle inputs for gui's. Making them simple to add and easy to configure and work with.
 
 	private static Panel Main;
 	
@@ -27,7 +26,7 @@ public class InputHandler {
 		}
 		else if (Focus instanceof TextField)
 		{
-			((Component) Focus).requestFocusInWindow();
+			((JComponent) Focus).requestFocusInWindow();
 		}
 		else if (Focus instanceof Panel) 
 		{
@@ -35,7 +34,7 @@ public class InputHandler {
 		}
 		else if (Focus instanceof JComponent) 
 		{
-			((Component) Focus).requestFocusInWindow();
+			((JComponent) Focus).requestFocusInWindow();
 		}
 		else 
 		{
@@ -43,7 +42,7 @@ public class InputHandler {
 		}
 	}
 	
-	public static void ChangeFocus(Object Focus) 
+	/*public static void ChangeFocus(Object Focus) 
 	{
 		if (Focus instanceof  Boolean) 
 		{
@@ -66,11 +65,26 @@ public class InputHandler {
 			System.out.println("Not within a valid type: [" + Focus.getClass() + "]");
 		}
 	}
+	*/
 
-	public static void focusChange(TextField UiObject) {
+	public static <UiField> void ChangeFocus(UiField UiObject) 
+	{
 		if (UiObject != null) 
         {
-            UiObject.requestFocusInWindow();
+			if (UiObject instanceof JComponent) 
+			{
+				 ((JComponent) UiObject).requestFocusInWindow();
+			}
+			else if (UiObject instanceof Component) 
+			{
+				 ((Component) UiObject).requestFocusInWindow();
+			}
+			else 
+			{
+				System.err.println("Not within if statement: [" + UiObject.getClass().getName() + "]");
+			}
+			
+			System.err.println("Not within if statement: [" + UiObject.getClass().getName() + "]");
         } 
         else 
         {
@@ -123,8 +137,10 @@ public class InputHandler {
 			}
 			else 
 			{
-				System.out.println("Contains a non valid Character.");
+				Console.error("Contains a non valid Character.");
 			}
 		}
+		
+		return "";
 	}
 }

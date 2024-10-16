@@ -26,6 +26,8 @@ public class LocalBankGUI_Data {
 		List<NewTransaction> Transactions = new ArrayList<>();
 	}
 	
+	public static List<NewAccount> Accounts = new ArrayList<>();
+	
 	@SuppressWarnings("unused")
 	private static class NewTransaction 
 	{
@@ -40,11 +42,46 @@ public class LocalBankGUI_Data {
 		}
 	}
 	
-	public static void createAccount(String Name, String Password) 
+	public static boolean createAccount(String Name, String Password) 
 	{
-		NewAccount Account = new NewAccount(Name, Password);
-		Accounts.add(Account);
-		LocalBankGUI.currentAccount = Account;
+		NewAccount GotAccount = null ;
+		int T = 0;
+		for (NewAccount Account : Accounts) 
+		{
+			T++;
+			Console.error("Checking: " + Account.Username + " account [" + T + "]");
+			
+			if (Name == Account.Username) 
+			{
+				GotAccount = Account;
+				Console.error("account: " + Account.Username + " Already exists.");
+				break;
+			}
+			
+			if (Name == Accounts.get(T - 1).Username) 
+			{
+				Console.error("account: " + Account.Username + " Already exists.");
+				break;
+			}
+			
+			GotAccount = null;
+		}
+		
+		if (GotAccount == null) 
+		{
+			NewAccount Account = new NewAccount(Name, Password);
+			
+			Accounts.add(Account);
+			LocalBankGUI.currentAccount = Account;
+			
+			Console.error("Doesn't exists", "Added new Account: " + Account.Username);
+		}
+		else 
+		{
+			Console.error("Account Creation", "Account Already Exists");
+		}
+		
+		return GotAccount != null;
 	}
 	
 	public static void createTransaction(double Amount, String Reason) 
@@ -54,5 +91,19 @@ public class LocalBankGUI_Data {
 		LocalBankGUI.currentAccount.Transactions.add(Transaction);
 	}
 	
-	public static List<NewAccount> Accounts = new ArrayList<>();
+	public static NewAccount getAccount(String Name, String Password) 
+	{
+		NewAccount SearchedAccount = null;
+		
+		for (NewAccount Account : Accounts) 
+		{
+			if (Account.Username == Name && Account.Password == Password) 
+			{
+				SearchedAccount = Account;
+				break;
+			}
+		}
+		
+		return SearchedAccount;
+	}
 }
