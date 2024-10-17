@@ -412,36 +412,62 @@ public class Ui {
 				String realText = "";
 				//boolean validCharacter = ValidCharacters(settings.selectedTextField.getText() + e.getKeyChar());
 				
-				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) 
+				if (e != null) 
 				{
-					char[] Allcharacters = settings.selectedTextField.getText().toCharArray();
-					
-					if (Allcharacters.length > 0) 
+					if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) 
 					{
-						for (int i = 0; i < Allcharacters.length - 1; i++) 
+						char[] Allcharacters = settings.selectedTextField.getText().toCharArray();
+						
+						if (Allcharacters.length > 0) 
 						{
-							realText += Allcharacters[i];
+							for (int i = 0; i < Allcharacters.length - 1; i++) 
+							{
+								realText += Allcharacters[i];
+							}
+						}
+
+						//System.out.println("Backspace: [" + realText + "] : " + validCharacter);
+						
+						if (realText.isEmpty()) 
+						{
+							return false;
+						}
+						else 
+						{
+							return true;
 						}
 					}
-
-					//System.out.println("Backspace: [" + realText + "] : " + validCharacter);
-					
-					if (realText.isEmpty()) 
+					else if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 					{
-						return false;
+						
 					}
-					else 
+					else
 					{
-						return true;
+						char[] Allcharacters = (settings.selectedTextField.getText() + e.getKeyChar()).toCharArray();
+						
+						if (Allcharacters.length > 0) 
+						{
+							for (int i = 0; i < Allcharacters.length; i++) 
+							{
+								realText += Allcharacters[i];
+							}
+						}
+						
+						//System.out.println("Setup: [" + realText + "] : " + validCharacter);
+						
+						if (realText.isEmpty() || settings.selectedTextField.getText().equals(settings.DefaultText)) 
+						{
+							return false;
+						}
+						else 
+						{
+							return true;
+						}
 					}
 				}
-				else if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				else 
 				{
-					
-				}
-				else
-				{
-					char[] Allcharacters = (settings.selectedTextField.getText() + e.getKeyChar()).toCharArray();
+					char[] Allcharacters = settings.selectedTextField.getText().toCharArray();
 					
 					if (Allcharacters.length > 0) 
 					{
@@ -453,7 +479,7 @@ public class Ui {
 					
 					//System.out.println("Setup: [" + realText + "] : " + validCharacter);
 					
-					if (realText.isEmpty()) 
+					if (realText.isEmpty() || settings.selectedTextField.getText().equals(settings.DefaultText)) 
 					{
 						return false;
 					}

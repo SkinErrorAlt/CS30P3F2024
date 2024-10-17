@@ -135,6 +135,7 @@ public class LocalBankGUI {
 		Ui.TextFieldSetup(EnterUsername_SignUp, Ui.textFieldType.Text, Color.DARK_GRAY, false);
 		
 		EnterPassword_SignUp = new JTextField();
+		EnterPassword_SignUp.setToolTipText("Enter the password to your account");
 		EnterPassword_SignUp.setText("Enter Password");
 		EnterPassword_SignUp.setSelectedTextColor(new Color(255, 159, 159));
 		EnterPassword_SignUp.setForeground(Color.GRAY);
@@ -142,7 +143,7 @@ public class LocalBankGUI {
 		EnterPassword_SignUp.setColumns(10);
 		EnterPassword_SignUp.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		EnterPassword_SignUp.setBackground(new Color(255, 206, 198));
-		EnterPassword_SignUp.setBounds(162, 201, 367, 27);
+		EnterPassword_SignUp.setBounds(162, 200, 367, 27);
 		SignUpScreen.add(EnterPassword_SignUp);
 		
 		Ui.TextFieldSetup(EnterPassword_SignUp, Ui.textFieldType.Text, Color.DARK_GRAY, false);
@@ -169,6 +170,7 @@ public class LocalBankGUI {
 		SignUpScreen.add(SignUpButton);
 		
 		ConfirmPassword = new JTextField();
+		ConfirmPassword.setToolTipText("Confirm the password to your account");
 		ConfirmPassword.setText("Confirm Password");
 		ConfirmPassword.setSelectedTextColor(new Color(255, 159, 159));
 		ConfirmPassword.setForeground(Color.GRAY);
@@ -176,7 +178,7 @@ public class LocalBankGUI {
 		ConfirmPassword.setColumns(10);
 		ConfirmPassword.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		ConfirmPassword.setBackground(new Color(255, 206, 198));
-		ConfirmPassword.setBounds(162, 244, 367, 27);
+		ConfirmPassword.setBounds(162, 239, 367, 27);
 		
 		SignUpScreen.add(ConfirmPassword);
 		
@@ -186,6 +188,18 @@ public class LocalBankGUI {
 		LoginScreen.setLayout(null);
 		
 		Ui.TextFieldSetup(ConfirmPassword, Ui.textFieldType.Text, Color.DARK_GRAY, false);
+		
+		JButton LoginError = new JButton();
+		LoginError.setVisible(false);
+		LoginError.setBorderPainted(false);
+		LoginError.setText("ACCOUNT ALREADY EXISTS.");
+		LoginError.setForeground(Color.RED);
+		LoginError.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
+		LoginError.setBorder(null);
+		LoginError.setBackground(Color.PINK);
+		LoginError.setAutoscrolls(false);
+		LoginError.setBounds(162, 118, 367, 27);
+		SignUpScreen.add(LoginError);
 		
 		JButton GoToSignUp = new JButton();
 		GoToSignUp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -330,13 +344,18 @@ public class LocalBankGUI {
 		});
 		EnterUsername_SignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(KeyEvent e) {	
+				boolean beingUsed = Ui.UiBeingUsed(EnterPassword_SignUp, e);
+				
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
-					IH.ChangeFocus(EnterPassword_SignUp);
+					if (beingUsed) // Allows to go to next enter because password is valid and entered.
+					{
+						IH.ChangeFocus(EnterPassword_SignUp);
+					}
 				}
 				
-				Ui.UiBeingUsed(EnterUsername_SignUp, e);
+				LoginError.setVisible(false);
 			}
 		});
 		
@@ -356,15 +375,6 @@ public class LocalBankGUI {
 			public void keyPressed(KeyEvent e) {
 				boolean beingUsed = Ui.UiBeingUsed(EnterPassword_SignUp, e);
 				
-				if (beingUsed) 
-				{
-					System.out.println("Being used");
-				}
-				else 
-				{
-					System.out.println("Not Being used");
-				}
-				
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
 				{
 					if (beingUsed) // Allows to go to next enter because password is valid and entered.
@@ -372,27 +382,8 @@ public class LocalBankGUI {
 						IH.ChangeFocus(EnterPassword_SignUp);
 					}
 				}
-			}
-		});
-		
-		// (SignUp) EnterPassword Events
-		EnterPassword.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				Ui.toggleTipText(EnterUsername_SignUp);
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				Ui.toggleTipText(EnterUsername_SignUp);
-			}
-		});
-		EnterPassword.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
-				{
-					IH.ChangeFocus(EnterPassword_SignUp);
-				}
+				
+				LoginError.setVisible(false);
 			}
 		});
 		
@@ -428,27 +419,61 @@ public class LocalBankGUI {
 		SignUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
+				boolean UsernamebeingUsed = Ui.UiBeingUsed(EnterUsername_SignUp, null);
+				boolean PasswordbeingUsed = Ui.UiBeingUsed(EnterPassword_SignUp, null);
+				boolean ConfirmPasswordbeingUsed = Ui.UiBeingUsed(ConfirmPassword, null);
+				
+				if (!UsernamebeingUsed) 
+				{
+					LoginError.setVisible(true);
+					LoginError.setText("Please enter a Username.");
+					Console.errorLogic(UsernamebeingUsed, "Sign Up Button", "No username found to be entered");
+					return;
+				}
+				
+				if (!PasswordbeingUsed) 
+				{
+					LoginError.setVisible(true);
+					LoginError.setText("Please enter a Password.");
+					Console.errorLogic(PasswordbeingUsed, "Sign Up Button", "No password found to be entered");
+					return;
+				}
+				
+				if (!ConfirmPasswordbeingUsed) 
+				{
+					LoginError.setVisible(true);
+					LoginError.setText("Please re-enter the Password in Confirm Password.");
+					Console.errorLogic(ConfirmPasswordbeingUsed, "Sign Up Button", "No Confirm password found to be entered");
+					return;
+				}
+				
+				if (!ConfirmPassword.getText().equals(EnterPassword_SignUp.getText())) 
+				{
+					LoginError.setVisible(true);
+					LoginError.setText("Confirm Password isn't the same as Password.");
+					Console.errorLogic(ConfirmPassword.getText().equals(EnterPassword_SignUp.getText()), "Sign Up Button", "Confirmed Password isn't the same as Password");
+					return;
+				}
+				
 				boolean AccountExists = MasteryData.LocalBankGUI_Data.createAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
 				
 				if (AccountExists) 
 				{
-					Console.print("Sign Up Button", "Account already Exists.");
+					Console.errorLogic(!AccountExists, "Sign Up Button", "Account already Exists", "Failed to create account");
+					LoginError.setVisible(true);
+					LoginError.setText("Account Already Exists.");
 				}
 				else 
 				{
-					MasteryData.LocalBankGUI_Data.NewAccount gotAccount = MasteryData.LocalBankGUI_Data.getAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
+					MasteryData.LocalBankGUI_Data.getAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
 					
-					if (gotAccount != null) 
-					{
-						Console.print("Sign Up Button", "Created Account: " + gotAccount);
-					}
-					else 
-					{
-						Console.error("Sign Up Button", "Created account: " + gotAccount);
-					}
+					Console.errorLogic(!AccountExists, "Sign Up Button", "Account doesn't Exists", "Successfully created account");
 				}
 				
 			}
 		});
+		
+		Console.error("Test Message Single");
+		Console.error("Test Function Name", "Test Message", "Test Message again");
 	}
 }

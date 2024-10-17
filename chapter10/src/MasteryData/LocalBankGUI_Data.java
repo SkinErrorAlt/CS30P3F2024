@@ -46,44 +46,30 @@ public class LocalBankGUI_Data {
 	// Todo: Finish up making it check if the account exists or not.
 	public static boolean createAccount(String Name, String Password) 
 	{
-		NewAccount GotAccount = null ;
-		int T = 0;
-		for (NewAccount Account : Accounts) 
-		{
-			T++;
-			Console.error("Checking: " + Account.Username + " account [" + T + "]");
-			
-			if (Name == Account.Username) 
-			{
-				GotAccount = Account;
-				Console.error("account: " + Account.Username + " Already exists.");
-				break;
-			}
-			
-			if (Name == Accounts.get(T - 1).Username) 
-			{
-				Console.error("account: " + Account.Username + " Already exists.");
-				break;
-			}
-			
-			GotAccount = null;
-		}
-		
-		if (GotAccount == null) 
-		{
-			NewAccount Account = new NewAccount(Name, Password);
-			
-			Accounts.add(Account);
-			LocalBankGUI.currentAccount = Account;
-			
-			Console.error("Doesn't exists", "Added new Account: " + Account.Username);
-		}
-		else 
-		{
-			Console.error("Account Creation", "Account Already Exists");
-		}
-		
-		return GotAccount != null;
+		boolean AccountExists = false; // Used to see if the account already exists.
+        for (int CA = 0; CA < Accounts.size(); CA++) // Loops through every account within the account storage array.
+        {
+            if (Name.equals(Accounts.get(CA).Username)) // Checks if the entered username is the same as a account.
+            {
+                AccountExists = true; // Changes the Account Exists varaible and ends the loop.
+                break;
+            }
+        }
+
+        if (!AccountExists) // If the account doesn't exist.
+        {
+            NewAccount account = new NewAccount(Name, Password); // Creates a new NewAccount class and assigns the Entered username and password to the account.
+            
+            Accounts.add(account); // Adds the account to the accounts list.
+            
+           // Console.error("Account Creation", "Account Doesn't Exists ✔️");
+        }
+        else // If the account already exists.
+        {
+        	//Console.error("Account Creation", "Account Already Exists ✖️");
+        }
+        
+        return AccountExists;
 	}
 	
 	public static void createTransaction(double Amount, String Reason) 
