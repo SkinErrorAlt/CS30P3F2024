@@ -567,9 +567,7 @@ public class LocalBankGUI {
 			}
 		});
 		
-		Console.error("Test Message Single");
-		Console.errorLogic(false, "Test Function Name", "Test Message", "Testing another message", "Third testing");
-		
-		Console.errorInTesting("Testing", "Testing Message", "Testing Description", false, "Testing", true);
+		Console.errorInTesting("Testing Title", "Testing Message", "Testing Description", false, true, "Testing", true);
+		Console.errorInTesting();
 	}
 }

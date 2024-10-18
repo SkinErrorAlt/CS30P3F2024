@@ -1,5 +1,10 @@
 package EasyKit;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import EasyKit.Ui.TextFieldSettings;
+
 public class Console {
 
 	private static enum State
@@ -9,6 +14,15 @@ public class Console {
 		Description,
 		Logic,
 		Next
+	}
+	
+	private static enum MessageType 
+	{
+		Name,
+		Message,
+		Description,
+		Logic,
+		End
 	}
 	
 	private static State currentPrintState = State.Message;
@@ -87,15 +101,62 @@ public class Console {
 		System.err.println(CompleteMessage);
 	}
 	
+	// Todo: Complete making a function to handle all other error message prompts
+	private static class Message 
+	{
+		String Message = "";
+		MessageType MessageState;
+		
+		MessageType NextMessageType;
+		
+		<other> Message(other... Settings) 
+		{
+			for (other OtherSettings : Settings) 
+			{
+				if (OtherSettings instanceof String) 
+				{
+					this.Message = Message;
+				}
+				else if (OtherSettings instanceof MessageType) 
+				{
+					this.NextMessageType = (MessageType) OtherSettings;
+				}
+			}
+		}
+	}
+	
+	private static class WholeMessage 
+	{
+		int SectionAmount = 0;
+		
+		List<Message> Messages = new ArrayList<>();
+	}
+	
+	public static void error1(Object... Message) 
+	{
+		WholeMessage Messages = new WholeMessage();
+		
+		String CompleteMessage = "";
+		String SectionMarker = "|=|";
+		String TrueMark = "✔️";
+		String FalseMark = "✖️";
+		
+		for (Object Text : Message) 
+		{
+			if (Text instanceof String) 
+			{
+				Message NewText = new Message(Text, null, null);
+			}
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
-	public static <M> void errorInTesting(M... Message) 
+	public static void errorInTesting(Object... Message) 
 	{
 		String CompleteMessage = "";
 		String Side = "|=|";
 		String TrueMark = "✔️";
 		String FalseMark = "✖️";
-		
-		State LastState = null;
 		
 		if (Message.length <= 1) 
 		{
@@ -107,9 +168,16 @@ public class Console {
 		}
 		
 		int MessageAmount = 0;
-		for (M Messages : Message) 
+		
+		if (Message.length == 0) 
 		{
-			if (Message.length == 1) 
+			System.err.println("[Error] Failed to create a error message. No error message was given.");
+			return;
+		}
+		
+		for (Object Messages : Message) 
+		{
+			if (Message.length <= 1) 
 			{
 				CompleteMessage = "[Unknown]: " + Messages;
 			}
@@ -117,14 +185,14 @@ public class Console {
 			{
 				if (currentPrintState == State.Name) 
 				{
-					CompleteMessage = "[" + Message[0] + "]: ";
+					CompleteMessage = "[" + Message[MessageAmount] + "]: ";
 					currentPrintState = State.Message;
 				}
 				else if (currentPrintState != State.Name)
 				{
 					// [Test Function Name]: |=| Message, Description | CheckStatus |=| Message | CheckStatus |
 					
-					if (Message[MessageAmount - 1] instanceof Boolean) 
+					if (Message[MessageAmount] instanceof Boolean) 
 					{
 						if ((boolean) Message[MessageAmount]) 
 						{
@@ -135,17 +203,23 @@ public class Console {
 							CompleteMessage += FalseMark;
 						}
 						
-						if (!(MessageAmount++ <= Message.length)) 
+						if (!((MessageAmount + 1) <= Message.length)) 
 						{
-							CompleteMessage += " " + Side;
-							currentPrintState = State.Next;
-							LastState = currentPrintState;
+							if (Message[(MessageAmount + 1)] instanceof Boolean) 
+							{
+								CompleteMessage += " " + Side;
+								currentPrintState = State.Next;
+							}
+							else 
+							{
+								CompleteMessage += ", ";
+								currentPrintState = State.Next;
+							}
 						}
 						else 
 						{
 							CompleteMessage += " | ";
 							currentPrintState = State.Next;
-							LastState = currentPrintState;
 						}
 					}
 					else 
@@ -155,7 +229,12 @@ public class Console {
 							if (currentPrintState != State.Next) 
 							{
 								CompleteMessage += Messages + " | ";
-							}	
+							}
+							else if (currentPrintState == State.Next) 
+							{
+								CompleteMessage += " [=]";
+								currentPrintState = State.Message;
+							}
 						}
 						else if (MessageAmount > 1) 
 						{
