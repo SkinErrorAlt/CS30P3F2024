@@ -45,6 +45,7 @@ import javax.swing.border.CompoundBorder;
 
 public class LocalBankGUI {
 
+	private static final Object False = null;
 	private JFrame frame;
 	private JTextField EnterUsername;
 	private JTextField EnterPassword;
@@ -93,6 +94,99 @@ public class LocalBankGUI {
 		
 		Panel SignUpScreen = new Panel();
 		SignUpScreen.setVisible(false);
+		
+		Panel AccountView = new Panel();
+		AccountView.setLayout(null);
+		AccountView.setBackground(Color.PINK);
+		AccountView.setBounds(0, 0, 650, 422);
+		frame.getContentPane().add(AccountView);
+		
+		JLabel AccountView_Welcome = new JLabel("Welcome, [Place Holder]");
+		AccountView_Welcome.setHorizontalTextPosition(SwingConstants.CENTER);
+		AccountView_Welcome.setHorizontalAlignment(SwingConstants.CENTER);
+		AccountView_Welcome.setForeground(Color.WHITE);
+		AccountView_Welcome.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
+		AccountView_Welcome.setAlignmentX(0.5f);
+		AccountView_Welcome.setBounds(136, 11, 383, 75);
+		AccountView.add(AccountView_Welcome);
+		
+		JButton AccountView_Logout = new JButton();
+		AccountView_Logout.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Logout.setText("Log out");
+		AccountView_Logout.setInheritsPopupMenu(true);
+		AccountView_Logout.setForeground(Color.BLACK);
+		AccountView_Logout.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Logout.setBackground(new Color(255, 206, 206));
+		AccountView_Logout.setAutoscrolls(false);
+		AccountView_Logout.setBounds(208, 366, 246, 27);
+		AccountView.add(AccountView_Logout);
+		
+		JButton AccountView_Settings = new JButton();
+		AccountView_Settings.setText("Account Settings");
+		AccountView_Settings.setInheritsPopupMenu(true);
+		AccountView_Settings.setForeground(Color.BLACK);
+		AccountView_Settings.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Settings.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Settings.setBackground(new Color(255, 206, 206));
+		AccountView_Settings.setAutoscrolls(false);
+		AccountView_Settings.setBounds(208, 312, 246, 27);
+		AccountView.add(AccountView_Settings);
+		
+		JButton AccountView_Withdrawal = new JButton();
+		AccountView_Withdrawal.setText("Withdrawal");
+		AccountView_Withdrawal.setInheritsPopupMenu(true);
+		AccountView_Withdrawal.setForeground(Color.BLACK);
+		AccountView_Withdrawal.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Withdrawal.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Withdrawal.setBackground(new Color(255, 206, 206));
+		AccountView_Withdrawal.setAutoscrolls(false);
+		AccountView_Withdrawal.setBounds(208, 220, 246, 27);
+		AccountView.add(AccountView_Withdrawal);
+		
+		JButton AccountView_Deposit = new JButton();
+		AccountView_Deposit.setText("Deposit");
+		AccountView_Deposit.setInheritsPopupMenu(true);
+		AccountView_Deposit.setForeground(Color.BLACK);
+		AccountView_Deposit.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Deposit.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Deposit.setBackground(new Color(255, 206, 206));
+		AccountView_Deposit.setAutoscrolls(false);
+		AccountView_Deposit.setBounds(208, 182, 246, 27);
+		AccountView.add(AccountView_Deposit);
+		
+		JPanel BalanceHolder = new JPanel();
+		BalanceHolder.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 206, 206), null));
+		BalanceHolder.setBounds(160, 82, 342, 75);
+		AccountView.add(BalanceHolder);
+		BalanceHolder.setLayout(null);
+		
+		JLabel Title = new JLabel("My Balance:");
+		Title.setFont(new Font("Verdana", Font.BOLD, 14));
+		Title.setBounds(10, 11, 119, 18);
+		BalanceHolder.add(Title);
+		
+		JLabel MoneySignIcon = new JLabel("$");
+		MoneySignIcon.setForeground(new Color(236, 119, 98));
+		MoneySignIcon.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		MoneySignIcon.setBounds(28, 37, 15, 18);
+		BalanceHolder.add(MoneySignIcon);
+		
+		JLabel MoneySignIcon_1 = new JLabel("0.00");
+		MoneySignIcon_1.setForeground(new Color(233, 98, 73));
+		MoneySignIcon_1.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		MoneySignIcon_1.setBounds(36, 35, 285, 29);
+		BalanceHolder.add(MoneySignIcon_1);
+		
+		JButton AccountView_Transactions = new JButton();
+		AccountView_Transactions.setText("Transactions");
+		AccountView_Transactions.setInheritsPopupMenu(true);
+		AccountView_Transactions.setForeground(Color.BLACK);
+		AccountView_Transactions.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Transactions.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Transactions.setBackground(new Color(255, 206, 206));
+		AccountView_Transactions.setAutoscrolls(false);
+		AccountView_Transactions.setBounds(208, 274, 246, 27);
+		AccountView.add(AccountView_Transactions);
 		SignUpScreen.setLayout(null);
 		SignUpScreen.setBackground(Color.PINK);
 		SignUpScreen.setBounds(0, 0, 650, 422);
@@ -474,6 +568,8 @@ public class LocalBankGUI {
 		});
 		
 		Console.error("Test Message Single");
-		Console.error("Test Function Name", "Test Message", "Test Message again");
+		Console.errorLogic(false, "Test Function Name", "Test Message", "Testing another message", "Third testing");
+		
+		Console.errorInTesting("Testing", "Testing Message", "Testing Description", false, "Testing", true);
 	}
 }
