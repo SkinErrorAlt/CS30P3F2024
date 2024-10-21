@@ -185,7 +185,7 @@ public class Console {
 						}
 						else if (Message[currentMessage + 1] instanceof String) 
 						{
-							if (trueLogicAmount == 0) 
+							if (trueLogicAmount == 0)
 							{
 								CompleteMessage += " | (" + trueLogicAmount + "/" + logicAmount + "): " + 0 + "%";
 							}
