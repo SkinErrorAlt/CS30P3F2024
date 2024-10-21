@@ -42,6 +42,14 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.CompoundBorder;
+import java.awt.Window.Type;
+import java.awt.Rectangle;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JScrollPane;
+import java.awt.ScrollPane;
+import javax.swing.Box;
 
 public class LocalBankGUI {
 
@@ -55,6 +63,8 @@ public class LocalBankGUI {
 	private JTextField ConfirmPassword;
 	@SuppressWarnings("unused")
 	public static MasteryData.LocalBankGUI_Data.NewAccount currentAccount;
+	private JTextField EnterAmount;
+	private JTextField Recever;
 
 	/**
 	 * Launch the application.
@@ -84,7 +94,10 @@ public class LocalBankGUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 666, 461);
+		frame.setType(Type.NORMAL);
+		frame.setAutoRequestFocus(false);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 666, 461); // SideBar = frame.setBounds(100, 100, 900, 461); | UnSideBar = frame.setBounds(100, 100, 666, 461);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -95,7 +108,370 @@ public class LocalBankGUI {
 		Panel SignUpScreen = new Panel();
 		SignUpScreen.setVisible(false);
 		
+		Panel Withdrawal = new Panel();
+		Withdrawal.setBackground(Color.PINK);
+		Withdrawal.setBounds(0, 0, 650, 422); // SideBar = Withdrawal.setBounds(0, 0, 884, 422); | UnSideBar = Withdrawal.setBounds(0, 0, 650, 422);
+		frame.getContentPane().add(Withdrawal);
+		Withdrawal.setLayout(null);
+		
+		EnterAmount = new JTextField();
+		EnterAmount.setBounds(160, 218, 342, 27);
+		EnterAmount.setToolTipText("Amount you wish to Withdrawal from your account");
+		EnterAmount.setText("Enter Withdrawal Amount");
+		EnterAmount.setSelectedTextColor(new Color(255, 159, 159));
+		EnterAmount.setForeground(Color.GRAY);
+		EnterAmount.setFont(new Font("Verdana", Font.PLAIN, 16));
+		EnterAmount.setColumns(10);
+		EnterAmount.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		EnterAmount.setBackground(new Color(255, 217, 217));
+		Withdrawal.add(EnterAmount);
+		
+		
+		
+		JLabel Deposit_Title = new JLabel("Withdrawal");
+		Deposit_Title.setBounds(136, 11, 383, 75);
+		Deposit_Title.setHorizontalTextPosition(SwingConstants.CENTER);
+		Deposit_Title.setHorizontalAlignment(SwingConstants.CENTER);
+		Deposit_Title.setForeground(Color.WHITE);
+		Deposit_Title.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
+		Deposit_Title.setAlignmentX(0.5f);
+		Withdrawal.add(Deposit_Title);
+		
+		JButton AccountView_Withdrawal_1 = new JButton();
+		AccountView_Withdrawal_1.setVisible(false);
+		AccountView_Withdrawal_1.setBounds(207, 384, 246, 27);
+		AccountView_Withdrawal_1.setText("Withdrawal");
+		AccountView_Withdrawal_1.setInheritsPopupMenu(true);
+		AccountView_Withdrawal_1.setForeground(Color.BLACK);
+		AccountView_Withdrawal_1.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Withdrawal_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Withdrawal_1.setBackground(new Color(255, 206, 206));
+		AccountView_Withdrawal_1.setAutoscrolls(false);
+		Withdrawal.add(AccountView_Withdrawal_1);
+		
+		JButton AccountView_Deposit_1 = new JButton();
+		AccountView_Deposit_1.setBounds(303, 251, 70, 27);
+		AccountView_Deposit_1.setText("Half");
+		AccountView_Deposit_1.setInheritsPopupMenu(true);
+		AccountView_Deposit_1.setForeground(Color.BLACK);
+		AccountView_Deposit_1.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Deposit_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Deposit_1.setBackground(new Color(255, 206, 206));
+		AccountView_Deposit_1.setAutoscrolls(false);
+		Withdrawal.add(AccountView_Deposit_1);
+		
+		JPanel BalanceHolder_1 = new JPanel();
+		BalanceHolder_1.setBounds(160, 82, 342, 119);
+		BalanceHolder_1.setLayout(null);
+		BalanceHolder_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 206, 206), null));
+		Withdrawal.add(BalanceHolder_1);
+		
+		JLabel Title_1 = new JLabel("My Balance:");
+		Title_1.setFont(new Font("Verdana", Font.BOLD, 14));
+		Title_1.setBounds(10, 11, 119, 18);
+		BalanceHolder_1.add(Title_1);
+		
+		JLabel MoneySignIcon_2 = new JLabel("$");
+		MoneySignIcon_2.setForeground(new Color(236, 119, 98));
+		MoneySignIcon_2.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		MoneySignIcon_2.setBounds(28, 37, 15, 18);
+		BalanceHolder_1.add(MoneySignIcon_2);
+		
+		JLabel MoneySignIcon_1_1 = new JLabel("0.00");
+		MoneySignIcon_1_1.setForeground(new Color(233, 98, 73));
+		MoneySignIcon_1_1.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		MoneySignIcon_1_1.setBounds(36, 35, 285, 29);
+		BalanceHolder_1.add(MoneySignIcon_1_1);
+		
+		JLabel MoneySignIcon_1_1_1 = new JLabel("0.00");
+		MoneySignIcon_1_1_1.setForeground(new Color(233, 98, 73));
+		MoneySignIcon_1_1_1.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		MoneySignIcon_1_1_1.setBounds(36, 83, 285, 29);
+		BalanceHolder_1.add(MoneySignIcon_1_1_1);
+		
+		JLabel MoneySignIcon_2_1 = new JLabel("$");
+		MoneySignIcon_2_1.setForeground(new Color(236, 119, 98));
+		MoneySignIcon_2_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		MoneySignIcon_2_1.setBounds(28, 85, 15, 18);
+		BalanceHolder_1.add(MoneySignIcon_2_1);
+		
+		JLabel Title_1_1 = new JLabel("After Balance:");
+		Title_1_1.setFont(new Font("Verdana", Font.BOLD, 14));
+		Title_1_1.setBounds(10, 64, 119, 18);
+		BalanceHolder_1.add(Title_1_1);
+		
+		JButton AccountView_Deposit_1_1 = new JButton();
+		AccountView_Deposit_1_1.setBounds(160, 251, 70, 27);
+		AccountView_Deposit_1_1.setText("All");
+		AccountView_Deposit_1_1.setInheritsPopupMenu(true);
+		AccountView_Deposit_1_1.setForeground(Color.BLACK);
+		AccountView_Deposit_1_1.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Deposit_1_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Deposit_1_1.setBackground(new Color(255, 206, 206));
+		AccountView_Deposit_1_1.setAutoscrolls(false);
+		Withdrawal.add(AccountView_Deposit_1_1);
+		
+		JButton AccountView_Deposit_1_2 = new JButton();
+		AccountView_Deposit_1_2.setBounds(432, 251, 70, 27);
+		AccountView_Deposit_1_2.setText("None");
+		AccountView_Deposit_1_2.setInheritsPopupMenu(true);
+		AccountView_Deposit_1_2.setForeground(Color.BLACK);
+		AccountView_Deposit_1_2.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Deposit_1_2.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Deposit_1_2.setBackground(new Color(255, 206, 206));
+		AccountView_Deposit_1_2.setAutoscrolls(false);
+		Withdrawal.add(AccountView_Deposit_1_2);
+		
+		JButton AccountView_Deposit_1_2_1 = new JButton();
+		AccountView_Deposit_1_2_1.setBounds(207, 346, 246, 27);
+		AccountView_Deposit_1_2_1.addMouseListener(new MouseAdapter() {
+			
+			public boolean sidebarOpen = false;
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				if (sidebarOpen) 
+				{
+					frame.setBounds(100, 100, 666, 461);
+					Withdrawal.setBounds(0, 0, 650, 422);
+				}
+				else 
+				{
+					frame.setBounds(100, 100, 900, 461);
+					Withdrawal.setBounds(0, 0, 884, 422);
+				}
+				
+				sidebarOpen = !sidebarOpen;
+			}
+		});
+		
+		AccountView_Deposit_1_2_1.setText("Submit");
+		AccountView_Deposit_1_2_1.setInheritsPopupMenu(true);
+		AccountView_Deposit_1_2_1.setForeground(Color.BLACK);
+		AccountView_Deposit_1_2_1.setFont(new Font("Verdana", Font.PLAIN, 16));
+		AccountView_Deposit_1_2_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		AccountView_Deposit_1_2_1.setBackground(new Color(255, 206, 206));
+		AccountView_Deposit_1_2_1.setAutoscrolls(false);
+		Withdrawal.add(AccountView_Deposit_1_2_1);
+		
+		JPanel SideBar = new JPanel();
+		SideBar.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		SideBar.setBounds(648, 0, 236, 422);
+		SideBar.setBackground(new Color(255, 217, 217));
+		SideBar.setForeground(new Color(252, 122, 122));
+		Withdrawal.add(SideBar);
+		
+		JPanel ChangedStatus_1 = new JPanel();
+		ChangedStatus_1.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		ChangedStatus_1.setLayout(null);
+		
+		JLabel MoneySignIconWithdrawal = new JLabel("$");
+		MoneySignIconWithdrawal.setForeground(new Color(236, 119, 98));
+		MoneySignIconWithdrawal.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		MoneySignIconWithdrawal.setBounds(15, 19, 15, 18);
+		ChangedStatus_1.add(MoneySignIconWithdrawal);
+		
+		JLabel Amount = new JLabel("0.00");
+		Amount.setBounds(20, 25, 196, 29);
+		ChangedStatus_1.add(Amount);
+		Amount.setForeground(new Color(233, 98, 73));
+		Amount.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		
+		JLabel MinusSymbol = new JLabel("-");
+		MinusSymbol.setForeground(new Color(236, 119, 98));
+		MinusSymbol.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
+		MinusSymbol.setBounds(4, 32, 15, 18);
+		ChangedStatus_1.add(MinusSymbol);
+		
+		JPanel Bar = new JPanel();
+		Bar.setBackground(new Color(255, 217, 217));
+		Bar.setBounds(0, 57, 216, 7);
+		ChangedStatus_1.add(Bar);
+		
+		JLabel SelectedPerson = new JLabel("For: ?");
+		SelectedPerson.setForeground(new Color(233, 98, 73));
+		SelectedPerson.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		SelectedPerson.setBounds(4, 66, 208, 29);
+		ChangedStatus_1.add(SelectedPerson);
+		
+		JButton Remove = new JButton();
+		Remove.setText("x");
+		Remove.setInheritsPopupMenu(true);
+		Remove.setForeground(new Color(255, 0, 0));
+		Remove.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		Remove.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(252, 218, 218), new Color(253, 227, 227), new Color(252, 216, 216), new Color(251, 200, 200)));
+		Remove.setBackground(new Color(255, 217, 217));
+		Remove.setAutoscrolls(false);
+		Remove.setBounds(186, 3, 26, 26);
+		ChangedStatus_1.add(Remove);
+		
+		JPanel ChangedStatus_2 = new JPanel();
+		ChangedStatus_2.setVisible(false);
+		ChangedStatus_2.setLayout(null);
+		ChangedStatus_2.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		
+		JLabel MoneySignIconWithdrawal_2 = new JLabel("$");
+		MoneySignIconWithdrawal_2.setForeground(new Color(236, 119, 98));
+		MoneySignIconWithdrawal_2.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		MoneySignIconWithdrawal_2.setBounds(15, 19, 15, 18);
+		ChangedStatus_2.add(MoneySignIconWithdrawal_2);
+		
+		JLabel Amount_2 = new JLabel("0.00");
+		Amount_2.setForeground(new Color(233, 98, 73));
+		Amount_2.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Amount_2.setBounds(20, 25, 196, 29);
+		ChangedStatus_2.add(Amount_2);
+		
+		JLabel MinusSymbol_2 = new JLabel("-");
+		MinusSymbol_2.setForeground(new Color(236, 119, 98));
+		MinusSymbol_2.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
+		MinusSymbol_2.setBounds(4, 32, 15, 18);
+		ChangedStatus_2.add(MinusSymbol_2);
+		
+		JPanel Bar_2 = new JPanel();
+		Bar_2.setBackground(new Color(255, 217, 217));
+		Bar_2.setBounds(0, 57, 216, 7);
+		ChangedStatus_2.add(Bar_2);
+		
+		JLabel SelectedPerson_2 = new JLabel("For: ?");
+		SelectedPerson_2.setForeground(new Color(233, 98, 73));
+		SelectedPerson_2.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		SelectedPerson_2.setBounds(4, 66, 208, 29);
+		ChangedStatus_2.add(SelectedPerson_2);
+		
+		JButton Remove_2 = new JButton();
+		Remove_2.setText("x");
+		Remove_2.setInheritsPopupMenu(true);
+		Remove_2.setForeground(Color.RED);
+		Remove_2.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		Remove_2.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(252, 218, 218), new Color(253, 227, 227), new Color(252, 216, 216), new Color(251, 200, 200)));
+		Remove_2.setBackground(new Color(255, 217, 217));
+		Remove_2.setAutoscrolls(false);
+		Remove_2.setBounds(186, 3, 26, 26);
+		ChangedStatus_2.add(Remove_2);
+		
+		JPanel ChangedStatus_3 = new JPanel();
+		ChangedStatus_3.setVisible(false);
+		ChangedStatus_3.setLayout(null);
+		ChangedStatus_3.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		
+		JLabel MoneySignIconWithdrawal_3 = new JLabel("$");
+		MoneySignIconWithdrawal_3.setForeground(new Color(236, 119, 98));
+		MoneySignIconWithdrawal_3.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		MoneySignIconWithdrawal_3.setBounds(15, 19, 15, 18);
+		ChangedStatus_3.add(MoneySignIconWithdrawal_3);
+		
+		JLabel Amount_3 = new JLabel("0.00");
+		Amount_3.setForeground(new Color(233, 98, 73));
+		Amount_3.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Amount_3.setBounds(20, 25, 196, 29);
+		ChangedStatus_3.add(Amount_3);
+		
+		JLabel MinusSymbol_3 = new JLabel("-");
+		MinusSymbol_3.setForeground(new Color(236, 119, 98));
+		MinusSymbol_3.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
+		MinusSymbol_3.setBounds(4, 32, 15, 18);
+		ChangedStatus_3.add(MinusSymbol_3);
+		
+		JPanel Bar_3 = new JPanel();
+		Bar_3.setBackground(new Color(255, 217, 217));
+		Bar_3.setBounds(0, 57, 216, 7);
+		ChangedStatus_3.add(Bar_3);
+		
+		JLabel SelectedPerson_3 = new JLabel("For: ?");
+		SelectedPerson_3.setForeground(new Color(233, 98, 73));
+		SelectedPerson_3.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		SelectedPerson_3.setBounds(4, 66, 208, 29);
+		ChangedStatus_3.add(SelectedPerson_3);
+		
+		JButton Remove_3 = new JButton();
+		Remove_3.setText("x");
+		Remove_3.setInheritsPopupMenu(true);
+		Remove_3.setForeground(Color.RED);
+		Remove_3.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		Remove_3.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(252, 218, 218), new Color(253, 227, 227), new Color(252, 216, 216), new Color(251, 200, 200)));
+		Remove_3.setBackground(new Color(255, 217, 217));
+		Remove_3.setAutoscrolls(false);
+		Remove_3.setBounds(186, 3, 26, 26);
+		ChangedStatus_3.add(Remove_3);
+		
+		JPanel PageControls = new JPanel();
+		
+		JLabel SideBarTitle = new JLabel("Changes");
+		SideBarTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		SideBarTitle.setForeground(new Color(202, 119, 119));
+		SideBarTitle.setFont(new Font("Times New Roman", Font.ITALIC, 20));
+		GroupLayout gl_SideBar = new GroupLayout(SideBar);
+		gl_SideBar.setHorizontalGroup(
+			gl_SideBar.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_SideBar.createSequentialGroup()
+					.addGroup(gl_SideBar.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_SideBar.createSequentialGroup()
+							.addGap(8)
+							.addComponent(SideBarTitle, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_SideBar.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_SideBar.createParallelGroup(Alignment.TRAILING)
+								.addComponent(ChangedStatus_1, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+								.addComponent(ChangedStatus_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+								.addComponent(ChangedStatus_3, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_SideBar.createSequentialGroup()
+							.addGap(8)
+							.addComponent(PageControls, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_SideBar.setVerticalGroup(
+			gl_SideBar.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_SideBar.createSequentialGroup()
+					.addGap(6)
+					.addComponent(SideBarTitle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(15)
+					.addComponent(PageControls, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(ChangedStatus_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(ChangedStatus_2, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(ChangedStatus_3, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_SideBar.setHonorsVisibility(false);
+		PageControls.setLayout(null);
+		
+		JButton Previous = new JButton();
+		Previous.setEnabled(false);
+		Previous.setText("→");
+		Previous.setInheritsPopupMenu(true);
+		Previous.setForeground(Color.RED);
+		Previous.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
+		Previous.setBorder(null);
+		Previous.setBackground(new Color(253, 234, 234));
+		Previous.setAutoscrolls(false);
+		Previous.setBounds(169, 0, 51, 36);
+		PageControls.add(Previous);
+		
+		JButton Previous_1 = new JButton();
+		Previous_1.setText("←");
+		Previous_1.setInheritsPopupMenu(true);
+		Previous_1.setForeground(Color.RED);
+		Previous_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
+		Previous_1.setEnabled(false);
+		Previous_1.setBorder(null);
+		Previous_1.setBackground(new Color(253, 234, 234));
+		Previous_1.setAutoscrolls(false);
+		Previous_1.setBounds(0, 0, 51, 36);
+		PageControls.add(Previous_1);
+		
+		JLabel PageNum = new JLabel("Page: 1");
+		PageNum.setBounds(0, 0, 220, 36);
+		PageControls.add(PageNum);
+		PageNum.setHorizontalAlignment(SwingConstants.CENTER);
+		PageNum.setForeground(new Color(233, 98, 73));
+		PageNum.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD, 15));
+		SideBar.setLayout(gl_SideBar);
+		
 		Panel AccountView = new Panel();
+		AccountView.setVisible(false);
 		AccountView.setLayout(null);
 		AccountView.setBackground(Color.PINK);
 		AccountView.setBounds(0, 0, 650, 422);
@@ -521,7 +897,7 @@ public class LocalBankGUI {
 				{
 					LoginError.setVisible(true);
 					LoginError.setText("Please enter a Username.");
-					//Console.errorLogic(UsernamebeingUsed, "Sign Up Button", "No username found to be entered");
+					Console.error("Sign Up Button", "Nothing entered for Username", UsernamebeingUsed);
 					return;
 				}
 				
@@ -529,7 +905,7 @@ public class LocalBankGUI {
 				{
 					LoginError.setVisible(true);
 					LoginError.setText("Please enter a Password.");
-					//Console.errorLogic(PasswordbeingUsed, "Sign Up Button", "No password found to be entered");
+					Console.error("Sign Up Button", "Nothing entered for Password", PasswordbeingUsed);
 					return;
 				}
 				
@@ -537,7 +913,7 @@ public class LocalBankGUI {
 				{
 					LoginError.setVisible(true);
 					LoginError.setText("Please re-enter the Password in Confirm Password.");
-					//Console.errorLogic(ConfirmPasswordbeingUsed, "Sign Up Button", "No Confirm password found to be entered");
+					Console.error("Sign Up Button", "Nothing entered for Confirm Password", ConfirmPasswordbeingUsed);
 					return;
 				}
 				
@@ -545,7 +921,7 @@ public class LocalBankGUI {
 				{
 					LoginError.setVisible(true);
 					LoginError.setText("Confirm Password isn't the same as Password.");
-					//Console.errorLogic(ConfirmPassword.getText().equals(EnterPassword_SignUp.getText()), "Sign Up Button", "Confirmed Password isn't the same as Password");
+					Console.error("Sign Up Button", "Confirm Password isn't the same as Password", ConfirmPassword.getText().equals(EnterPassword_SignUp.getText()));
 					return;
 				}
 				
@@ -553,25 +929,30 @@ public class LocalBankGUI {
 				
 				if (AccountExists) 
 				{
-					//Console.errorLogic(!AccountExists, "Sign Up Button", "Account already Exists", "Failed to create account");
 					LoginError.setVisible(true);
 					LoginError.setText("Account Already Exists.");
+					Console.error("Sign Up Button", "Account Already Exists", "Failed to create account", !AccountExists);
 				}
 				else 
 				{
 					MasteryData.LocalBankGUI_Data.getAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
-					
-					//Console.errorLogic(!AccountExists, "Sign Up Button", "Account doesn't Exists", "Successfully created account");
 				}
-				
 			}
 		});
 		
-		//Console.errorInTesting("Testing Title", "Testing Message", "Testing Description", false, true, "Testing", true);
-		//Console.errorInTesting();
+		frame.setBounds(100, 100, 900, 461);
+		Withdrawal.setBounds(0, 0, 884, 422);
 		
-		Console.error1("Test", "Test Again", "Another Desciption", false, true, false);
-		Console.error1(false);
-		Console.error1("Test", "Test Again", false, true, false, "Testing After Boolean", false, "Testing AGain", "Testing description again", true);
+		Recever = new JTextField(); 
+		Recever.setToolTipText("The Individual the money is going to");
+		Recever.setText("Recever");
+		Recever.setSelectedTextColor(new Color(255, 159, 159));
+		Recever.setForeground(Color.GRAY);
+		Recever.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Recever.setColumns(10); 
+		Recever.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		Recever.setBackground(new Color(255, 217, 217));
+		Recever.setBounds(159, 296, 342, 27);
+		Withdrawal.add(Recever);
 	}
 }

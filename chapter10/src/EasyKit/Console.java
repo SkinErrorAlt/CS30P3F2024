@@ -66,7 +66,7 @@ public class Console {
 	
 	private static State PrintState = State.Message;
 	
-	public static void error1(Object... Message) 
+	public static void error(Object... Message) 
 	{	
 		PrintState = State.Name;
 		
