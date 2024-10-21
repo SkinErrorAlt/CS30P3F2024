@@ -64,205 +64,160 @@ public class Console {
 		System.out.println(CompleteMessage);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static <M> void error(M... Message) 
-	{
-		String CompleteMessage = "";
-		
-		if (Message.length <= 1) 
-		{
-			currentPrintState = State.Message;
-		}
-		else 
-		{
-			currentPrintState = State.Name;
-		}
-		
-		for (M Messages : Message) 
-		{
-			if (Message.length == 1) 
-			{
-				CompleteMessage = "[Unknown]: " + Messages;
-			}
-			else 
-			{
-				if (currentPrintState == State.Name) 
-				{
-					CompleteMessage = "[" + Message[0] + "]: ";
-					currentPrintState = State.Message;
-				}
-				else 
-				{
-					CompleteMessage += Messages;
-				}
-			}
-		}
-		
-		System.err.println(CompleteMessage);
-	}
-	
-	// Todo: Complete making a function to handle all other error message prompts
-	private static class Message 
-	{
-		String Message = "";
-		MessageType MessageState;
-		
-		MessageType NextMessageType;
-		
-		<other> Message(other... Settings) 
-		{
-			for (other OtherSettings : Settings) 
-			{
-				if (OtherSettings instanceof String) 
-				{
-					this.Message = Message;
-				}
-				else if (OtherSettings instanceof MessageType) 
-				{
-					this.NextMessageType = (MessageType) OtherSettings;
-				}
-			}
-		}
-	}
-	
-	private static class WholeMessage 
-	{
-		int SectionAmount = 0;
-		
-		List<Message> Messages = new ArrayList<>();
-	}
+	private static State PrintState = State.Message;
 	
 	public static void error1(Object... Message) 
-	{
-		WholeMessage Messages = new WholeMessage();
+	{	
+		PrintState = State.Name;
 		
 		String CompleteMessage = "";
 		String SectionMarker = "|=|";
 		String TrueMark = "✔️";
 		String FalseMark = "✖️";
 		
+		int currentMessage = 0;
+		double logicAmount = 0, trueLogicAmount = 0;
+		
 		for (Object Text : Message) 
 		{
+			boolean IsNextMessage = false;
+			Object NextMessage = Message;
+			
+			if ((currentMessage + 1) < Message.length) 
+			{
+				IsNextMessage = true;
+				NextMessage = Message[currentMessage + 1];
+			}
+			
 			if (Text instanceof String) 
 			{
-				Message NewText = new Message(Text, null, null);
-			}
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static void errorInTesting(Object... Message) 
-	{
-		String CompleteMessage = "";
-		String Side = "|=|";
-		String TrueMark = "✔️";
-		String FalseMark = "✖️";
-		
-		if (Message.length <= 1) 
-		{
-			currentPrintState = State.Message;
-		}
-		else 
-		{
-			currentPrintState = State.Name;
-		}
-		
-		int MessageAmount = 0;
-		
-		if (Message.length == 0) 
-		{
-			System.err.println("[Error] Failed to create a error message. No error message was given.");
-			return;
-		}
-		
-		for (Object Messages : Message) 
-		{
-			if (Message.length <= 1) 
-			{
-				CompleteMessage = "[Unknown]: " + Messages;
-			}
-			else 
-			{
-				if (currentPrintState == State.Name) 
+				if (currentMessage == 0 && Message.length > 1) 
 				{
-					CompleteMessage = "[" + Message[MessageAmount] + "]: ";
-					currentPrintState = State.Message;
-				}
-				else if (currentPrintState != State.Name)
-				{
-					// [Test Function Name]: |=| Message, Description | CheckStatus |=| Message | CheckStatus |
-					
-					if (Message[MessageAmount] instanceof Boolean) 
+					if (PrintState == State.Name) 
 					{
-						if ((boolean) Message[MessageAmount]) 
-						{
-							CompleteMessage += TrueMark;
-						}
-						else 
-						{
-							CompleteMessage += FalseMark;
-						}
+						CompleteMessage += "[" + Text + "]: ";
+						PrintState = State.Message;
+					}
+				}
+				else if (currentMessage > 0 && Message.length > 1) 
+				{
+					if (PrintState == State.Message) 
+					{
+						CompleteMessage += Text;
 						
-						if (!((MessageAmount + 1) <= Message.length)) 
+						if (IsNextMessage) 
 						{
-							if (Message[(MessageAmount + 1)] instanceof Boolean) 
+							if (NextMessage instanceof String) 
 							{
-								CompleteMessage += " " + Side;
-								currentPrintState = State.Next;
+								if (currentMessage + 2 < Message.length) 
+								{
+									if (Message[currentMessage + 2] instanceof String) 
+									{
+										CompleteMessage += " | ";
+									}
+									else 
+									{
+										CompleteMessage += ", ";
+									}
+								}
+								
+								PrintState = State.Description;
+							}
+							else if (NextMessage instanceof Boolean) 
+							{
+								CompleteMessage += " | ";
+								PrintState = State.Logic;
+							}
+						}
+					}
+					else if (PrintState == State.Description) 
+					{
+						CompleteMessage += Text;
+						
+						if (IsNextMessage) 
+						{
+							if (NextMessage instanceof String) 
+							{
+								CompleteMessage += ", ";
+							}
+							else if (NextMessage instanceof Boolean) 
+							{
+								CompleteMessage += " | ";
+								PrintState = State.Logic;
+							}
+						}
+					}
+				}
+				else if (Message.length == 1) 
+				{
+					CompleteMessage += "[Unknown]: " + Text;
+				}
+				else 
+				{
+					CompleteMessage += "[ErrorSys]: No strings or booleans were given.";
+				}
+			}
+			else if (Text instanceof Boolean) 
+			{
+				if (currentMessage == 0) 
+				{
+					CompleteMessage += "[ErrorSys]: No name was given. [";
+					CompleteMessage += (boolean) Text ? TrueMark : FalseMark + "]";
+					
+					break;
+				}
+				else 
+				{
+					CompleteMessage += (Boolean) Text ? TrueMark : FalseMark;
+					
+					logicAmount++;
+					
+					if ((Boolean) Text) 
+					{
+						trueLogicAmount += 1;
+					}
+					
+					if (IsNextMessage) 
+					{
+						if (Message[currentMessage + 1] instanceof Boolean) 
+						{
+							CompleteMessage += ", ";
+						}
+						else if (Message[currentMessage + 1] instanceof String) 
+						{
+							if (trueLogicAmount == 0) 
+							{
+								CompleteMessage += " | (" + trueLogicAmount + "/" + logicAmount + "): " + 0 + "%";
 							}
 							else 
 							{
-								CompleteMessage += ", ";
-								currentPrintState = State.Next;
+								CompleteMessage += " | (" + (int) trueLogicAmount + "/" + (int) logicAmount + "): " + Math.round((trueLogicAmount) / (logicAmount) * 100) + "% " + SectionMarker + " ";
+								
+								if (IsNextMessage) 
+								{
+									if (NextMessage instanceof String) 
+									{
+										PrintState = State.Message;
+									}
+								}
 							}
-						}
-						else 
-						{
-							CompleteMessage += " | ";
-							currentPrintState = State.Next;
 						}
 					}
 					else 
 					{
-						if (MessageAmount == Message.length) 
+						if (trueLogicAmount == 0) 
 						{
-							if (currentPrintState != State.Next) 
-							{
-								CompleteMessage += Messages + " | ";
-							}
-							else if (currentPrintState == State.Next) 
-							{
-								CompleteMessage += " [=]";
-								currentPrintState = State.Message;
-							}
-						}
-						else if (MessageAmount > 1) 
-						{
-							if (currentPrintState == State.Description) 
-							{
-								CompleteMessage += Messages + " | ";
-							}
-							else if (currentPrintState == State.Message) 
-							{
-								if (MessageAmount >= Message.length) 
-								{
-									CompleteMessage += Side + " " + Messages + " |)";
-								}
-								else 
-								{
-									CompleteMessage += " " + Messages + ", ";
-								}
-							}
+							CompleteMessage += " | (" + trueLogicAmount + "/" + logicAmount + "): " + 0 + "%";
 						}
 						else 
 						{
-							CompleteMessage += Messages + ", ";
+							CompleteMessage += " | (" + (int) trueLogicAmount + "/" + (int) logicAmount + "): " + Math.round((trueLogicAmount) / (logicAmount) * 100) + "%";
 						}
 					}
 				}
 			}
 			
-			MessageAmount++;
+			currentMessage++;
 		}
 		
 		System.err.println(CompleteMessage);
@@ -274,92 +229,6 @@ public class Console {
 		{
 			System.out.println();
 		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public static <M> void errorLogic(boolean Logic, M... Message) 
-	{
-		String CompleteMessage = "";
-		
-		if (Message.length <= 1) 
-		{
-			currentPrintState = State.Message;
-		}
-		else 
-		{
-			currentPrintState = State.Name;
-		}
-		
-		int MessageAmount = 0;
-		for (M Messages : Message) 
-		{
-			MessageAmount++;
-			
-			if (Message.length == 1) 
-			{
-				CompleteMessage = "[Unknown]: " + Messages;
-			}
-			else 
-			{
-				if (currentPrintState == State.Name) 
-				{
-					CompleteMessage = "[" + Message[0] + "]: ";
-					currentPrintState = State.Message;
-				}
-				else if (currentPrintState == State.Message)
-				{
-					if (MessageAmount == Message.length) 
-					{
-						CompleteMessage += Messages + " | ";
-						
-						if (Logic) 
-						{
-							CompleteMessage += "✔️";
-						}
-						else 
-						{
-							CompleteMessage += "✖️";
-						}
-					}
-					else if (MessageAmount > 1) 
-					{
-						CompleteMessage += Messages + " - ";
-					}
-					else 
-					{
-						if (Message.length == 1) 
-						{
-							CompleteMessage += Messages;
-						}
-						else 
-						{
-							CompleteMessage += Messages + " - ";
-						}
-					}
-				}
-			}
-		}
-		
-		System.err.println(CompleteMessage);
 	}
 
 }

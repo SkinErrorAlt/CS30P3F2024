@@ -521,7 +521,7 @@ public class LocalBankGUI {
 				{
 					LoginError.setVisible(true);
 					LoginError.setText("Please enter a Username.");
-					Console.errorLogic(UsernamebeingUsed, "Sign Up Button", "No username found to be entered");
+					//Console.errorLogic(UsernamebeingUsed, "Sign Up Button", "No username found to be entered");
 					return;
 				}
 				
@@ -529,7 +529,7 @@ public class LocalBankGUI {
 				{
 					LoginError.setVisible(true);
 					LoginError.setText("Please enter a Password.");
-					Console.errorLogic(PasswordbeingUsed, "Sign Up Button", "No password found to be entered");
+					//Console.errorLogic(PasswordbeingUsed, "Sign Up Button", "No password found to be entered");
 					return;
 				}
 				
@@ -537,7 +537,7 @@ public class LocalBankGUI {
 				{
 					LoginError.setVisible(true);
 					LoginError.setText("Please re-enter the Password in Confirm Password.");
-					Console.errorLogic(ConfirmPasswordbeingUsed, "Sign Up Button", "No Confirm password found to be entered");
+					//Console.errorLogic(ConfirmPasswordbeingUsed, "Sign Up Button", "No Confirm password found to be entered");
 					return;
 				}
 				
@@ -545,7 +545,7 @@ public class LocalBankGUI {
 				{
 					LoginError.setVisible(true);
 					LoginError.setText("Confirm Password isn't the same as Password.");
-					Console.errorLogic(ConfirmPassword.getText().equals(EnterPassword_SignUp.getText()), "Sign Up Button", "Confirmed Password isn't the same as Password");
+					//Console.errorLogic(ConfirmPassword.getText().equals(EnterPassword_SignUp.getText()), "Sign Up Button", "Confirmed Password isn't the same as Password");
 					return;
 				}
 				
@@ -553,7 +553,7 @@ public class LocalBankGUI {
 				
 				if (AccountExists) 
 				{
-					Console.errorLogic(!AccountExists, "Sign Up Button", "Account already Exists", "Failed to create account");
+					//Console.errorLogic(!AccountExists, "Sign Up Button", "Account already Exists", "Failed to create account");
 					LoginError.setVisible(true);
 					LoginError.setText("Account Already Exists.");
 				}
@@ -561,13 +561,17 @@ public class LocalBankGUI {
 				{
 					MasteryData.LocalBankGUI_Data.getAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
 					
-					Console.errorLogic(!AccountExists, "Sign Up Button", "Account doesn't Exists", "Successfully created account");
+					//Console.errorLogic(!AccountExists, "Sign Up Button", "Account doesn't Exists", "Successfully created account");
 				}
 				
 			}
 		});
 		
-		Console.errorInTesting("Testing Title", "Testing Message", "Testing Description", false, true, "Testing", true);
-		Console.errorInTesting();
+		//Console.errorInTesting("Testing Title", "Testing Message", "Testing Description", false, true, "Testing", true);
+		//Console.errorInTesting();
+		
+		Console.error1("Test", "Test Again", "Another Desciption", false, true, false);
+		Console.error1(false);
+		Console.error1("Test", "Test Again", false, true, false, "Testing After Boolean", false, "Testing AGain", "Testing description again", true);
 	}
 }

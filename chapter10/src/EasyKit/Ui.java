@@ -33,7 +33,7 @@ public class Ui {
         TextLimit
     }
     
-    private static class TextFieldSettings 
+    public static class TextFieldSettings 
     {
         JTextField selectedTextField;
         textFieldType currentType;
