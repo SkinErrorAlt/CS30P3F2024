@@ -135,10 +135,6 @@ public class IH {
 				
 				return realText;
 			}
-			else 
-			{
-				Console.error("Contains a non valid Character.");
-			}
 		}
 		
 		return "";

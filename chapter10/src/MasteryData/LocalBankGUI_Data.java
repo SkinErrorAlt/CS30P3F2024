@@ -7,23 +7,24 @@ import Mastery.LocalBankGUI;
 
 public class LocalBankGUI_Data {
 
-	@SuppressWarnings("unused")
 	public static class NewAccount 
 	{
-		String Username;
-		String Password;
+		public String Username;
+		public String Password;
+		public double Balance;
 		
-		String creationDate;
+		public String CreationDate;
 		
 		NewAccount(String Username, String Password) 
 		{
 			this.Username = Username;
 			this.Password = Password;
+			this.Balance = Math.random() * 10000;
 			
-			creationDate = Text.GetTime();
+			CreationDate = Text.GetTime();
 		}
 		
-		List<NewTransaction> Transactions = new ArrayList<>();
+		public List<NewTransaction> Transactions = new ArrayList<>();
 	}
 	
 	public static List<NewAccount> Accounts = new ArrayList<>();
@@ -42,16 +43,14 @@ public class LocalBankGUI_Data {
 		}
 	}
 	
-	// broken and doesn't function correctly
-	// Todo: Finish up making it check if the account exists or not.
 	public static boolean createAccount(String Name, String Password) 
 	{
-		boolean AccountExists = false; // Used to see if the account already exists.
-        for (int CA = 0; CA < Accounts.size(); CA++) // Loops through every account within the account storage array.
+		boolean AccountExists = false;
+        for (int CA = 0; CA < Accounts.size(); CA++)
         {
-            if (Name.equals(Accounts.get(CA).Username)) // Checks if the entered username is the same as a account.
+            if (Name.equals(Accounts.get(CA).Username))
             {
-                AccountExists = true; // Changes the Account Exists varaible and ends the loop.
+                AccountExists = true;
                 break;
             }
         }
@@ -62,11 +61,11 @@ public class LocalBankGUI_Data {
             
             Accounts.add(account); // Adds the account to the accounts list.
             
-           // Console.error("Account Creation", "Account Doesn't Exists ✔️");
+           Console.error("Account Creation", "Account Doesn't Exists", true, "Account Name: " + account.Username);
         }
         else // If the account already exists.
         {
-        	//Console.error("Account Creation", "Account Already Exists ✖️");
+        	Console.error("Account Creation", "Account Already Exists ✖️");
         }
         
         return AccountExists;
@@ -82,14 +81,22 @@ public class LocalBankGUI_Data {
 	public static NewAccount getAccount(String Name, String Password) 
 	{
 		NewAccount SearchedAccount = null;
-		
+
 		for (NewAccount Account : Accounts) 
 		{
-			if (Account.Username == Name && Account.Password == Password) 
+			Console.error("Get Account", "Found Account: " + Account.Username + " | Usernames(" + Name + ")|Passowrds(" + Password + ") Same", Name.equals(Account.Username), Password.equals(Account.Password));
+			
+			if (Name.equals(Account.Username) || Password.equals(Account.Password)) 
 			{
 				SearchedAccount = Account;
+				Console.error("Get Account", "Retreved Account.");
 				break;
 			}
+		}
+		
+		if (SearchedAccount == null) 
+		{
+			Console.error("Get Account", "Failed to Retreved Account.");
 		}
 		
 		return SearchedAccount;
