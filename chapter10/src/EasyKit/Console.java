@@ -16,15 +16,6 @@ public class Console {
 		Next
 	}
 	
-	private static enum MessageType 
-	{
-		Name,
-		Message,
-		Description,
-		Logic,
-		End
-	}
-	
 	private static State currentPrintState = State.Message;
 	
 	@SuppressWarnings("unchecked")
@@ -187,11 +178,18 @@ public class Console {
 						{
 							if (trueLogicAmount == 0)
 							{
-								CompleteMessage += " | (" + trueLogicAmount + "/" + logicAmount + "): " + 0 + "%";
+								if (logicAmount > 2) 
+								{
+									CompleteMessage += " | (" + (int) trueLogicAmount + "/" + (int) logicAmount + "): " + 0 + "%";
+								}
+								else 
+								{
+									CompleteMessage += " |";
+								}
 							}
 							else 
 							{
-								CompleteMessage += " | (" + (int) trueLogicAmount + "/" + (int) logicAmount + "): " + Math.round((trueLogicAmount) / (logicAmount) * 100) + "% " + SectionMarker + " ";
+								CompleteMessage += " | (" + (int) trueLogicAmount + "/" + (int) logicAmount + "): " + (int) Math.round((trueLogicAmount) / (logicAmount) * 100) + "% " + SectionMarker + " ";
 								
 								if (IsNextMessage) 
 								{
@@ -207,11 +205,11 @@ public class Console {
 					{
 						if (trueLogicAmount == 0) 
 						{
-							CompleteMessage += " | (" + trueLogicAmount + "/" + logicAmount + "): " + 0 + "%";
+							CompleteMessage += " | (" + (int) trueLogicAmount + "/" + (int) logicAmount + "): " + 0 + "%";
 						}
 						else 
 						{
-							CompleteMessage += " | (" + (int) trueLogicAmount + "/" + (int) logicAmount + "): " + Math.round((trueLogicAmount) / (logicAmount) * 100) + "%";
+							CompleteMessage += " | (" + (int) trueLogicAmount + "/" + (int) logicAmount + "): " + (int) Math.round((trueLogicAmount) / (logicAmount) * 100) + "%";
 						}
 					}
 				}

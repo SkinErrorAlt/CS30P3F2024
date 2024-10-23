@@ -16,19 +16,48 @@ public class OtherSystems {
 		
 		boolean GotAmount = false;
 		
-		lookingForChar(char Character, int Amount) 
+		@SafeVarargs
+		<Settings> lookingForChar(Settings... Settings) 
 		{
-			this.Character = Character;
-			this.Amount = Amount;
+			for (Settings Setting : Settings) 
+			{
+				if (Setting instanceof Character) 
+				{
+					this.Character = (char) Setting;
+				}
+				else if (Setting instanceof Integer) 
+				{
+					this.Amount = (int) Setting;
+				}
+			}
 		}
 	}
 	
 	public static List<lookingForChar> CharacterList = new ArrayList<>();
 	
-	public static void CreateLookingChar(char Character, int Amount) 
+	private static enum CharType
 	{
-		lookingForChar newLookingForChar = new lookingForChar(Character, Amount); // Creates a class for looking for a certain character and amount of that character.
-		CharacterList.add(newLookingForChar);
+		Char,
+		Amount
+	}
+	
+	private static CharType CurrentCharType = CharType.Char;
+	
+	@SafeVarargs
+	public static <Chars> void CreateLookingChar(Chars... Settings) 
+	{
+		for (Chars Character : Settings) 
+		{
+			if (CurrentCharType == CharType.Char) 
+			{
+				lookingForChar newLookingForChar = new lookingForChar(Character); // Creates a class for looking for a certain character and amount of that character.
+				CharacterList.add(newLookingForChar);
+			}
+			else 
+			{
+				CharacterList.get(CharacterList.size() - 1).Character = (char) Character;
+			}	
+		}
 	}
 	
 	public static void ClearList() 

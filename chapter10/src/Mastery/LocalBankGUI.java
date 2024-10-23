@@ -17,6 +17,7 @@ import javax.swing.border.EtchedBorder;
 
 import EasyKit.Console;
 import EasyKit.IH;
+import EasyKit.OtherSystems;
 import EasyKit.Text;
 import EasyKit.Ui;
 import MasteryData.LocalBankGUI_Data;
@@ -66,6 +67,9 @@ public class LocalBankGUI {
 	private static JLabel MoneySignIcon_1;
 	private JTextField Withdrawal_Amount;
 	private JTextField Withdrawal_Recever;
+	private JPanel Withdrawal_Trans_1;
+	private JPanel ChangeStatus_1_1;
+	private JPanel ChangeStatus_1_1_1;
 
 	/**
 	 * Launch the application.
@@ -256,19 +260,19 @@ public class LocalBankGUI {
 		SideBar.setForeground(new Color(252, 122, 122));
 		Withdrawal.add(SideBar);
 		
-		JPanel ChangedStatus_1 = new JPanel();
-		ChangedStatus_1.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
-		ChangedStatus_1.setLayout(null);
+		Withdrawal_Trans_1 = new JPanel();
+		Withdrawal_Trans_1.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		Withdrawal_Trans_1.setLayout(null);
 		
 		JLabel MoneySignIconWithdrawal = new JLabel("$");
 		MoneySignIconWithdrawal.setForeground(new Color(236, 119, 98));
 		MoneySignIconWithdrawal.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
 		MoneySignIconWithdrawal.setBounds(15, 19, 15, 18);
-		ChangedStatus_1.add(MoneySignIconWithdrawal);
+		Withdrawal_Trans_1.add(MoneySignIconWithdrawal);
 		
 		JLabel Amount = new JLabel("0.00");
 		Amount.setBounds(20, 25, 196, 29);
-		ChangedStatus_1.add(Amount);
+		Withdrawal_Trans_1.add(Amount);
 		Amount.setForeground(new Color(233, 98, 73));
 		Amount.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
 		
@@ -276,18 +280,18 @@ public class LocalBankGUI {
 		MinusSymbol.setForeground(new Color(236, 119, 98));
 		MinusSymbol.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
 		MinusSymbol.setBounds(4, 32, 15, 18);
-		ChangedStatus_1.add(MinusSymbol);
+		Withdrawal_Trans_1.add(MinusSymbol);
 		
 		JPanel Bar = new JPanel();
 		Bar.setBackground(new Color(255, 217, 217));
 		Bar.setBounds(0, 57, 216, 7);
-		ChangedStatus_1.add(Bar);
+		Withdrawal_Trans_1.add(Bar);
 		
 		JLabel SelectedPerson = new JLabel("For: Joe");
 		SelectedPerson.setForeground(new Color(233, 98, 73));
 		SelectedPerson.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
 		SelectedPerson.setBounds(4, 66, 208, 29);
-		ChangedStatus_1.add(SelectedPerson);
+		Withdrawal_Trans_1.add(SelectedPerson);
 		
 		JButton Remove = new JButton();
 		Remove.setText("x");
@@ -298,40 +302,41 @@ public class LocalBankGUI {
 		Remove.setBackground(new Color(255, 217, 217));
 		Remove.setAutoscrolls(false);
 		Remove.setBounds(186, 3, 26, 26);
-		ChangedStatus_1.add(Remove);
+		Withdrawal_Trans_1.add(Remove);
 		
-		JPanel ChangedStatus_1_1 = new JPanel();
-		ChangedStatus_1_1.setLayout(null);
-		ChangedStatus_1_1.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		JPanel Withdrawal_Trans_2 = new JPanel();
+		Withdrawal_Trans_2.setVisible(false);
+		Withdrawal_Trans_2.setLayout(null);
+		Withdrawal_Trans_2.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
 		
 		JLabel MoneySignIconWithdrawal_1 = new JLabel("$");
 		MoneySignIconWithdrawal_1.setForeground(new Color(236, 119, 98));
 		MoneySignIconWithdrawal_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
 		MoneySignIconWithdrawal_1.setBounds(15, 19, 15, 18);
-		ChangedStatus_1_1.add(MoneySignIconWithdrawal_1);
+		Withdrawal_Trans_2.add(MoneySignIconWithdrawal_1);
 		
 		JLabel Amount_1 = new JLabel("0.00");
 		Amount_1.setForeground(new Color(233, 98, 73));
 		Amount_1.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
 		Amount_1.setBounds(20, 25, 196, 29);
-		ChangedStatus_1_1.add(Amount_1);
+		Withdrawal_Trans_2.add(Amount_1);
 		
 		JLabel MinusSymbol_1 = new JLabel("-");
 		MinusSymbol_1.setForeground(new Color(236, 119, 98));
 		MinusSymbol_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
 		MinusSymbol_1.setBounds(4, 32, 15, 18);
-		ChangedStatus_1_1.add(MinusSymbol_1);
+		Withdrawal_Trans_2.add(MinusSymbol_1);
 		
 		JPanel Bar_1 = new JPanel();
 		Bar_1.setBackground(new Color(255, 217, 217));
 		Bar_1.setBounds(0, 57, 216, 7);
-		ChangedStatus_1_1.add(Bar_1);
+		Withdrawal_Trans_2.add(Bar_1);
 		
 		JLabel SelectedPerson_1 = new JLabel("For: Joe");
 		SelectedPerson_1.setForeground(new Color(233, 98, 73));
 		SelectedPerson_1.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
 		SelectedPerson_1.setBounds(4, 66, 208, 29);
-		ChangedStatus_1_1.add(SelectedPerson_1);
+		Withdrawal_Trans_2.add(SelectedPerson_1);
 		
 		JButton Remove_1 = new JButton();
 		Remove_1.setText("x");
@@ -342,40 +347,41 @@ public class LocalBankGUI {
 		Remove_1.setBackground(new Color(255, 217, 217));
 		Remove_1.setAutoscrolls(false);
 		Remove_1.setBounds(186, 3, 26, 26);
-		ChangedStatus_1_1.add(Remove_1);
+		Withdrawal_Trans_2.add(Remove_1);
 		
-		JPanel ChangedStatus_1_1_1 = new JPanel();
-		ChangedStatus_1_1_1.setLayout(null);
-		ChangedStatus_1_1_1.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		JPanel Withdrawal_Trans_3 = new JPanel();
+		Withdrawal_Trans_3.setVisible(false);
+		Withdrawal_Trans_3.setLayout(null);
+		Withdrawal_Trans_3.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
 		
 		JLabel MoneySignIconWithdrawal_1_1 = new JLabel("$");
 		MoneySignIconWithdrawal_1_1.setForeground(new Color(236, 119, 98));
 		MoneySignIconWithdrawal_1_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
 		MoneySignIconWithdrawal_1_1.setBounds(15, 19, 15, 18);
-		ChangedStatus_1_1_1.add(MoneySignIconWithdrawal_1_1);
+		Withdrawal_Trans_3.add(MoneySignIconWithdrawal_1_1);
 		
 		JLabel Amount_1_1 = new JLabel("0.00");
 		Amount_1_1.setForeground(new Color(233, 98, 73));
 		Amount_1_1.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
 		Amount_1_1.setBounds(20, 25, 196, 29);
-		ChangedStatus_1_1_1.add(Amount_1_1);
+		Withdrawal_Trans_3.add(Amount_1_1);
 		
 		JLabel MinusSymbol_1_1 = new JLabel("-");
 		MinusSymbol_1_1.setForeground(new Color(236, 119, 98));
 		MinusSymbol_1_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
 		MinusSymbol_1_1.setBounds(4, 32, 15, 18);
-		ChangedStatus_1_1_1.add(MinusSymbol_1_1);
+		Withdrawal_Trans_3.add(MinusSymbol_1_1);
 		
 		JPanel Bar_1_1 = new JPanel();
 		Bar_1_1.setBackground(new Color(255, 217, 217));
 		Bar_1_1.setBounds(0, 57, 216, 7);
-		ChangedStatus_1_1_1.add(Bar_1_1);
+		Withdrawal_Trans_3.add(Bar_1_1);
 		
 		JLabel SelectedPerson_1_1 = new JLabel("For: Joe");
 		SelectedPerson_1_1.setForeground(new Color(233, 98, 73));
 		SelectedPerson_1_1.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
 		SelectedPerson_1_1.setBounds(4, 66, 208, 29);
-		ChangedStatus_1_1_1.add(SelectedPerson_1_1);
+		Withdrawal_Trans_3.add(SelectedPerson_1_1);
 		
 		JButton Remove_1_1 = new JButton();
 		Remove_1_1.setText("x");
@@ -386,7 +392,7 @@ public class LocalBankGUI {
 		Remove_1_1.setBackground(new Color(255, 217, 217));
 		Remove_1_1.setAutoscrolls(false);
 		Remove_1_1.setBounds(186, 3, 26, 26);
-		ChangedStatus_1_1_1.add(Remove_1_1);
+		Withdrawal_Trans_3.add(Remove_1_1);
 		
 		Panel AccountView = new Panel();
 		AccountView.setLayout(null);
@@ -402,6 +408,7 @@ public class LocalBankGUI {
 		lblChanges.setForeground(new Color(202, 119, 119));
 		lblChanges.setFont(new Font("Times New Roman", Font.ITALIC, 20));
 		GroupLayout gl_SideBar = new GroupLayout(SideBar);
+		gl_SideBar.setHonorsVisibility(false);
 		gl_SideBar.setHorizontalGroup(
 			gl_SideBar.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_SideBar.createSequentialGroup()
@@ -409,9 +416,9 @@ public class LocalBankGUI {
 						.addGroup(gl_SideBar.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(gl_SideBar.createParallelGroup(Alignment.TRAILING)
-								.addComponent(ChangedStatus_1, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
-								.addComponent(ChangedStatus_1_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
-								.addComponent(ChangedStatus_1_1_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(Withdrawal_Trans_1, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+								.addComponent(Withdrawal_Trans_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+								.addComponent(Withdrawal_Trans_3, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_SideBar.createSequentialGroup()
 							.addGap(8)
 							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE))
@@ -428,11 +435,11 @@ public class LocalBankGUI {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
 					.addGap(11)
-					.addComponent(ChangedStatus_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addComponent(Withdrawal_Trans_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(ChangedStatus_1_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addComponent(Withdrawal_Trans_2, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(ChangedStatus_1_1_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addComponent(Withdrawal_Trans_3, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		panel.setLayout(null);
@@ -1100,6 +1107,18 @@ public class LocalBankGUI {
 				}
 			}
 		});
+		
+		Withdrawal_SubmitAmount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				OtherSystems.CreateLookingChar('1', 1, '2');
+				
+				if (Ui.hasVaildChars(Withdrawal_Amount, chars)) 
+				{
+					
+				}
+			}
+		});
 	}
 	
 	public static void UpdateAccountViewBalance() 
@@ -1107,5 +1126,9 @@ public class LocalBankGUI {
 		MoneySignIcon_1.setText(String.format("%,.2f", currentAccount.Balance));
 		Withdrawal_CurrentBalance.setText(String.format("%,.2f", currentAccount.Balance));
 	}
-
+	
+	public static void UpdateWithdrawalTransactionSideBar() 
+	{
+		
+	}
 }
