@@ -20,7 +20,7 @@ public class IH {
 	
 	public static void PressedEnter(Object Focus) 
 	{
-		if (Focus instanceof  Boolean) 
+		if (Focus instanceof  Boolean) //
 		{
 			Main.requestFocusInWindow();
 		}

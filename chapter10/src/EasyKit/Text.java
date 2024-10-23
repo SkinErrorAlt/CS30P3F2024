@@ -25,7 +25,7 @@ public class Text
     public String checkClass(Object variable) // Checks what class the variable is.
 	{
 		if (variable instanceof Number) // If its Type is a Integer.
-		{
+ 		{
 			return "Integer"; // Returns a String to show what class it is.
 		}
 		else if (variable instanceof Double)  // If its Type is a Number.

@@ -39,7 +39,7 @@ public class Ui {
         textFieldType currentType;
         
         String DefaultText;
-        String DefaultName;
+        String DefaultName;//
         Color BackgroundColor;
         
         boolean AllowResize = false;

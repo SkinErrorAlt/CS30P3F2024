@@ -195,7 +195,7 @@ public class Console {
 								
 								if (IsNextMessage) 
 								{
-									if (NextMessage instanceof String) //
+									if (NextMessage instanceof String) //.//
 									{
 										PrintState = State.Message;
 									}
