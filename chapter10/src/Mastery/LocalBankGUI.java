@@ -125,7 +125,7 @@ public class LocalBankGUI {
 		Withdrawal_Amount.setColumns(10);
 		Withdrawal_Amount.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		Withdrawal_Amount.setBackground(new Color(255, 217, 217));
-		Withdrawal.add(Withdrawal_Amount);
+		Withdrawal.add(Withdrawal_Amount); // 
 		
 		Ui.TextFieldSetup(Withdrawal_Amount, Ui.textFieldType.Text, Color.DARK_GRAY, false);
 		
