@@ -135,6 +135,8 @@ public class LocalBankGUI {
 		
 		Ui.TextFieldSetup(Withdrawal_Amount, Ui.textFieldType.Text, Color.DARK_GRAY, false);
 		
+		Input.TextField_Click.ClickEventSetup(Withdrawal_Amount);
+		
 		Gui_Handler.TextFieldSetup(Withdrawal_Amount);
 		
 		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Char_Range, 1, 25);
@@ -1019,6 +1021,15 @@ public class LocalBankGUI {
 				Ui.toggleTipText(EnterUsername);
 			}
 		});
+		
+		class EnterUsernameClick 
+		{
+			void ClickCustomEvent() 
+			{
+				Console.print("Got it!");
+			}
+		}
+		
 		EnterUsername.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -1134,4 +1145,9 @@ public class LocalBankGUI {
 	{
 		
 	}
+}
+
+class F 
+{
+	
 }
