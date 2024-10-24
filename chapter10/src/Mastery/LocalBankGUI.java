@@ -21,6 +21,7 @@ import EasyKit.IH;
 import EasyKit.OtherSystems;
 import EasyKit.Text;
 import EasyKit.Ui;
+import EasyKit.Gui_Handler.*;
 import MasteryData.LocalBankGUI_Data;
 import MasteryData.LocalBankGUI_Data.*;
 
@@ -133,14 +134,12 @@ public class LocalBankGUI {
 		Withdrawal.add(Withdrawal_Amount); // 
 		
 		Ui.TextFieldSetup(Withdrawal_Amount, Ui.textFieldType.Text, Color.DARK_GRAY, false);
-		Gui_Handler.TextFieldSetup(Withdrawal_Amount, Gui_Handler.TextFieldSettings.Number_Range, 1.0, 15.0);
-		Gui_Handler.TextFieldSetup(Withdrawal_Amount, Gui_Handler.TextFieldSettings.Limited_Char, 1, 15);
 		
-		System.out.println(Gui_Handler.getTextFieldSettings(Withdrawal_Amount).getSettings(Gui_Handler.TextFieldSettings.Number_Range));
-		System.out.println(Gui_Handler.getTextFieldSettings(Withdrawal_Amount).hasSetting(Gui_Handler.TextFieldSettings.Number_Range));
+		Gui_Handler.TextFieldSetup(Withdrawal_Amount);
 		
-		System.out.println(Gui_Handler.getTextFieldSettings(Withdrawal_Amount).getSettings(Gui_Handler.TextFieldSettings.Limited_Char));
-		System.out.println(Gui_Handler.getTextFieldSettings(Withdrawal_Amount).hasSetting(Gui_Handler.TextFieldSettings.Limited_Char));
+		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Char_Range, 1, 25);
+		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Number_Range, 1, 25);
+		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Number_Only, true);
 		
 		Withdrawal_Recever = new JTextField(); 
 		Withdrawal_Recever.setToolTipText("The Individual the money is going to");
