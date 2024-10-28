@@ -86,7 +86,7 @@ public class LocalBankGUI_Data {
 		{
 			Console.error("Get Account", "Found Account: " + Account.Username + " | Usernames(" + Name + ")|Passowrds(" + Password + ") Same", Name.equals(Account.Username), Password.equals(Account.Password));
 			
-			if (Name.equals(Account.Username) || Password.equals(Account.Password)) 
+			if (Name.equals(Account.Username) && Password.equals(Account.Password)) 
 			{
 				SearchedAccount = Account;
 				Console.error("Get Account", "Retreved Account.");
@@ -96,7 +96,7 @@ public class LocalBankGUI_Data {
 		
 		if (SearchedAccount == null) 
 		{
-			Console.error("Get Account", "Failed to Retreved Account.");
+			Console.error("Get Account", "Failed to Retreved Account. [" + Name + "]");
 		}
 		
 		return SearchedAccount;
