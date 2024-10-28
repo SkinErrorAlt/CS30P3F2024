@@ -66,9 +66,8 @@ public class LocalBankGUI_ChangesHandler {
 		
 		CreateTransaction("1", 45);
 		CreateTransaction("2", 55);
-		CreateTransaction("3", 65);
 		
-		GotPage SelectedPage = FindSection(3, 2);
+		GotPage SelectedPage = FindSection(3, 3);
 		
 		System.out.println("Page: " + SelectedPage.Page + " | Section: " + SelectedPage.Section);
 		System.out.println("Person: " + SelectedPage.SectionArray.get(0).Transaction.Person + " | Amount: " + SelectedPage.SectionArray.get(0).Transaction.Amount);
@@ -107,10 +106,10 @@ public class LocalBankGUI_ChangesHandler {
 		int Count = 0;
 		int CurrentPage = 1;
 		int fullCount = 0;
+		Page NewPage = new Page();
 		
 		for (Transaction Transaction : Transactions) 
 		{
-			Page NewPage = new Page();
 			NewPage.Page = CurrentPage;
 			
 			Count++;
@@ -134,6 +133,9 @@ public class LocalBankGUI_ChangesHandler {
 			
 			if (Count == 3) 
 			{
+				NewPage = new Page();
+				NewPage.Page = CurrentPage;
+				
 				Count = 0;
 				CurrentPage++;
 			}

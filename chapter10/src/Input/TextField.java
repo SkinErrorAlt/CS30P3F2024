@@ -16,13 +16,25 @@ public class TextField {
             if ((Boolean) Gui_Handler.getTextField(TextField).getSettings(Gui_Handler.TextFieldSettings.Allow_Enter).get(0)) 
             {
                 Console.error("Entered Event", "Entered!", true);
-                IH.ChangeFocus(Gui_Handler.getTextField(TextField).getSettings(Gui_Handler.TextFieldSettings.Allow_Enter).get(1));
+                IH.PressedEnter(Gui_Handler.getTextField(TextField).getSettings(Gui_Handler.TextFieldSettings.Allow_Enter).get(1));
             } 
             else 
             {
-                Console.error("Entered Event", "Failed to Entered!", true);
+                Console.error("Entered Event", "Failed to Enter!", true);
             }
         }
+    }
+    
+    private static void DeletedEvent(JTextField TextField, KeyEvent e) 
+    {
+    	if ((Boolean) Gui_Handler.getTextField(TextField).hasSetting(Gui_Handler.TextFieldSettings.Currency))
+    	{
+    		TextField.setText(TextConfig.CurrencyFormatter.formatToCurrency(Input.TextField.getFutureText(TextField, e)));
+    		
+    		TextField.setText(TextField.getText().substring(0, TextField.getText().length() - 1));
+    	}
+    	
+    	e.consume();
     }
     
     private static void KeyEvent(JTextField TextField, KeyEvent e) 
@@ -60,6 +72,7 @@ public class TextField {
                         return;
                     }
                     
+                    DeletedEvent(TextField, e);
                     return;
                 }
                 

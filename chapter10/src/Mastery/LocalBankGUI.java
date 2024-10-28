@@ -152,8 +152,6 @@ public class LocalBankGUI {
 		
 		Input.TextField.EventsSetup(Withdrawal_Amount);
 		
-
-		
 		Withdrawal_Recever = new JTextField(); 
 		Withdrawal_Recever.setToolTipText("The Individual the money is going to");
 		Withdrawal_Recever.setText("Recever");
