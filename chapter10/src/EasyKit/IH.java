@@ -26,15 +26,15 @@ public class IH {
 		}
 		else if (Focus instanceof TextField)
 		{
-			((JComponent) Focus).requestFocusInWindow();
+			((TextField) Focus).requestFocusInWindow();
 		}
 		else if (Focus instanceof Panel) 
 		{
 			((Panel) Focus).requestFocusInWindow();
 		}
-		else if (Focus instanceof JComponent) 
+		else if (Focus instanceof JTextField) 
 		{
-			((JComponent) Focus).requestFocusInWindow();
+			((JTextField) Focus).requestFocusInWindow();
 		}
 		else 
 		{

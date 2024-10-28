@@ -14,7 +14,6 @@ public class Gui_Handler {
     public static class CreateTextField 
     {
         private Map<TextFieldSettings, List<Object>> textSettings = new HashMap<>(); // Instead of using an array i'm using a hashmap because its easier and wayyyy faster since i looks for the value directly instead of checking every single one.
-        private Map<TextFieldEvents, List<Object>> textEventConfig = new HashMap<>();
         
         JTextField TextField = null;
         
@@ -106,17 +105,11 @@ public class Gui_Handler {
     	Stricted_Letters_Only, // Very stricted on not allowing <>? or ,./ stuff and only allowing ABC or abc
     	
     	Allow_Delete,
-    	Allow_Enter
+    	Allow_Enter,
+    	
+    	Currency
     }
-    
-    public enum TextFieldEvents 
-    {
-    	Clicked,
-    	Hovered,
-    	Entered,
-    	Deleted
-    }
-    
+
     public static List<CreateTextField> TextFields = new ArrayList<>();
 
 	public static void  TextFieldSetup(JTextField TextField)
