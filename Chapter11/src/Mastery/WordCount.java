@@ -1,9 +1,12 @@
 package Mastery;
 
+import EasyKit.*;
 import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -39,65 +42,172 @@ public class WordCount {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
+	private static class Word 
+	{
+		String Word = "";
+		int Amount = 1;
+		
+		@SafeVarargs
+		<WordType> Word(WordType... Property) 
+		{
+			for (WordType Type : Property) 
+			{
+				if (Type instanceof String) 
+				{
+					Word = (String) Type;
+				}
+				else 
+				{
+					Console.error("Class Word", "Invalid property type: [" + Property.getClass().getName() + "] | Needing Number or Word.");
+				}
+			}
+		}
+	}
+	
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		File textFile = new File("C:\\Users\\27237009\\git\\CS30P3F2024\\Chapter11\\src\\Mastery\\source.txt");
+		Text.clear();
+		Scanner userInput = new Scanner(System.in);
 		
-		System.out.println(textFile.exists() ? "Exists" : "Doesn't exist" + " | " + textFile.exists());
-		
-		if (!textFile.exists()) {return;}
-		
-		try 
+		for (boolean InMainMenu = true; InMainMenu;) 
 		{
-			Map<String, Integer> Words = new HashMap<>(); 
+			Text.print("[File Scanner 9000]");
+			Text.addSpace();
 			
-			System.out.println("");
-			try (Scanner textFileReader = new Scanner(textFile)) 
+			Text.addButton(1, "Select File");
+			Text.addButton(2, "Quit");
+			Text.addSpace();
+			
+			int MainMenuSelection = Text.userIntager(false, null);
+			
+			if (MainMenuSelection == 2) 
 			{
-				while (textFileReader.hasNext()) 
+				InMainMenu = false;
+				Text.clear();
+			}
+			else if (MainMenuSelection == 1) 
+			{
+				Text.clear();
+
+				for (boolean GettingUserFile = true; GettingUserFile;) 
 				{
-					String wordFound = textFileReader.next();
-					//System.out.println(wordFound);
+					Text.print("[Finding File]");
+					Text.addSpace();
+					Text.addButton(-1, "Back");
+					Text.addSpace();
 					
-					for (Map.Entry<String, Integer> Word : Words.entrySet()) 
-					{
-						if (textFileReader.equals(Word.getKey())) 
-						{
-							int Count = Word.getValue() + 1;
-							Word.setValue(Count);
-							
-							System.out.println(Word.getKey() + " | [" + Word.getValue() + "x]");
-						}
-					}
+					String UserFile = Text.userString(false, null);
 					
-					if (Words.containsKey(textFileReader.next())) 
+					if (UserFile.equals("-1")) 
 					{
-						System.out.println("Added 1 to [" + textFileReader.next() + "]");
-						
-						int Count = Words.getOrDefault(textFileReader.next(), 1);
-						Words.put(textFileReader.next(), Count++);
-						
-						System.out.println(Words.get(textFileReader.next()) + " | [" + Words.get(textFileReader.next()).intValue() + "x]");
+						GettingUserFile = false;
+						Text.clear();
 					}
 					else 
 					{
-						System.out.println("Created [" + textFileReader.next() + "]");
-						Words.put(textFileReader.next(), 1);
-					}	
+						for (boolean FileViewing = true; FileViewing;) 
+						{
+							List<Word> Words = new ArrayList<>();
+							File textFile = new File("..\\Chapter11\\src\\Mastery\\" + UserFile + ".txt");
+							
+							try 
+							{
+								System.out.println("");
+								try (Scanner textFileReader = new Scanner(textFile)) 
+								{
+									while (textFileReader.hasNext()) 
+									{
+										String wordFound = textFileReader.next();
+										//System.out.println(wordFound);
+										
+										if (wordFound != null) 
+										{
+											boolean HasWord = false;
+											for (Word getWords : Words) 
+											{
+												if (getWords.Word.equals(wordFound)) 
+												{
+													getWords.Amount += 1;
+													HasWord = true;
+													break;
+												}
+											}
+											
+											if (!HasWord) 
+											{
+												Word newWord = new Word(wordFound);
+												Words.add(newWord);
+											}
+										}
+									}
+									
+									for (boolean SearchingFile = true; SearchingFile;) 
+									{
+										Text.print("[File Properties]");
+										Text.addSpace();
+										
+										Text.addButton(-1, "Back");
+										Text.print("Type: ");
+										Text.print("| (All) to view all instances and appearances of all words in " + UserFile + " |");
+										Text.print("| {a word} to view the number of instances of that word in " + UserFile + " |");
+										Text.addSpace();
+										
+										String UserSearch = Text.userString(false, null);
+										
+										if (UserSearch.toLowerCase().equals("-1")) 
+										{
+											Text.clear();
+											SearchingFile = false;
+										}
+										else if (UserSearch.toLowerCase().equals("all")) 
+										{
+											Text.clear();
+											Text.print("[Word: " + UserSearch + " ]");
+											Text.addSpace();
+											
+											for (Word Word : Words) 
+											{
+												Text.print("[" + Word.Word + "] shows up a total [" + Word.Amount + "]");
+											}
+										}
+										else 
+										{
+											for (boolean SearchingWord = true; SearchingWord;) 
+											{
+												Text.print("[Word: " + UserSearch + " ]");
+												Text.addSpace();
+												
+												Text.addButton(-1, "Back");
+												Text.print("Type: ");
+												Text.print("| (All) to view all instances and appearances of all words in " + UserFile + " |");
+												Text.print("| {a word} to view the number of instances of that word in " + UserFile + " |");
+												Text.addSpace();
+											}
+										}
+									}
+								}
+							} 
+							catch (FileNotFoundException e) 
+							{
+								FileViewing = false;
+								Text.clear();
+								Text.print("No file with the name [" + UserFile + "] exists. Please try again.");
+								Text.addSpace();
+							}
+						}
+					}
 				}
 			}
-			
-			for (Map.Entry<String, Integer> Word : Words.entrySet()) 
+			else 
 			{
-				System.out.println(Word.getKey() + " | [" + Word.getValue() + "x]");
+				Text.clear();
+				Text.print("Not a valid option");
+				Text.addSpace();
 			}
-		} 
-		catch (FileNotFoundException e) 
-		{
-			System.err.println("Failed to get file");
 		}
 	}
 }
