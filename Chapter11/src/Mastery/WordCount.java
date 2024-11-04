@@ -3,13 +3,14 @@ package Mastery;
 import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-public class WordCount {
+public class WordCount extends EasyKit.Text {
 
 	private JFrame frame;
 
@@ -49,7 +50,7 @@ public class WordCount {
 		
 		System.out.println(textFile.exists() ? "Exists" : "Doesn't exist" + " | " + textFile.exists());
 		
-		if (!textFile.exists()) {return;}
+		if (!textFile.exists()) {return;} // If it doesn't exist there isn't a point in continuing.
 		
 		try 
 		{
@@ -64,17 +65,19 @@ public class WordCount {
 					String wordFound = textFileReader.next();
 					wordFound.replace(" ", "");
 					
+					print(wordFound);
+					
 					if (Stricted_Words.containsKey(wordFound.toLowerCase())) 
 					{
 						int Count = Stricted_Words.get(wordFound.toLowerCase()).intValue();
 						Stricted_Words.put(wordFound.toLowerCase(), Count + 1);
 						
-						System.out.println("Stricted: " + wordFound + " (" + Stricted_Words.get(wordFound.toLowerCase()).intValue()  + ") | already exists");
+						System.out.println("Stricted: (" + Stricted_Words.get(wordFound.toLowerCase()).intValue()  + ") | already exists");
 					}
 					else 
 					{
-						Stricted_Words.put(wordFound.toLowerCase(), 0);
-						System.out.println("Stricted: " + wordFound + " Not inside hashmap adding.");
+						Stricted_Words.put(wordFound.toLowerCase(), 1);
+						System.out.println("Stricted: Not inside hashmap adding.");
 					}
 					
 					if (Relaxed_Words.containsKey(wordFound)) 
@@ -82,12 +85,12 @@ public class WordCount {
 						int Count = Relaxed_Words.get(wordFound).intValue();
 						Relaxed_Words.put(wordFound, Count + 1);
 						
-						System.out.println("Relaxed: " + wordFound + " (" + Relaxed_Words.get(wordFound).intValue()  + ") | already exists");
+						System.out.println("Relaxed: (" + Relaxed_Words.get(wordFound).intValue()  + ") | already exists");
 					}
 					else 
 					{
-						Relaxed_Words.put(wordFound, 0);
-						System.out.println("Relaxed: " + wordFound + " Not inside hashmap adding.");
+						Relaxed_Words.put(wordFound, 1);
+						System.out.println("Relaxed: Not inside hashmap adding.");
 					}
 					
 					System.out.println("");
