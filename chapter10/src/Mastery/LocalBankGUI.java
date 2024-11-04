@@ -80,6 +80,7 @@ public class LocalBankGUI {
 	private static Panel SignUpScreen;
 	private static Panel LoginScreen;
 	private static Panel AccountView;
+	private static Panel ChangeNameScreen;
 	
 	/**
 	 * Launch the application.
@@ -685,9 +686,6 @@ public class LocalBankGUI {
 		AccountView_Transactions.setBounds(208, 274, 246, 27);
 		AccountView.add(AccountView_Transactions);
 		
-		//frame.setBounds(100, 100, 900, 461);
-		//Withdrawal.setBounds(0, 0, 884, 422);
-		
 		LoginScreen = new Panel();
 		IH.UiSetupJPanel(LoginScreen);
 		
@@ -939,6 +937,13 @@ public class LocalBankGUI {
 		AccountSettings_Back.setAutoscrolls(false);
 		AccountSettings_Back.setBounds(208, 366, 246, 27);
 		AccountSettings.add(AccountSettings_Back);
+		
+		ChangeNameScreen = new Panel();
+		ChangeNameScreen.setLayout(null);
+		ChangeNameScreen.setBackground(Color.PINK);
+		ChangeNameScreen.setBounds(0, 0, 650, 422);
+		frame.getContentPane().add(AccountSettings);
+		ChangeNameScreen.setVisible(true);
 		
 		// Account Settings Events
 		AccountSettings_Back.addActionListener(new ActionListener() {
