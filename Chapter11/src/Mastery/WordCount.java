@@ -85,7 +85,7 @@ public class WordCount extends EasyKit.Text {
 			
 			String UserFile = userString(true, "Enter file name"); // Asks the user for a file.
 			
-			File textFile = new File("..\\Chapter11\\src\\Mastery\\" + UserFile + (UserFile.contains(".") ? "" : ".txt")); // Looks for the file, and uses a 
+			File textFile = new File("..\\Chapter11\\src\\Mastery\\" + UserFile + (UserFile.contains(".") ? "" : ".txt")); // Looks for the file, and uses a ternary operator to adjust the .txt, Making a 8 line if statement into just a single line. and also make it easier to read.
 			
 			try // In-case the selected file doesn't exist it won't break and end the program.
 			{
