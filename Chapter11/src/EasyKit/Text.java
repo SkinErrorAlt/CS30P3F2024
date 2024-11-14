@@ -48,6 +48,11 @@ public class Text
 		System.out.println(Message); // Prints the Message
 	}
 	
+	public static <M> void error(M Message) // Allows for easier printing, because i can type Ui.print(""); better then System.out.println(""); which is much longer.
+	{
+		System.err.println(Message); // Prints the Message
+	}
+	
 	public static <Types> void addButton(Types... Functions) // Makes a easy button that can be made in just a simple function.
 	{
 		int CurrentFunctionNum = 0;

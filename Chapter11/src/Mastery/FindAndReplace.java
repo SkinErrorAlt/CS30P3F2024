@@ -15,6 +15,8 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import EasyKit.Text;
+
 public class FindAndReplace extends EasyKit.Text {
 
 	private JFrame frame;
@@ -74,70 +76,55 @@ public class FindAndReplace extends EasyKit.Text {
 			
 			File textFile = new File("..\\Chapter11\\src\\Mastery\\" + UserFile + (UserFile.contains(".") ? "" : ".txt")); // Looks for the file, and uses a ternary operator to adjust the .txt, Making a 8 line if statement into just a single line. and also make it easier to read.
 			
-			try // In-case the selected file doesn't exist it won't break and end the program.
+			// Checks if the file exists.
+			if (!textFile.exists()) 
 			{
 				clear();
-
-				FileReader FileRead = new FileReader(textFile);
-				BufferedReader BufferReader = new BufferedReader(FileRead);
-				
-				while (true) 
-				{
-					print("[Finder]");
-					addSpace();
-					
-					String UserFind = userString(true, "Enter Word or Sentance"); // Asks the user for a file.
-					
-					String EntireFile = "";
-					Scanner input = new Scanner(FileRead);
-					
-					while (input.hasNext()) 
-					{
-						EntireFile += input.next() + "\r\n";
-					}
-					
-					System.out.println("Entire File: " + EntireFile);
-					
-					String UserReplace;
-					
-					clear();
-					
-					print("[Replacer]");
-					addSpace();
-					
-					UserReplace = userString(true, "Enter Word or Sentance"); // Asks the user for a file.
-					
-					// Gets the users sentence or word to search for.
-					clear();
-					
-					String OldText = "", Line = "";
-					while (BufferReader.ready()) 
-					{
-						Line = BufferReader.readLine();
-						OldText += Line + "\r";
-						System.out.println("String [" + OldText + "]");
-					}
-					BufferReader.close();
-					String NewText = OldText;
-					
-					NewText.replaceAll(UserFind, UserReplace);
-
-					FileWriter writer = new FileWriter("..\\Chapter11\\src\\Mastery\\" + UserFile + (UserFile.contains(".") ? "" : ".txt"));
-					writer.write(NewText);
-					
-					System.out.println("[" + NewText + "]");
-					
-					writer.close();
-					break;
-				}
-			} 
-			catch (FileNotFoundException e) 
-			{
-				clear();
-				print("No file was found [" + UserFile + "]"); // Shows the user the file that doesn't exist.
+				error("No text file with the name [" + UserFile + "] located in (.../Chapter11/src/Mastery/)");
 				addSpace();
-				continue; // Makes the loop end and go onto the next loop iteration.
+				continue;
 			}
+
+			clear();
+
+			print("[Finder]");
+			addSpace();
+			
+			String userFind = userString(true, "Enter Word or Sentence"); // Asks the user for a Word or Sentence to search for.
+			
+			clear();
+			
+			print("[Replacer] (" + userFind + ")");
+			addSpace();
+			
+			String userReplace = userString(true, "Enter Word or Sentence"); // Asks the user for a Word or Sentence to replace the selected words with.
+			
+			// Calls the replace function for more easier replacing of a file.txt
+			replaceTextInFile(UserFile, userFind, userReplace);
+			
+			clear();
 		}	
+	}
+	
+	public static void replaceTextInFile(String filePath, String target, String replace) throws IOException 
+	{
+		File file = new File("..\\Chapter11\\src\\Mastery\\" + filePath + (filePath.contains(".") ? "" : ".txt"));
+		StringBuilder text = new StringBuilder();
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) 
+		{
+			String currentLine;
+			while ((currentLine = reader.readLine()) != null) 
+			{
+				currentLine = currentLine.replace(target, replace);
+				text.append(currentLine).append(System.lineSeparator());
+			}
+		}
+		
+		// This will write over the text with 
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) 
+		{
+			writer.write(text.toString());
+		}
 	}
 }
