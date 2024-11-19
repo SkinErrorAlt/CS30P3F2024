@@ -58,6 +58,10 @@ public class WordCount extends EasyKit.Text {
 	public static Map<String, Integer> Relaxed_Words = new HashMap<>(); // Relaxed just means it will determine a difference in caps as a different word.
 
 	public static boolean inStrictedMode = false; // Checks if the user wants the word search to be stricted or not.
+	public static boolean SpecialCharacters_DifferentWords = false; // Checks if the program will separate words if there is a special character between them.
+	public static boolean Word_Blocks = true; // Checks if it should allow for "(Word block)" to be counted as a full word rather then "(Word" and "block)".
+	
+	public static char[] SpecialCharacters = {'-', ',', '_', '!', '@', '#', '$', '%', '^', '&', '*'};
 	
 	private void initialize() {
 		
@@ -100,18 +104,59 @@ public class WordCount extends EasyKit.Text {
 					{
 						String wordFound = textFileReader.next(); // Gets the next word in the file.
 						String FullWord = ""; // Declared for getting a full word.
+						String WordSection = "";
 						
+						// For context of WordSection is that its used for checking a word block. This is just a message with "(" at the beginning, and ")" at its end. To be used for getting a block of a word.
+						// This will be counted (as everything within it) a single word rather then different words. -- NOTE: This can be toggled. And is off by default.
+						boolean isWordSection = false; // This is used for checking if -> (This is a message block) <- is happening.
+						s
 						for (char Char : wordFound.toCharArray()) // Loops through the wordFound string by turning it into a character array to be checked.
 						{
-							if (Char == '-') 
+							if (Word_Blocks) 
 							{
-								FullWords.add(FullWord); // Makes the new word : This is because the task was to separate the words when a dash in introduced.
-								FullWord = ""; // Clears it so a new word can be created.
+								if (Char == '(') // Starts the word block.
+								{
+									WordSection += Char;
+									isWordSection = true;
+									continue;
+								}
+								
+								if (isWordSection) // If it is the word block.
+								{
+									WordSection += Char;
+									print("[Word Section Before]: " + WordSection);
+									continue;
+								}
+
+								if (Char == ')') // Ends the word block.
+								{
+									isWordSection = false;
+									
+									WordSection = WordSection + Char; // Adds the character ")" to it.
+									FullWords.add(WordSection); // Adds it to the words list.
+									print("[Word Section]: " + FullWords.get(FullWords.size() - 1));
+									
+									WordSection = ""; // Clears it.
+									
+									continue;
+								}
 							}
-							else
+							
+							// If it is toggled for special characters to be counted to separate words then it will do that.
+							if (SpecialCharacters_DifferentWords) 
 							{
-								FullWord += Char; // Fills up the word.
+								for (char Character : SpecialCharacters) // Loops through the Special Characters list. Then checks to see if it is a special character.
+								{
+									if (Char == Character) 
+									{
+										FullWords.add(FullWord); // Makes the new word : This is because the task was to separate the words when a special character is introduced.
+										FullWord = ""; // Clears it so a new word can be created.
+										continue; // Continues onto the next iteration because it already got the word.
+									}
+								}
 							}
+							
+							FullWord += Char; // Fills up the word.
 						}
 						
 						FullWords.add(FullWord); // Adds it when the character array stops because that means the word is completed.
@@ -161,8 +206,9 @@ public class WordCount extends EasyKit.Text {
 				addSpace();
 				
 				// Shows the commands the user has
-				addButton("/All", "View all");
-				addButton("/Clear", "Makes it clear");
+				addButton("/All", "View all words");
+				addButton("/Clear", "Clears Previous Words");
+				addButton((SpecialCharacters_DifferentWords ? "/UnSpecial" : "/Special"), (SpecialCharacters_DifferentWords ? "All words attached count as one" : "Seperates words based on special characters"));
 				addButton("/Back", "Go back");
 				addSpace();
 
@@ -211,8 +257,10 @@ public class WordCount extends EasyKit.Text {
 						clear();
 						break;
 					}
+					
+					// This block will check if the user is changing the stricted or relaxed modes.
 					// Checks if it will be able to change the mode into relaxed or not. And if so then it will change it.
-					else if (UserWord.toLowerCase().equals("/relaxed")) 
+					else if (UserWord.toLowerCase().equals("/relaxed") || UserWord.toLowerCase().equals("/r")) 
 					{
 						if (!inStrictedMode) 
 						{
@@ -229,7 +277,7 @@ public class WordCount extends EasyKit.Text {
 						}
 					}
 					// Checks if it will be able to change the mode into strict or not. And if so then it will change it.
-					else if (UserWord.toLowerCase().equals("/strict")) 
+					else if (UserWord.toLowerCase().equals("/strict") || UserWord.toLowerCase().equals("/s")) 
 					{
 						if (inStrictedMode) 
 						{
@@ -248,6 +296,8 @@ public class WordCount extends EasyKit.Text {
 					
 					// If no if-statements connected it will just pass through and continue.
 				}
+				// End of code block: changing stricted or relaxed modes.
+				
 				
 				// Checks if its in strict mode.
 				if (inStrictedMode) 
