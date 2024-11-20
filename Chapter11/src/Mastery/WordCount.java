@@ -54,14 +54,16 @@ public class WordCount extends EasyKit.Text {
 	// Also another reason is because i wanted to really challenge my-self with hash-maps because the only thing i actually used it for was for a text dungeon game i was working on in computer science 20.
 	// And because i don't actually understand everything for a hash-map. And using it helped me improve in an area that i was lacking in.
 	
-	public static Map<String, Integer> Stricted_Words = new HashMap<>(); // Stricted just means it will determine if a word is same for letter for letter without caring for caps.
-	public static Map<String, Integer> Relaxed_Words = new HashMap<>(); // Relaxed just means it will determine a difference in caps as a different word.
+	private static Map<String, Integer> Stricted_Words = new HashMap<>(); // Stricted just means it will determine if a word is same for letter for letter without caring for caps.
+	private static Map<String, Integer> Relaxed_Words = new HashMap<>(); // Relaxed just means it will determine a difference in caps as a different word.
 
-	public static boolean inStrictedMode = false; // Checks if the user wants the word search to be stricted or not.
-	public static boolean SpecialCharacters_DifferentWords = false; // Checks if the program will separate words if there is a special character between them.
-	public static boolean Word_Blocks = true; // Checks if it should allow for "(Word block)" to be counted as a full word rather then "(Word" and "block)".
+	private static boolean inStrictedMode = false; // Checks if the user wants the word search to be stricted or not.
+	private static boolean SpecialCharacters_DifferentWords = false; // Checks if the program will separate words if there is a special character between them.
+	private static boolean Word_Blocks = true; // Checks if it should allow for "(Word block)" to be counted as a full word rather then "(Word" and "block)".
 	
-	public static char[] SpecialCharacters = {'-', ',', '_', '!', '@', '#', '$', '%', '^', '&', '*'};
+	private static char[] SpecialCharacters = {'-', ',', '_', '!', '@', '#', '$', '%', '^', '&', '*'};
+	
+	private static String LastMessage = null;
 	
 	private void initialize() {
 		
@@ -109,7 +111,7 @@ public class WordCount extends EasyKit.Text {
 						// For context of WordSection is that its used for checking a word block. This is just a message with "(" at the beginning, and ")" at its end. To be used for getting a block of a word.
 						// This will be counted (as everything within it) a single word rather then different words. -- NOTE: This can be toggled. And is off by default.
 						boolean isWordSection = false; // This is used for checking if -> (This is a message block) <- is happening.
-						s
+						
 						for (char Char : wordFound.toCharArray()) // Loops through the wordFound string by turning it into a character array to be checked.
 						{
 							if (Word_Blocks) 
@@ -200,6 +202,11 @@ public class WordCount extends EasyKit.Text {
 			// The point of this loop is to in-sure that the user can check different words in the file and also for the 
 			while (true) 
 			{
+				if (LastMessage != null) 
+				{
+					ShowWordCount(LastMessage);
+				}
+				
 				// Shows the current menu to the user so they aren't confused.
 				print("[Word Searcher]");
 				print("Successfully got file [" + UserFile.replaceAll(".txt", "") + "].txt"); // Shows the selected file to the user and that it successfully got it. Also formats it so it wont have 2 .txt's for more clarity.
@@ -223,6 +230,7 @@ public class WordCount extends EasyKit.Text {
 				{
 					if (UserWord.toLowerCase().equals("/all")) 
 					{
+						LastMessage = null;
 						clear();
 						
 						// If its is in stricted mode it will just print out all entries from the hash-map into the console in a format of "[word]: amount".
@@ -248,12 +256,14 @@ public class WordCount extends EasyKit.Text {
 					// Clears the console and goes onto the next iteration.
 					else if (UserWord.toLowerCase().equals("/clear")) 
 					{
+						LastMessage = null;
 						clear();
 						continue;
 					}
 					// Goes to the last loop.
 					else if (UserWord.toLowerCase().equals("/back")) 
 					{
+						LastMessage = null;
 						clear();
 						break;
 					}
@@ -298,41 +308,50 @@ public class WordCount extends EasyKit.Text {
 				}
 				// End of code block: changing stricted or relaxed modes.
 				
+				LastMessage = UserWord;
 				
-				// Checks if its in strict mode.
-				if (inStrictedMode) 
-				{
-					// Checks if the Stricted Words contains the word in lower-case since every word is auto set lower-case.
-					if (Stricted_Words.containsKey(UserWord.toLowerCase())) 
-					{
-						clear();
-						print("[" + UserWord + "]: " + Stricted_Words.get(UserWord.toLowerCase())); // Shows the user the word in-cluding its amount
-						addSpace();
-					}
-					else 
-					{
-						clear();
-						print("[" + UserWord + "] doesn't appear in this file."); // Tells the user that the word doesn't exist.
-						addSpace();
-					}
-				}
-				else 
-				{
-					// Checks if the Relaxed Words contains the word.
-					if (Relaxed_Words.containsKey(UserWord)) 
-					{
-						clear();
-						print("[" + UserWord + "]: " + Relaxed_Words.get(UserWord)); // Shows the word and it's amount.
-						addSpace();
-					}
-					else 
-					{
-						clear();
-						print("[" + UserWord + "] doesn't appear in this file."); // Shows that the word doesn't exist.
-						addSpace();
-					}
-				}
+				// This function shows the words so there's less redundant code.
+				ShowWordCount(LastMessage);
 			}
 		}	
 	}
+	
+	// This function will show the word and count of the selected word.
+	public static void ShowWordCount(String UserWord) 
+	{
+		// Checks if the user is in stricted mode
+		if (inStrictedMode) 
+		{
+			// Checks if the Stricted Words contains the word in lower-case since every word is auto set lower-case.
+			if (Stricted_Words.containsKey(UserWord.toLowerCase())) 
+			{
+				clear();
+				print("[" + UserWord + "]: " + Stricted_Words.get(UserWord.toLowerCase())); // Shows the user the word in-cluding its amount
+				addSpace();
+			}
+			else 
+			{
+				clear();
+				print("[" + UserWord + "] doesn't appear in this file."); // Tells the user that the word doesn't exist.
+				addSpace();
+			}
+		}
+		else 
+		{
+			// Checks if the Relaxed Words contains the word.
+			if (Relaxed_Words.containsKey(UserWord)) 
+			{
+				clear();
+				print("[" + UserWord + "]: " + Relaxed_Words.get(UserWord)); // Shows the word and it's amount.
+				addSpace();
+			}
+			else 
+			{
+				clear();
+				print("[" + UserWord + "] doesn't appear in this file."); // Shows that the word doesn't exist.
+				addSpace();
+			}
+		}
+	}
+	
 }

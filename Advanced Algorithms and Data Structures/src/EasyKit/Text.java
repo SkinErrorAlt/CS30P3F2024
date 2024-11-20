@@ -206,7 +206,7 @@ public class Text
 		return answer; // Returns the answer to be used in a different function.
 	}
 	
-	public static int userIntager(boolean DoingCustomMessage, String CustomMessage) // Gets the users Integer
+	public static Integer userIntager(boolean DoingCustomMessage, String CustomMessage) // Gets the users Integer
 	{
 		boolean gotInteger = false; // Sees if it got the Integer.
 		String userinput; // Stores the users input.
@@ -238,14 +238,14 @@ public class Text
 			catch (NumberFormatException e) // Catches an error if the user inputs something like a string instead.
 			{
 				clear(); // Clears the screen.
-				return (Integer) null; // Returns -1 so the screen can reset and show the prevous text and also so a custom error message can be shown.
+				return null; // Returns -1 so the screen can reset and show the prevous text and also so a custom error message can be shown.
 			}
 		}
 	
 		return userInt; // Returns the users Integer
 	}
 	
-	public static double userDouble(boolean DoingCustomMessage, String CustomMessage) // Gets the users Number
+	public static Double userDouble(boolean DoingCustomMessage, String CustomMessage) // Gets the users Number
 	{
 		boolean gotDouble = false; // Sees if it got the number
 		String userinput; // Stores the users input.
@@ -277,7 +277,7 @@ public class Text
 			catch (NumberFormatException e)
 			{
 				clear(); // Clears the screen.
-				return -1; // Returns -1 so the screen can reset and show the prevous text and also so a custom error message can be shown.
+				return null; // Returns -1 so the screen can reset and show the prevous text and also so a custom error message can be shown.
 			}
 		}
 	
