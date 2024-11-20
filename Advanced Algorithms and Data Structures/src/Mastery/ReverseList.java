@@ -1,6 +1,7 @@
 package Mastery;
 
 import java.util.*;
+import java.text.DecimalFormat;
 
 public class ReverseList extends EasyKit.Text
 {
@@ -13,23 +14,43 @@ public class ReverseList extends EasyKit.Text
 		
 		while (true) 
 		{
-			// Loops for every number that is needed
-			for (int i = 1; i <= userNumberAmount;) 
+			// Prompts the user with entering an amount of numbers that will be sorting.
+			print("Enter the amount of numbers you wish to sort.");
+			addSpace();
+			
+			Integer userInt = userInteger(true, "Enter amount");
+			
+			// Makes sure the user entered a valid number.
+			if (userInt == null) 
 			{
-				print("Enter your (" + i + ") number.");
+				clear();
+				error("Failed, please enter a number.");
+				continue; // Skips to the next loop without continuing the code.
+			}
+			
+			// Sets the amount to the amount the user wants.
+			userNumberAmount = userInt;
+			clear();
+
+			// Loops for every number that is needed
+			for (int i = 0; i < userNumberAmount;) 
+			{
+				print("Enter your (" + (i + 1) + ") number.");
 				addSpace();
 				
-				Double userChoice = userDouble(true, "Enter your number");
+				Double userChoice = userDouble(false, null);
 				
-				// If the user entered
+				// Makes sure the user entered a valid number.
 				if (userChoice == null) 
 				{
 					error("Failed, please enter a number.");
-					continue;
+					continue; // Skips to the next loop without continuing the code.
 				}
 
 				i++;
 				clear();
+				
+				// Adds the users number to the list to be stored for later use.
 				numbers.add(userChoice);
 			}
 			
@@ -91,10 +112,15 @@ public class ReverseList extends EasyKit.Text
 			}
 		}
 		
+		// Used for formating the number.
+		DecimalFormat Decimal = new DecimalFormat("#.##");
+
 		// Shows the sorted numbers.
+		print("-=- Sorted -=-");
+
 		for (double num : numbers) 
-		{
-			System.out.println("[" + num + "]");
+		{	
+			print("    [" + Decimal.format(num) + "]");
 		}
 	}
 }

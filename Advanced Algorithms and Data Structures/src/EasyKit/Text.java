@@ -206,7 +206,7 @@ public class Text
 		return answer; // Returns the answer to be used in a different function.
 	}
 	
-	public static Integer userIntager(boolean DoingCustomMessage, String CustomMessage) // Gets the users Integer
+	public static Integer userInteger(boolean DoingCustomMessage, String CustomMessage) // Gets the users Integer
 	{
 		boolean gotInteger = false; // Sees if it got the Integer.
 		String userinput; // Stores the users input.
