@@ -11,8 +11,8 @@ public class LocalBankGUI_PageHandler {
 	
 	public static class Transaction 
 	{
-		double Amount;
-		String Person;
+		public double Amount;
+		public String Person;
 		
 		Transaction(String Person, double Amount) 
 		{
@@ -26,7 +26,17 @@ public class LocalBankGUI_PageHandler {
 	public static ArrayList<Transaction> getSectionFromPage(List<Transaction> Pages, int PageNumber) 
 	{
 		int StartingPage = SectionLimit * PageNumber;
+		
+		System.err.println("StartingPage: " + StartingPage);
+		
+		if (StartingPage + SectionLimit > Pages.size()) 
+		{
+			return null;
+		}
+		
 		int EndPage = Math.min(StartingPage + SectionLimit, Pages.size());
+		
+		
 		
 		List<Transaction> SectionsOnPage = new ArrayList<>(Pages.subList(StartingPage, EndPage));
 		
@@ -73,7 +83,5 @@ public class LocalBankGUI_PageHandler {
 	{
 		Transaction NewTransaction = new Transaction(Person, Amount);
 		Pages.add(NewTransaction);
-		
-		
 	}
 }
