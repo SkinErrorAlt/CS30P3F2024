@@ -5,50 +5,47 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import Mastery.ArrayPageHandler.Section;
-import MasteryData.LocalBankGUI_ChangesHandler.Transaction;
-
 public class LocalBankGUI_PageHandler {
 	public static int SectionLimit = 3;
+	public static int CurrentPage = 1;
 	
-	public static class Section 
+	public static class Transaction 
 	{
-		int Amount;
+		double Amount;
 		String Person;
 		
-		Section(int amount, String person) 
+		Transaction(String Person, double Amount) 
 		{
-			Amount = amount;
-			Person = person;
+			this.Person = Person;
+			this.Amount = Amount;
 		}
 	}
 	
-	static List<Section> Pages = new ArrayList<>();
+	public static List<Transaction> Pages = new ArrayList<>();
 	
-	public static ArrayList<Section> getSectionFromPage(List<Section> Pages, int PageNumber) 
+	public static ArrayList<Transaction> getSectionFromPage(List<Transaction> Pages, int PageNumber) 
 	{
 		int StartingPage = SectionLimit * PageNumber;
 		int EndPage = Math.min(StartingPage + SectionLimit, Pages.size());
 		
-		List<Section> SectionsOnPage = new ArrayList<>(Pages.subList(StartingPage, EndPage));
+		List<Transaction> SectionsOnPage = new ArrayList<>(Pages.subList(StartingPage, EndPage));
 		
-		return (ArrayList<Section>) SectionsOnPage;
+		return (ArrayList<Transaction>) SectionsOnPage;
 	}
 	
-	public static void removeSectionFromPage(List<Section> Pages, int PageNumber, int SelectedSection) 
+	public static void removeSectionFromPage(List<Transaction> Pages, int PageNumber, int SelectedSection) 
 	{
-		int StartingPage = SectionLimit * PageNumber;
-		int EndPage = Math.min(StartingPage + SectionLimit, Pages.size());
+		int StartingPage = SectionLimit * (PageNumber - 1);
+		int EndPage = StartingPage + (SelectedSection - 1);
+
+		int getSection = EndPage;
+
+		Pages.remove(getSection);
 		
-		List<Section> SectionsOnPage = new ArrayList<>();
-		
-		int getSection = (SelectedSection - 1);
-		
-		System.err.println("removed: (" + SelectedSection + ") " + Pages.get(getSection).Person + " | $" + Pages.get(getSection).Amount);
-		
-		Pages.remove(Pages.subList(StartingPage, EndPage).get(getSection));
-		
-		System.err.println("Replacement: (" + SelectedSection + ") " + Pages.get(getSection).Person + " | $" + Pages.get(getSection).Amount);
+		if (CurrentPage > Pages.size()) 
+		{
+			CurrentPage = getTotalPages();
+		}
 	}
 	
 	public static int getTotalPages() 
@@ -60,51 +57,23 @@ public class LocalBankGUI_PageHandler {
 	{
 		for (int Page = 1; Page < getTotalPages(); Page++) 
 		{
-			ArrayList<Section> currentPage = getSectionFromPage(Pages, Page - 1);
+			ArrayList<Transaction> currentPage = getSectionFromPage(Pages, Page - 1);
 			System.out.println("Page " + Page + ": ");
 			
-			for (Section CurrentSection : currentPage) 
+			for (Transaction CurrentSection : currentPage) 
 			{
-				System.out.println(CurrentSection.Person + " | $" + CurrentSection.Amount);
+				System.out.println(CurrentSection.Person + " | " + (CurrentSection.Amount >= 0 ? "$" + CurrentSection.Amount : "-$" + (-CurrentSection.Amount)));
 			}
 			
 			System.out.println("");
 		}
-		
-		System.out.println("");
-		System.out.println("");
-		System.out.println("--------------");
-		System.out.println("");
-		System.out.println("");
 	}
 	
-	public static void main(String[] args) 
+	public static void addSection(String Person, double Amount)
 	{
-		Section NewSection = new Section(254, "Jack");
-		Pages.add(NewSection);
+		Transaction NewTransaction = new Transaction(Person, Amount);
+		Pages.add(NewTransaction);
 		
-		NewSection = new Section(2355, "Joe");
-		Pages.add(NewSection);
 		
-		NewSection = new Section(1, "Tila");
-		Pages.add(NewSection);
-		
-		NewSection = new Section(76, "Yalga");
-		Pages.add(NewSection);
-		
-		NewSection = new Section(896, "Ichi");
-		Pages.add(NewSection);
-		
-		NewSection = new Section(0, "Elica");
-		Pages.add(NewSection);
-		
-		NewSection = new Section(-534, "Frinka");
-		Pages.add(NewSection);
-		
-		printAllPages();
-		
-		removeSectionFromPage(Pages, 1, 2);
-		
-		printAllPages();
 	}
 }

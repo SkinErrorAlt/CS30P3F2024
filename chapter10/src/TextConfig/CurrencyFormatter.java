@@ -2,7 +2,7 @@ package TextConfig;
 
 public class CurrencyFormatter 
 {
-    // Format string to currency format because the built in one sucks. (e.g, "$1200" -> "$1,200.00")
+    // Format string to currency format because the built in one sucks. (e.g "$1200" -> "$1,200.00")
     public static String formatToCurrency(String input) 
     {
         try 

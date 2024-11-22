@@ -24,6 +24,7 @@ import EasyKit.Ui;
 import EasyKit.Gui_Handler.*;
 import MasteryData.LocalBankGUI_Data;
 import MasteryData.LocalBankGUI_Data.*;
+import MasteryData.LocalBankGUI_PageHandler;
 import TextConfig.*;
 
 import javax.swing.JButton;
@@ -70,9 +71,11 @@ public class LocalBankGUI {
 	@SuppressWarnings("unused")
 	public static MasteryData.LocalBankGUI_Data.NewAccount currentAccount;
 	private static JLabel MoneySignIcon_1;
-	private JTextField Withdrawal_Amount;
-	private JTextField Withdrawal_Recever;
-	private JPanel Withdrawal_Trans_1;
+	private static JTextField Withdrawal_Amount;
+	private static JTextField Withdrawal_Recever;
+	private static JPanel Withdrawal_Trans_1;
+	private static JPanel Withdrawal_Trans_3;
+	private static JPanel Withdrawal_Trans_2;
 	private static JLabel Balance_AfterBalance;
 	private static JButton Withdrawal_Withdrawal;
 	private static Panel AccountSettings;
@@ -80,6 +83,7 @@ public class LocalBankGUI {
 	private static Panel LoginScreen;
 	private static Panel AccountView;
 	private static Panel ChangeNameScreen;
+	
 	
 	/**
 	 * Launch the application.
@@ -556,8 +560,13 @@ public class LocalBankGUI {
 		
 		Withdrawal_SubmitAmount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				OtherSystems.CreateLookingChar('1', 1, '2');
+				double Currency = CurrencyFormatter.getAsDouble(Withdrawal_Amount.getText());
+				if (!(Withdrawal_Amount.getText().isEmpty() || Withdrawal_Recever.getText().isEmpty()) && Currency > 0) 
+				{
+					LocalBankGUI_PageHandler.addSection(Withdrawal_Recever.getText(), Currency);
+					LocalBankGUI_PageHandler.CurrentPage = LocalBankGUI_PageHandler.getTotalPages();
+					UpdateWithdrawalTransactionSideBar();
+				}
 			}
 		});
 		
@@ -1281,6 +1290,21 @@ public class LocalBankGUI {
 	
 	public static void UpdateWithdrawalTransactionSideBar() 
 	{
+		int Sections = LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage).size();
 		
+		if (Sections == 3) 
+		{
+			Withdrawal_Trans_3.setVisible(true);
+		}
+		
+		if (Sections >= 2) 
+		{
+			Withdrawal_Trans_2.setVisible(true);
+		}
+		
+		if (Sections >= 1) 
+		{
+			Withdrawal_Trans_1.setVisible(true);
+		}
 	}
 }
