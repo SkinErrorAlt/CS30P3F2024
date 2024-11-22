@@ -73,7 +73,6 @@ public class LocalBankGUI {
 	private JTextField Withdrawal_Amount;
 	private JTextField Withdrawal_Recever;
 	private JPanel Withdrawal_Trans_1;
-	private static JPanel ChangeStatus_1_1;
 	private static JLabel Balance_AfterBalance;
 	private static JButton Withdrawal_Withdrawal;
 	private static Panel AccountSettings;
@@ -1140,14 +1139,6 @@ public class LocalBankGUI {
 				Ui.toggleTipText(EnterUsername);
 			}
 		});
-		
-		class EnterUsernameClick 
-		{
-			void ClickCustomEvent() 
-			{
-				Console.print("Got it!");
-			}
-		}
 		
 		EnterUsername.addKeyListener(new KeyAdapter() {
 			@Override
