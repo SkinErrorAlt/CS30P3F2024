@@ -1193,7 +1193,6 @@ public class LocalBankGUI {
 		AccountView_Settings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				System.out.println("Clicked");
 				AccountSettings.setVisible(true);
 				AccountView.setVisible(false);
 			}
@@ -1209,6 +1208,7 @@ public class LocalBankGUI {
 				{
 					LocalBankGUI_PageHandler.addSection(Withdrawal_Recever.getText(), Currency);
 					LocalBankGUI_PageHandler.CurrentPage = LocalBankGUI_PageHandler.getTotalPages();
+					System.out.println("CurrentPage: " + LocalBankGUI_PageHandler.getTotalPages());
 					UpdateWithdrawalTransactionSideBar();
 				}
 			}
@@ -1309,8 +1309,10 @@ public class LocalBankGUI {
 		sidebarOpen = false;
 		
 		// Gets the size for the current page.
-		int Sections = (LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage) != null ? LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage).size() : null);
+		Integer Sections = (LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage) != null ? LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage).size() : null);
 		List<LocalBankGUI_PageHandler.Transaction> Transactions =  LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage - 1);
+		
+		if (Sections == null) {System.err.println("Failed to get sections."); return;}
 		
 		if (Sections == 3) 
 		{
