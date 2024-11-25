@@ -29,9 +29,11 @@ public class TextField {
     {
     	if ((Boolean) Gui_Handler.getTextField(TextField).hasSetting(Gui_Handler.TextFieldSettings.Currency))
     	{
-    		TextField.setText(TextConfig.CurrencyFormatter.formatToCurrency(Input.TextField.getFutureText(TextField, e)));
-    		
-    		TextField.setText(TextField.getText().substring(0, TextField.getText().length() - 1));
+    		if (TextField.getText().length() > 1) 
+    		{
+    			TextField.setText(TextConfig.CurrencyFormatter.formatToCurrency(Input.TextField.getFutureText(TextField, e)));
+        		TextField.setText(TextField.getText().substring(0, TextField.getText().length() - 1));
+    		}
     	}
     	
     	e.consume();
@@ -53,6 +55,8 @@ public class TextField {
         TextField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+            	e.consume();
+            	
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) 
                 {
                 	if (isEnterAllowed(TextField)) 

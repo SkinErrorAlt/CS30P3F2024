@@ -7,22 +7,6 @@ public class LocalBankGUI_PageHandler {
 	public static int SectionLimit = 3;
 	public static int CurrentPage = 1;
 	
-	public static void main(String[] args) 
-	{
-		addSection("Jack", 0);
-		addSection("Mile", 543);
-		addSection("Zimple", 12);
-		
-		addSection("Crimple", 6);
-		addSection("Polil", 83);
-		
-		printAllPages();
-		
-		removeSectionFromPage(Pages, 1, 1);
-		System.out.println(getSectionFromPage(Pages, 0).get(0).Person);
-		System.out.println(getSectionFromPage(Pages, 0).get(0).Amount);
-	}
-	
 	public static class Transaction 
 	{
 		public double Amount;
@@ -90,7 +74,7 @@ public class LocalBankGUI_PageHandler {
 	
 	public static void printAllPages() 
 	{
-		for (int Page = 1; Page <= getTotalPages(); Page++) 
+		for (int Page = 1; Page < getTotalPages(); Page++) 
 		{
 			ArrayList<Transaction> currentPage = getSectionFromPage(Pages, Page - 1);
 			

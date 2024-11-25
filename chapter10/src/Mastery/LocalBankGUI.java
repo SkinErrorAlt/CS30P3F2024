@@ -112,12 +112,11 @@ public class LocalBankGUI {
 	private static Panel Withdrawal;
 	private static Panel ChangeNameScreen;
 	
-	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		LocalBankGUI_Data.createAccount("DummyAccount", "");
+		//LocalBankGUI_Data.createAccount("DummyAccount", "");
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -1308,6 +1307,30 @@ public class LocalBankGUI {
 			}
 		});
 		
+		Withdrawal_Amount_Remove_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				LocalBankGUI_PageHandler.removeSectionFromPage(LocalBankGUI_PageHandler.Pages, LocalBankGUI_PageHandler.CurrentPage, 1);
+				UpdateWithdrawalTransactionSideBar();
+			}
+		});
+		
+		Withdrawal_Amount_Remove_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				LocalBankGUI_PageHandler.removeSectionFromPage(LocalBankGUI_PageHandler.Pages, LocalBankGUI_PageHandler.CurrentPage, 2);
+				UpdateWithdrawalTransactionSideBar();
+			}
+		});
+		
+		Withdrawal_Amount_Remove_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				LocalBankGUI_PageHandler.removeSectionFromPage(LocalBankGUI_PageHandler.Pages, LocalBankGUI_PageHandler.CurrentPage, 3);
+				UpdateWithdrawalTransactionSideBar();
+			}
+		});
+		
 		frame.setBounds(100, 100, 666, 461);
 		Withdrawal.setBounds(0, 0, 650, 422);
 	}
@@ -1340,10 +1363,15 @@ public class LocalBankGUI {
 			Withdrawal_NextPage.setVisible(false);
 			Withdrawal_PreviousPage.setVisible(true);
 		}
-		else if (LocalBankGUI_PageHandler.CurrentPage <= 1) 
+		else if (LocalBankGUI_PageHandler.CurrentPage <= 1 && LocalBankGUI_PageHandler.getTotalPages() > 1) 
 		{
 			Withdrawal_PreviousPage.setVisible(false);
 			Withdrawal_NextPage.setVisible(true);
+		}
+		else if (LocalBankGUI_PageHandler.CurrentPage <= 1 && !(LocalBankGUI_PageHandler.getTotalPages() > 1)) 
+		{
+			Withdrawal_NextPage.setVisible(false);
+			Withdrawal_PreviousPage.setVisible(false);
 		}
 		else 
 		{
