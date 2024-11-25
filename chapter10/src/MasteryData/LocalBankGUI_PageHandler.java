@@ -1,13 +1,27 @@
 package MasteryData;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class LocalBankGUI_PageHandler {
 	public static int SectionLimit = 3;
 	public static int CurrentPage = 1;
+	
+	public static void main(String[] args) 
+	{
+		addSection("Jack", 0);
+		addSection("Mile", 543);
+		addSection("Zimple", 12);
+		
+		addSection("Crimple", 6);
+		addSection("Polil", 83);
+		
+		printAllPages();
+		
+		removeSectionFromPage(Pages, 1, 1);
+		System.out.println(getSectionFromPage(Pages, 0).get(0).Person);
+		System.out.println(getSectionFromPage(Pages, 0).get(0).Amount);
+	}
 	
 	public static class Transaction 
 	{
@@ -25,17 +39,18 @@ public class LocalBankGUI_PageHandler {
 	
 	public static ArrayList<Transaction> getSectionFromPage(List<Transaction> Pages, int PageNumber) 
 	{
-		int StartingPage = SectionLimit * PageNumber;
-		
-		if (StartingPage + SectionLimit > Pages.size()) 
-		{
-			return null;
-		}
-		
-		int EndPage = Math.min(StartingPage + SectionLimit, Pages.size());
-		List<Transaction> SectionsOnPage = new ArrayList<>(Pages.subList(StartingPage, EndPage));
-		
-		return (ArrayList<Transaction>) SectionsOnPage;
+	    int StartingPage = SectionLimit * (PageNumber);
+	    
+	    if (StartingPage < 0 || StartingPage >= Pages.size()) 
+	    {
+	        System.out.println("Invalid page range: " + StartingPage + " | (PageNumber): " + PageNumber);
+	        return null;
+	    }
+	    
+	    int EndPage = Math.min(StartingPage + SectionLimit, Pages.size());
+	    List<Transaction> SectionsOnPage = new ArrayList<>(Pages.subList(StartingPage, EndPage));
+	    
+	    return (ArrayList<Transaction>) SectionsOnPage;
 	}
 	
 	public static void addSection(String Person, double Amount)
@@ -43,7 +58,10 @@ public class LocalBankGUI_PageHandler {
 		Transaction NewTransaction = new Transaction(Person, Amount);
 		Pages.add(NewTransaction);
 		
-		System.out.print("Added: ");
+		System.out.println("");
+		System.out.println("Added: [Name] = {" + Pages.get(Pages.size() - 1).Person + "}");
+		System.out.println("Added: [Amount] = {" + Pages.get(Pages.size() - 1).Amount + "}");
+		System.out.println("");
 	}
 	
 	public static void removeSectionFromPage(List<Transaction> Pages, int PageNumber, int SelectedSection) 
@@ -61,18 +79,20 @@ public class LocalBankGUI_PageHandler {
 		}
 	}
 	
-	public static int getTotalPages() 
-	{
-		return (int) Math.ceil((double) Pages.size() / SectionLimit) + 1;
+	public static int getTotalPages() {
+	    if (Pages.isEmpty()) 
+	    {
+	        return 1;
+	    }
+	    
+	    return (int) Math.ceil((double) Pages.size() / SectionLimit);
 	}
 	
 	public static void printAllPages() 
 	{
-		for (int Page = 1; Page < getTotalPages(); Page++) 
+		for (int Page = 1; Page <= getTotalPages(); Page++) 
 		{
 			ArrayList<Transaction> currentPage = getSectionFromPage(Pages, Page - 1);
-			
-			if (currentPage == null) {System.err.println("|Failed|"); break;}
 			
 			System.out.println("Page " + Page + ": ");
 			

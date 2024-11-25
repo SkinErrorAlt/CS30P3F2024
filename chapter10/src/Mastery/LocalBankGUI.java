@@ -75,6 +75,7 @@ public class LocalBankGUI {
 	// Withdrawal Stuff
 	private static JLabel Withdrawal_CurrentBalance;
 	public static MasteryData.LocalBankGUI_Data.NewAccount currentAccount;
+	
 	private static JLabel MoneySignIcon_1;
 	private static JTextField Withdrawal_Amount;
 	private static JTextField Withdrawal_Recever;
@@ -94,9 +95,14 @@ public class LocalBankGUI {
 	private static JLabel Withdrawal_Amount_SelectedPerson_2;
 	private static JLabel Withdrawal_Amount_SelectedPerson_3;
 	
+	private static JLabel Withdrawal_PageCount;
+	
 	private static JButton Withdrawal_Amount_Remove_1;
 	private static JButton Withdrawal_Amount_Remove_2;
 	private static JButton Withdrawal_Amount_Remove_3;
+	
+	private static JButton Withdrawal_NextPage;
+	private static JButton Withdrawal_PreviousPage;
 	
 	// Menus
 	private static Panel AccountSettings;
@@ -140,18 +146,18 @@ public class LocalBankGUI {
 		frame.setType(Type.NORMAL);
 		frame.setAutoRequestFocus(false);
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 666, 461); // SideBar = frame.setBounds(100, 100, 900, 461); | UnSideBar = frame.setBounds(100, 100, 666, 461);
+		frame.setBounds(100, 100, 847, 461); // SideBar = frame.setBounds(100, 100, 900, 461); | UnSideBar = frame.setBounds(100, 100, 666, 461);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		SignUpScreen = new Panel();
 		SignUpScreen.setVisible(false);
 		
-		Panel Withdrawal = new Panel();
+		Withdrawal = new Panel();
 		Withdrawal.setVisible(false);
 		
 		Withdrawal.setBackground(Color.PINK);
-		Withdrawal.setBounds(0, 0, 773, 422); // SideBar = Withdrawal.setBounds(0, 0, 884, 422); | UnSideBar = Withdrawal.setBounds(0, 0, 650, 422);
+		Withdrawal.setBounds(0, 0, 684, 422); // SideBar = Withdrawal.setBounds(0, 0, 884, 422); | UnSideBar = Withdrawal.setBounds(0, 0, 650, 422);
 		frame.getContentPane().add(Withdrawal);
 		Withdrawal.setLayout(null);
 		
@@ -309,6 +315,7 @@ public class LocalBankGUI {
 		
 		Withdrawal_Trans_1 = new JPanel();
 		Withdrawal_Trans_1.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		Withdrawal_Trans_1.setLayout(null);
 		
 		JLabel MoneySignIconWithdrawal = new JLabel("$");
 		MoneySignIconWithdrawal.setForeground(new Color(236, 119, 98));
@@ -317,17 +324,17 @@ public class LocalBankGUI {
 		Withdrawal_Trans_1.add(MoneySignIconWithdrawal);
 		
 		Withdrawal_Amount_Trans_1 = new JLabel("0.00");
-		Withdrawal_Amount_Trans_1.setBounds(20, 25, 196, 29);
-		Withdrawal_Trans_1.add(Withdrawal_Amount_Trans_1);
 		Withdrawal_Amount_Trans_1.setForeground(new Color(233, 98, 73));
 		Withdrawal_Amount_Trans_1.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
-		
+		Withdrawal_Amount_Trans_1.setBounds(20, 25, 196, 29);
+		Withdrawal_Trans_1.add(Withdrawal_Amount_Trans_1);
+
 		JLabel MinusSymbol = new JLabel("-");
 		MinusSymbol.setForeground(new Color(236, 119, 98));
 		MinusSymbol.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
 		MinusSymbol.setBounds(4, 32, 15, 18);
 		Withdrawal_Trans_1.add(MinusSymbol);
-		
+
 		JPanel Bar = new JPanel();
 		Bar.setBackground(new Color(255, 217, 217));
 		Bar.setBounds(0, 57, 216, 7);
@@ -338,11 +345,11 @@ public class LocalBankGUI {
 		Withdrawal_Amount_SelectedPerson_1.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
 		Withdrawal_Amount_SelectedPerson_1.setBounds(4, 66, 208, 29);
 		Withdrawal_Trans_1.add(Withdrawal_Amount_SelectedPerson_1);
-		
+
 		Withdrawal_Amount_Remove_1 = new JButton();
 		Withdrawal_Amount_Remove_1.setText("x");
 		Withdrawal_Amount_Remove_1.setInheritsPopupMenu(true);
-		Withdrawal_Amount_Remove_1.setForeground(new Color(255, 0, 0));
+		Withdrawal_Amount_Remove_1.setForeground(Color.RED);
 		Withdrawal_Amount_Remove_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
 		Withdrawal_Amount_Remove_1.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(252, 218, 218), new Color(253, 227, 227), new Color(252, 216, 216), new Color(251, 200, 200)));
 		Withdrawal_Amount_Remove_1.setBackground(new Color(255, 217, 217));
@@ -483,34 +490,34 @@ public class LocalBankGUI {
 		);
 		panel.setLayout(null);
 		
-		JButton Remove_2_2 = new JButton();
-		Remove_2_2.setBounds(0, 0, 51, 36);
-		Remove_2_2.setText("←");
-		Remove_2_2.setInheritsPopupMenu(true);
-		Remove_2_2.setForeground(Color.RED);
-		Remove_2_2.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
-		Remove_2_2.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(253, 232, 232), new Color(253, 234, 234), new Color(252, 216, 216), new Color(251, 202, 202)));
-		Remove_2_2.setBackground(new Color(253, 234, 234));
-		Remove_2_2.setAutoscrolls(false);
-		panel.add(Remove_2_2);
+		Withdrawal_NextPage = new JButton();
+		Withdrawal_NextPage.setBounds(0, 0, 51, 36);
+		Withdrawal_NextPage.setText("←");
+		Withdrawal_NextPage.setInheritsPopupMenu(true);
+		Withdrawal_NextPage.setForeground(Color.RED);
+		Withdrawal_NextPage.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
+		Withdrawal_NextPage.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(253, 232, 232), new Color(253, 234, 234), new Color(252, 216, 216), new Color(251, 202, 202)));
+		Withdrawal_NextPage.setBackground(new Color(253, 234, 234));
+		Withdrawal_NextPage.setAutoscrolls(false);
+		panel.add(Withdrawal_NextPage);
 		
-		JButton Remove_2_1 = new JButton();
-		Remove_2_1.setText("→");
-		Remove_2_1.setInheritsPopupMenu(true);
-		Remove_2_1.setForeground(Color.RED);
-		Remove_2_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
-		Remove_2_1.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(253, 232, 232), new Color(253, 234, 234), new Color(252, 216, 216), new Color(251, 202, 202)));
-		Remove_2_1.setBackground(new Color(253, 234, 234));
-		Remove_2_1.setAutoscrolls(false);
-		Remove_2_1.setBounds(169, 0, 51, 36);
-		panel.add(Remove_2_1);
+		Withdrawal_PreviousPage = new JButton();
+		Withdrawal_PreviousPage.setText("→");
+		Withdrawal_PreviousPage.setInheritsPopupMenu(true);
+		Withdrawal_PreviousPage.setForeground(Color.RED);
+		Withdrawal_PreviousPage.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
+		Withdrawal_PreviousPage.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(253, 232, 232), new Color(253, 234, 234), new Color(252, 216, 216), new Color(251, 202, 202)));
+		Withdrawal_PreviousPage.setBackground(new Color(253, 234, 234));
+		Withdrawal_PreviousPage.setAutoscrolls(false);
+		Withdrawal_PreviousPage.setBounds(169, 0, 51, 36);
+		panel.add(Withdrawal_PreviousPage);
 		
-		JLabel Page = new JLabel("Page: 1");
-		Page.setHorizontalAlignment(SwingConstants.CENTER);
-		Page.setForeground(new Color(233, 98, 73));
-		Page.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD, 20));
-		Page.setBounds(0, 1, 220, 32);
-		panel.add(Page);
+		Withdrawal_PageCount = new JLabel("Page: 1");
+		Withdrawal_PageCount.setHorizontalAlignment(SwingConstants.CENTER);
+		Withdrawal_PageCount.setForeground(new Color(233, 98, 73));
+		Withdrawal_PageCount.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD, 20));
+		Withdrawal_PageCount.setBounds(0, 1, 220, 32);
+		panel.add(Withdrawal_PageCount);
 		SideBar.setLayout(gl_SideBar);
 		
 		JButton Withdrawal_Exit = new JButton();
@@ -1204,11 +1211,33 @@ public class LocalBankGUI {
 			public void mouseClicked(MouseEvent e) 
 			{
 				double Currency = CurrencyFormatter.getAsDouble(Withdrawal_Amount.getText());
-				if (!(Withdrawal_Amount.getText().isEmpty() || Withdrawal_Recever.getText().isEmpty()) && Currency > 0) 
+				if (!(Withdrawal_Amount.getText().isEmpty() && Withdrawal_Recever.getText().isEmpty()) && Currency > 0) 
 				{
 					LocalBankGUI_PageHandler.addSection(Withdrawal_Recever.getText(), Currency);
 					LocalBankGUI_PageHandler.CurrentPage = LocalBankGUI_PageHandler.getTotalPages();
-					System.out.println("CurrentPage: " + LocalBankGUI_PageHandler.getTotalPages());
+					UpdateWithdrawalTransactionSideBar();
+				}
+			}
+		});
+		
+		// Switch Page Events
+		Withdrawal_NextPage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{		
+				if (LocalBankGUI_PageHandler.CurrentPage < LocalBankGUI_PageHandler.getTotalPages()) 
+				{
+					LocalBankGUI_PageHandler.CurrentPage++;
+					UpdateWithdrawalTransactionSideBar();
+				}
+			}
+		});
+		
+		Withdrawal_PreviousPage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				if (LocalBankGUI_PageHandler.CurrentPage > 1) 
+				{
+					LocalBankGUI_PageHandler.CurrentPage--;
 					UpdateWithdrawalTransactionSideBar();
 				}
 			}
@@ -1306,34 +1335,62 @@ public class LocalBankGUI {
 		Withdrawal_Amount_Trans_2.setText("0.00");
 		Withdrawal_Amount_Trans_1.setText("0.00");
 		
+		if (LocalBankGUI_PageHandler.CurrentPage >= LocalBankGUI_PageHandler.getTotalPages()) 
+		{
+			Withdrawal_NextPage.setVisible(false);
+			Withdrawal_PreviousPage.setVisible(true);
+		}
+		else if (LocalBankGUI_PageHandler.CurrentPage <= 1) 
+		{
+			Withdrawal_PreviousPage.setVisible(false);
+			Withdrawal_NextPage.setVisible(true);
+		}
+		else 
+		{
+			Withdrawal_NextPage.setVisible(true);
+			Withdrawal_PreviousPage.setVisible(true);
+		}
+		
+		Withdrawal_PageCount.setText("Page: " + LocalBankGUI_PageHandler.CurrentPage);
+		
 		sidebarOpen = false;
 		
-		// Gets the size for the current page.
-		Integer Sections = (LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage) != null ? LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage).size() : null);
-		List<LocalBankGUI_PageHandler.Transaction> Transactions =  LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, MasteryData.LocalBankGUI_PageHandler.CurrentPage - 1);
+		LocalBankGUI_PageHandler.printAllPages();
 		
-		if (Sections == null) {System.err.println("Failed to get sections."); return;}
+		// Gets the size for the current page.
+		List<LocalBankGUI_PageHandler.Transaction> Transactions = LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, LocalBankGUI_PageHandler.CurrentPage - 1);
+
+		Integer Sections = (Transactions != null ? Transactions.size() : null);
+
+		if (Sections == null) 
+		{
+		    System.err.println("Failed to get sections. [" + Sections + "]");
+		    return;
+		}
 		
 		if (Sections == 3) 
 		{
 			Withdrawal_Trans_3.setVisible(true);
 			Withdrawal_Amount_Trans_3.setText(CurrencyFormatter.formatToCurrency("" + Transactions.get(2).Amount));
+			Withdrawal_Amount_SelectedPerson_3.setText(Transactions.get(2).Person);
 		}
 		
 		if (Sections >= 2) 
 		{
 			Withdrawal_Trans_2.setVisible(true);
 			Withdrawal_Amount_Trans_2.setText(CurrencyFormatter.formatToCurrency("" + Transactions.get(1).Amount));
+			Withdrawal_Amount_SelectedPerson_2.setText(Transactions.get(1).Person);
 		}
 		
 		if (Sections >= 1) 
 		{
 			Withdrawal_Trans_1.setVisible(true);
 			Withdrawal_Amount_Trans_1.setText(CurrencyFormatter.formatToCurrency("" + Transactions.get(0).Amount));
+			Withdrawal_Amount_SelectedPerson_1.setText(Transactions.get(0).Person);
 			sidebarOpen = true;
 		}
 		
-		if (sidebarOpen) 
+		if (!sidebarOpen) 
 		{
 			frame.setBounds(100, 100, 666, 461);
 			Withdrawal.setBounds(0, 0, 650, 422);
