@@ -35,7 +35,13 @@ public class TextField {
         		TextField.setText(TextField.getText().substring(0, TextField.getText().length() - 1));
     		}
     	}
-    	
+    	else 
+    	{
+    		if (TextField.getText().length() > 1) 
+    		{
+    			TextField.setText(TextField.getText().substring(0, TextField.getText().length() - 1));
+    		}
+    	}
     	e.consume();
     }
     

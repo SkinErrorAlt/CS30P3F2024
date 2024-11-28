@@ -22,9 +22,6 @@ import java.lang.*;
 
 // Easy UI effects.
 public class Ui {
-    
-    private static Panel Main;
-    
     public static enum textFieldType 
     {
         NumberOnly,

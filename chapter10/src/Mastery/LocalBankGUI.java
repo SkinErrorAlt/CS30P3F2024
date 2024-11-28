@@ -84,7 +84,9 @@ public class LocalBankGUI {
 	private static JPanel Withdrawal_Trans_2;
 	private static JPanel Withdrawal_Trans_3;
 	
-	private static JLabel Balance_AfterBalance;
+	private static JLabel Withdrawal_AfterBalance;
+	private static JLabel Withdrawal_AfterBalance_MinusSymbol;
+	private static JLabel Withdrawal_Balance_MinusSymbol;
 	private static JButton Withdrawal_Withdrawal;
 	
 	private static JLabel Withdrawal_Amount_Trans_1;
@@ -178,8 +180,9 @@ public class LocalBankGUI {
 		
 		Gui_Handler.TextFieldSetup(Withdrawal_Amount);
 		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Allow_Enter, true, Withdrawal_Recever);
-		System.out.println("Ui name: " + Gui_Handler.getTextField(Withdrawal_Amount).getSettings(TextFieldSettings.Allow_Enter).get(1));
-		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Currency);
+		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Allow_Delete, true, Withdrawal_Recever);
+		System.out.println("Ui name: " + Gui_Handler.getTextField(Withdrawal_Amount).getSettings(TextFieldSettings.Allow_Enter).get(0));
+		
 		
 		Input.TextField.EventsSetup(Withdrawal_Amount);
 		
@@ -235,10 +238,10 @@ public class LocalBankGUI {
 		BalanceHolder_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(255, 206, 206), null));
 		Withdrawal.add(BalanceHolder_1);
 		
-		JLabel Title_1 = new JLabel("My Balance:");
-		Title_1.setFont(new Font("Verdana", Font.BOLD, 14));
-		Title_1.setBounds(10, 11, 119, 18);
-		BalanceHolder_1.add(Title_1);
+		JLabel Withdrawal_Balance_Title = new JLabel("My Balance:");
+		Withdrawal_Balance_Title.setFont(new Font("Verdana", Font.BOLD, 14));
+		Withdrawal_Balance_Title.setBounds(10, 11, 119, 18);
+		BalanceHolder_1.add(Withdrawal_Balance_Title);
 		
 		JLabel Balance_MoneySignIcon_Balance = new JLabel("$");
 		Balance_MoneySignIcon_Balance.setForeground(new Color(236, 119, 98));
@@ -252,11 +255,11 @@ public class LocalBankGUI {
 		Withdrawal_CurrentBalance.setBounds(36, 35, 285, 29);
 		BalanceHolder_1.add(Withdrawal_CurrentBalance);
 		
-		Balance_AfterBalance = new JLabel("0.00");
-		Balance_AfterBalance.setForeground(new Color(233, 98, 73));
-		Balance_AfterBalance.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
-		Balance_AfterBalance.setBounds(36, 83, 285, 29);
-		BalanceHolder_1.add(Balance_AfterBalance);
+		Withdrawal_AfterBalance = new JLabel("0.00");
+		Withdrawal_AfterBalance.setForeground(new Color(233, 98, 73));
+		Withdrawal_AfterBalance.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Withdrawal_AfterBalance.setBounds(36, 83, 285, 29);
+		BalanceHolder_1.add(Withdrawal_AfterBalance);
 		
 		JLabel Withdrawal_MoneySignIcon_AfterBalance = new JLabel("$");
 		Withdrawal_MoneySignIcon_AfterBalance.setForeground(new Color(236, 119, 98));
@@ -264,10 +267,22 @@ public class LocalBankGUI {
 		Withdrawal_MoneySignIcon_AfterBalance.setBounds(28, 85, 15, 18);
 		BalanceHolder_1.add(Withdrawal_MoneySignIcon_AfterBalance);
 		
-		JLabel Title_1_1 = new JLabel("After Balance:");
-		Title_1_1.setFont(new Font("Verdana", Font.BOLD, 14));
-		Title_1_1.setBounds(10, 64, 119, 18);
-		BalanceHolder_1.add(Title_1_1);
+		JLabel Withdrawal_AfterBalance_Title = new JLabel("After Balance:");
+		Withdrawal_AfterBalance_Title.setFont(new Font("Verdana", Font.BOLD, 14));
+		Withdrawal_AfterBalance_Title.setBounds(10, 64, 119, 18);
+		BalanceHolder_1.add(Withdrawal_AfterBalance_Title);
+		
+		Withdrawal_AfterBalance_MinusSymbol = new JLabel("-");
+		Withdrawal_AfterBalance_MinusSymbol.setForeground(new Color(233, 98, 73));
+		Withdrawal_AfterBalance_MinusSymbol.setFont(new Font("Yu Gothic UI", Font.BOLD | Font.ITALIC, 20));
+		Withdrawal_AfterBalance_MinusSymbol.setBounds(15, 83, 15, 29);
+		BalanceHolder_1.add(Withdrawal_AfterBalance_MinusSymbol);
+		
+		Withdrawal_Balance_MinusSymbol = new JLabel("-");
+		Withdrawal_Balance_MinusSymbol.setForeground(new Color(233, 98, 73));
+		Withdrawal_Balance_MinusSymbol.setFont(new Font("Yu Gothic UI", Font.BOLD | Font.ITALIC, 20));
+		Withdrawal_Balance_MinusSymbol.setBounds(15, 35, 15, 29);
+		BalanceHolder_1.add(Withdrawal_Balance_MinusSymbol);
 		
 		JButton Withdrawal_All = new JButton();
 		
@@ -1343,8 +1358,32 @@ public class LocalBankGUI {
 	
 	public static void UpdateAfterAccountViewBalance() 
 	{
-		Balance_AfterBalance.setText(String.format("%,.2f", currentAccount.Balance));
-		Withdrawal_CurrentBalance.setText(String.format("%,.2f", currentAccount.Balance));
+		double Amount = 0.00;
+		for (LocalBankGUI_PageHandler.Transaction Trans : LocalBankGUI_PageHandler.Pages) 
+		{
+			Amount += Trans.Amount;
+		}
+		
+		if (Amount < 0) 
+		{
+			Withdrawal_AfterBalance_MinusSymbol.setVisible(true);
+		}
+		else 
+		{
+			Withdrawal_AfterBalance_MinusSymbol.setVisible(false);
+		}
+		
+		if (currentAccount.Balance < 0) 
+		{
+			Withdrawal_Balance_MinusSymbol.setVisible(true);
+		}
+		else 
+		{
+			Withdrawal_Balance_MinusSymbol.setVisible(false);
+		}
+		
+		Withdrawal_AfterBalance.setText(String.format("%,.2f", ((currentAccount.Balance - Amount) > 0 ? (currentAccount.Balance - Amount) : -(currentAccount.Balance - Amount))));
+		Withdrawal_CurrentBalance.setText(String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
 	}
 	
 	public static void UpdateWithdrawalTransactionSideBar() 
@@ -1427,6 +1466,7 @@ public class LocalBankGUI {
 		{
 			frame.setBounds(100, 100, 900, 461);
 			Withdrawal.setBounds(0, 0, 884, 422);
+			UpdateAfterAccountViewBalance();
 		}
 	}
 }
