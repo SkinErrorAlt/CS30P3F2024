@@ -1400,7 +1400,7 @@ public class LocalBankGUI {
 		if (LocalBankGUI_PageHandler.CurrentPage >= LocalBankGUI_PageHandler.getTotalPages()) 
 		{
 			Withdrawal_NextPage.setVisible(false);
-			Withdrawal_PreviousPage.setVisible(true);
+			Withdrawal_PreviousPage.setVisible(LocalBankGUI_PageHandler.CurrentPage == 1 ? false : true);
 		}
 		else if (LocalBankGUI_PageHandler.CurrentPage <= 1 && LocalBankGUI_PageHandler.getTotalPages() > 1) 
 		{
@@ -1427,11 +1427,23 @@ public class LocalBankGUI {
 		// Gets the size for the current page.
 		List<LocalBankGUI_PageHandler.Transaction> Transactions = LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, LocalBankGUI_PageHandler.CurrentPage - 1);
 
-		Integer Sections = (Transactions != null ? Transactions.size() : null);
+		Integer Sections = (Transactions != null ? Transactions.size() : null); // Uses Integer instead of int because it can handle being null.
 
 		if (Sections == null) 
 		{
 		    System.err.println("Failed to get sections. [" + Sections + "]");
+		    
+		    if (LocalBankGUI_PageHandler.CurrentPage > 1) 
+		    {
+		    	LocalBankGUI_PageHandler.CurrentPage -= 1;
+		    	UpdateWithdrawalTransactionSideBar(); // Recalls the function
+		    }
+		    else 
+		    {
+		    	frame.setBounds(100, 100, 666, 461);
+				Withdrawal.setBounds(0, 0, 650, 422);
+		    }
+		    
 		    return;
 		}
 		
