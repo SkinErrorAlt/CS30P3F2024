@@ -1,7 +1,11 @@
 package EasyKit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import EasyKit.Gui_Handler.TextFieldSettings;
 
 public class PageHandler {
 	public static int SectionLimit = 3;
@@ -14,18 +18,40 @@ public class PageHandler {
 	}
 	
 	@SafeVarargs
-	@SuppressWarnings("hiding")
+	@SuppressWarnings({ "hiding", "unchecked" })
 	<Objects> PageHandler(int SectionLimit, Objects... CurrentObject) 
 	{
+		Map<String, Objects> PageHandlers = new HashMap<>();
+		
+		String NameOfPageHandler = "";
+		
 		for (Object CurObject : CurrentObject) 
 		{
-			System.out.println("Added new Item to page handler: ");
+			if (CurObject.getClass() == String.class) 
+			{
+				NameOfPageHandler = CurrentObject.toString();
+				continue;
+			}
+			else if (CurObject.getClass() == Class.class) 
+			{
+				PageHandlers.put(NameOfPageHandler, (Objects) CurObject);
+				System.out.println("Added new Item to page handler: " + NameOfPageHandler);
+			}
+			else 
+			{
+				System.err.println("Failed, class not valid. [String, Class]");
+			}
 		}
 	}
 	
-	public static List<Transaction> Pages = new ArrayList<>();
+	public static void GetPageHandler() 
+	{
+		
+	}
 	
-	public static ArrayList<Transaction> getSectionFromPage(List<Transaction> Pages, int PageNumber) 
+	public static List<PageHandlerPages> Pages = new ArrayList<>();
+	
+	public static ArrayList<PageHandlerPages> getSectionFromPage(List<PageHandlerPages> Pages, int PageNumber) 
 	{
 	    int StartingPage = SectionLimit * (PageNumber);
 	    
