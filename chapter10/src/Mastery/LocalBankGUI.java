@@ -26,6 +26,7 @@ import MasteryData.LocalBankGUI_Data;
 import MasteryData.LocalBankGUI_Data.*;
 import MasteryData.LocalBankGUI_PageHandler;
 import TextConfig.*;
+import MasteryData.LocalBankGUI_CurrencyHandler;
 
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -59,10 +60,17 @@ import java.awt.Window;
 import javax.swing.Box;
 
 public class LocalBankGUI {
+	
+	static  {
+		boolean NeedsUserForTransfer = true; // Toggle if the withdrawal will require an actual account to give the money too.
+		boolean AllowCurrencySwitching = true; // Toggle if the users are allowed to switch their currency.
+	}
 
 	private static JFrame frame;
 	
 	public static boolean sidebarOpen = false;
+	
+	public static MasteryData.LocalBankGUI_Data.NewAccount currentAccount;
 	
 	// Password\Sign up stuff
 	private JTextField EnterUsername;
@@ -72,13 +80,53 @@ public class LocalBankGUI {
 	private JTextField EnterPassword_SignUp;
 	private JTextField ConfirmPassword;
 	
-	// Withdrawal Stuff
+	// Deposit Stuff
+	private static JTextField Deposit_Amount;
 	private static JLabel Withdrawal_CurrentBalance;
-	public static MasteryData.LocalBankGUI_Data.NewAccount currentAccount;
 	
-	private static JLabel MoneySignIcon_1;
+	private static JLabel Deposit_MoneySignIcon_1;
+	private static JTextField Deposit_Giver;
+	
+	private static JLabel Deposit_CurrentBalance;
+	
+	private static JPanel Deposit_Trans_1;
+	private static JPanel Deposit_Trans_2;
+	private static JPanel Deposit_Trans_3;
+	
+	private static JLabel Deposit_AfterBalance;
+	private static JLabel Deposit_AfterBalance_MinusSymbol;
+	private static JLabel Deposit_Balance_MinusSymbol;
+	private static JButton Deposit_Deposit;
+	
+	private static JLabel Deposit_Amount_Trans_1;
+	private static JLabel Deposit_Amount_Trans_2;
+	private static JLabel Deposit_Amount_Trans_3;
+	
+	private static JLabel Deposit_Amount_SelectedPerson_1;
+	private static JLabel Deposit_Amount_SelectedPerson_2;
+	private static JLabel Deposit_Amount_SelectedPerson_3;
+	
+	private static JLabel Deposit_PageCount;
+	
+	private static JButton Deposit_Amount_Remove_1;
+	private static JButton Deposit_Amount_Remove_2;
+	private static JButton Deposit_Amount_Remove_3;
+	
+	private static JButton Deposit_NextPage;
+	private static JButton Deposit_PreviousPage;
+	
+	private static JLabel Deposit_MoneySignIcon_Balance;
+	private static JLabel Deposit_MoneySignIcon_AfterBalance;
+	
+	private static JLabel SideBar_MoneySignIconDeposit_1;
+	private static JLabel SideBar_MoneySignIconDeposit_2;
+	private static JLabel SideBar_MoneySignIconDeposit_3;
+	
+	// Withdrawal Stuff
 	private static JTextField Withdrawal_Amount;
 	private static JTextField Withdrawal_Recever;
+	
+	private static JButton Withdrawal_Withdrawal;
 	
 	private static JPanel Withdrawal_Trans_1;
 	private static JPanel Withdrawal_Trans_2;
@@ -87,7 +135,6 @@ public class LocalBankGUI {
 	private static JLabel Withdrawal_AfterBalance;
 	private static JLabel Withdrawal_AfterBalance_MinusSymbol;
 	private static JLabel Withdrawal_Balance_MinusSymbol;
-	private static JButton Withdrawal_Withdrawal;
 	
 	private static JLabel Withdrawal_Amount_Trans_1;
 	private static JLabel Withdrawal_Amount_Trans_2;
@@ -106,13 +153,29 @@ public class LocalBankGUI {
 	private static JButton Withdrawal_NextPage;
 	private static JButton Withdrawal_PreviousPage;
 	
+	private static JLabel Withdrawal_MoneySignIcon_Balance;
+	private static JLabel Withdrawal_MoneySignIcon_AfterBalance;
+	
+	private static JLabel SideBar_MoneySignIconWithdrawal_1;
+	private static JLabel SideBar_MoneySignIconWithdrawal_2;
+	private static JLabel SideBar_MoneySignIconWithdrawal_3;
+	
+	// AccountView Stuff
+	private static JLabel MoneySignIcon_AccountView;
+	private static JLabel Balance_AccountView_2;
+	
 	// Menus
 	private static Panel AccountSettings;
 	private static Panel SignUpScreen;
 	private static Panel LoginScreen;
 	private static Panel AccountView;
 	private static Panel Withdrawal;
+	private static Panel Deposit;
+	private static Panel ConfirmTransaction;
 	private static Panel ChangeNameScreen;
+	
+	// AccountSettings Buttons
+	private static JButton AccountSettings_Delete;
 	
 	/**
 	 * Launch the application.
@@ -147,7 +210,7 @@ public class LocalBankGUI {
 		frame.setType(Type.NORMAL);
 		frame.setAutoRequestFocus(false);
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 847, 461); // SideBar = frame.setBounds(100, 100, 900, 461); | UnSideBar = frame.setBounds(100, 100, 666, 461);
+		frame.setBounds(100, 100, 666, 556); // SideBar = frame.setBounds(100, 100, 900, 461); | UnSideBar = frame.setBounds(100, 100, 666, 461);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -156,11 +219,65 @@ public class LocalBankGUI {
 		
 		Withdrawal = new Panel();
 		Withdrawal.setVisible(false);
+				
+		Deposit = new Panel();
+		Deposit.setVisible(false);
 		
+		Deposit.setBackground(Color.PINK);
+		Deposit.setBounds(0, 0, 684, 422); // SideBar = Withdrawal.setBounds(0, 0, 884, 422); | UnSideBar = Withdrawal.setBounds(0, 0, 650, 422);
+		Deposit.setLayout(null);
+		frame.getContentPane().add(Deposit);
+		Deposit_Amount = new JTextField();
+		
+		// Deposit Amount
+		Deposit_Amount.setBounds(154, 234, 342, 27);
+		Deposit_Amount.setToolTipText("Amount you wish to Deposit into your account");
+		Deposit_Amount.setText("Enter Deposit Amount");
+		Deposit_Amount.setSelectedTextColor(new Color(255, 159, 159));
+		Deposit_Amount.setForeground(Color.GRAY);
+		Deposit_Amount.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Deposit_Amount.setColumns(10);
+		Deposit_Amount.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		Deposit_Amount.setBackground(new Color(255, 217, 217));
+		Deposit.add(Deposit_Amount);
+		
+		Ui.TextFieldSetup(Deposit_Amount, Ui.textFieldType.Text, Color.DARK_GRAY, false);
+		
+		Gui_Handler.TextFieldSetup(Deposit_Amount);
+		Gui_Handler.getTextField(Deposit_Amount).addSetting(Gui_Handler.TextFieldSettings.Allow_Enter, true, Deposit_Giver);
+		Gui_Handler.getTextField(Deposit_Amount).addSetting(Gui_Handler.TextFieldSettings.Allow_Delete, true, Deposit_Giver);
+		
+		Input.TextField.EventsSetup(Deposit_Amount);
+		
+		// Deposit Recever
+		Deposit_Giver = new JTextField(); 
+		Deposit_Giver.setToolTipText("The Individual/Group the money is coming from");
+		Deposit_Giver.setText("Giver");
+		Deposit_Giver.setSelectedTextColor(new Color(255, 159, 159));
+		Deposit_Giver.setForeground(Color.GRAY);
+		Deposit_Giver.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Deposit_Giver.setColumns(10); 
+		Deposit_Giver.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		Deposit_Giver.setBackground(new Color(255, 217, 217));
+		Deposit_Giver.setBounds(154, 302, 342, 27);
+		Deposit.add(Deposit_Giver);
+		
+		Ui.TextFieldSetup(Deposit_Giver, Ui.textFieldType.Text, Color.DARK_GRAY, false);
+		
+		// Deposit Text
+		JLabel Deposit_Title = new JLabel("Deposit");
+		Deposit_Title.setBounds(133, 11, 383, 75);
+		Deposit_Title.setHorizontalTextPosition(SwingConstants.CENTER);
+		Deposit_Title.setHorizontalAlignment(SwingConstants.CENTER);
+		Deposit_Title.setForeground(Color.WHITE);
+		Deposit_Title.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
+		Deposit_Title.setAlignmentX(0.5f);
+		Deposit.add(Deposit_Title);
+
 		Withdrawal.setBackground(Color.PINK);
 		Withdrawal.setBounds(0, 0, 684, 422); // SideBar = Withdrawal.setBounds(0, 0, 884, 422); | UnSideBar = Withdrawal.setBounds(0, 0, 650, 422);
-		frame.getContentPane().add(Withdrawal);
 		Withdrawal.setLayout(null);
+		frame.getContentPane().add(Withdrawal);
 		
 		Withdrawal_Amount = new JTextField();
 
@@ -181,13 +298,12 @@ public class LocalBankGUI {
 		Gui_Handler.TextFieldSetup(Withdrawal_Amount);
 		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Allow_Enter, true, Withdrawal_Recever);
 		Gui_Handler.getTextField(Withdrawal_Amount).addSetting(Gui_Handler.TextFieldSettings.Allow_Delete, true, Withdrawal_Recever);
-		System.out.println("Ui name: " + Gui_Handler.getTextField(Withdrawal_Amount).getSettings(TextFieldSettings.Allow_Enter).get(0));
-		
 		
 		Input.TextField.EventsSetup(Withdrawal_Amount);
 		
+		// Withdrawal recever
 		Withdrawal_Recever = new JTextField(); 
-		Withdrawal_Recever.setToolTipText("The Individual the money is going to");
+		Withdrawal_Recever.setToolTipText("The Individual/Group the money is going to");
 		Withdrawal_Recever.setText("Recever");
 		Withdrawal_Recever.setSelectedTextColor(new Color(255, 159, 159));
 		Withdrawal_Recever.setForeground(Color.GRAY);
@@ -200,6 +316,7 @@ public class LocalBankGUI {
 		
 		Ui.TextFieldSetup(Withdrawal_Recever, Ui.textFieldType.Text, Color.DARK_GRAY, false);
 		
+		// Withdrawal Title
 		JLabel Withdrawal_Title = new JLabel("Withdrawal");
 		Withdrawal_Title.setBounds(133, 11, 383, 75);
 		Withdrawal_Title.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -209,6 +326,7 @@ public class LocalBankGUI {
 		Withdrawal_Title.setAlignmentX(0.5f);
 		Withdrawal.add(Withdrawal_Title);
 		
+		// Withdrawal Withdrawal
 		Withdrawal_Withdrawal = new JButton();
 		Withdrawal_Withdrawal.setEnabled(false);
 		Withdrawal_Withdrawal.setBounds(202, 384, 246, 27);
@@ -221,6 +339,19 @@ public class LocalBankGUI {
 		Withdrawal_Withdrawal.setAutoscrolls(false);
 		Withdrawal.add(Withdrawal_Withdrawal);
 		
+		// Deposit Deposit
+		Deposit_Deposit = new JButton();
+		Deposit_Deposit.setEnabled(false);
+		Deposit_Deposit.setBounds(202, 384, 246, 27);
+		Deposit_Deposit.setText("Deposit");
+		Deposit_Deposit.setInheritsPopupMenu(true);
+		Deposit_Deposit.setForeground(Color.BLACK);
+		Deposit_Deposit.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Deposit_Deposit.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		Deposit_Deposit.setBackground(new Color(255, 206, 206));
+		Deposit_Deposit.setAutoscrolls(false);
+		Deposit.add(Deposit_Deposit);
+		
 		JButton Withdrawal_Half = new JButton();
 		Withdrawal_Half.setBounds(290, 265, 70, 27);
 		Withdrawal_Half.setText("Half");
@@ -232,57 +363,175 @@ public class LocalBankGUI {
 		Withdrawal_Half.setAutoscrolls(false);
 		Withdrawal.add(Withdrawal_Half);
 		
-		JPanel BalanceHolder_1 = new JPanel();
-		BalanceHolder_1.setBounds(154, 82, 342, 119);
-		BalanceHolder_1.setLayout(null);
-		BalanceHolder_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(255, 206, 206), null));
-		Withdrawal.add(BalanceHolder_1);
+		// Deposit CertainAmount
+		JButton Deposit_Half = new JButton();
+		Deposit_Half.setBounds(290, 265, 70, 27);
+		Deposit_Half.setText("Half");
+		Deposit_Half.setInheritsPopupMenu(true);
+		Deposit_Half.setForeground(Color.BLACK);
+		Deposit_Half.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Deposit_Half.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		Deposit_Half.setBackground(new Color(255, 206, 206));
+		Deposit_Half.setAutoscrolls(false);
+		Deposit.add(Deposit_Half);
+		
+		
+		/*
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 	Work on making the Transfer and Deposit Panels
+		 * 		+ Add the ability to add friends
+		 * 		- Add the ability to remove friends
+		 * 		+ Make it so money can transfer between friends
+		 * 		+ Make it so the Transactions can be viewed in the Transactions tab, and make it so it can sort by date, person, and amount. with some sub options for each
+		 * 		- Remove the cash ($) sign from the sidebar amount labels
+		 * 		+ Add the ability to see how many pages of the sidebar are available
+		 * 		
+		 * 
+		 *  For Transactions it should have:
+		 *  	> The ability to go through pages
+		 *  	> The ability to see how many pages
+		 *  	> The ability to sort it by many types (Amount, Time, Person)
+		 *  	> The ability to hide or trash transactions
+		 *  
+		 *  More Features:
+		 *  	+ Add the ability to lock accounts from getting money and be able to suspend accounts
+		 *  	+ Allow for account deletion in the account settings
+		 *  	+ Allow the current currency to change and for symbols and the amount to change as-well (1/2 complete)
+		 *  	+ Add the ability to freeze money well in transfer
+		 * 		+ Add a realistic time scale for a slight delay before money gets processed
+		 * 		+ Add a menu to view pending cash and from who and what time it was sent
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+		
+		JPanel BalanceHolder_Withdrawal = new JPanel();
+		BalanceHolder_Withdrawal.setBounds(154, 82, 342, 119);
+		BalanceHolder_Withdrawal.setLayout(null);
+		BalanceHolder_Withdrawal.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(255, 206, 206), null));
+		Withdrawal.add(BalanceHolder_Withdrawal);
 		
 		JLabel Withdrawal_Balance_Title = new JLabel("My Balance:");
 		Withdrawal_Balance_Title.setFont(new Font("Verdana", Font.BOLD, 14));
 		Withdrawal_Balance_Title.setBounds(10, 11, 119, 18);
-		BalanceHolder_1.add(Withdrawal_Balance_Title);
-		
-		JLabel Balance_MoneySignIcon_Balance = new JLabel("$");
-		Balance_MoneySignIcon_Balance.setForeground(new Color(236, 119, 98));
-		Balance_MoneySignIcon_Balance.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
-		Balance_MoneySignIcon_Balance.setBounds(28, 37, 15, 18);
-		BalanceHolder_1.add(Balance_MoneySignIcon_Balance);
+		BalanceHolder_Withdrawal.add(Withdrawal_Balance_Title);
+
+		Withdrawal_MoneySignIcon_Balance = new JLabel("$");
+		Withdrawal_MoneySignIcon_Balance.setForeground(new Color(236, 119, 98));
+		Withdrawal_MoneySignIcon_Balance.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		Withdrawal_MoneySignIcon_Balance.setBounds(28, 37, 15, 18);
+		BalanceHolder_Withdrawal.add(Withdrawal_MoneySignIcon_Balance);
 		
 		Withdrawal_CurrentBalance = new JLabel("0.00");
 		Withdrawal_CurrentBalance.setForeground(new Color(233, 98, 73));
 		Withdrawal_CurrentBalance.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
 		Withdrawal_CurrentBalance.setBounds(36, 35, 285, 29);
-		BalanceHolder_1.add(Withdrawal_CurrentBalance);
+		BalanceHolder_Withdrawal.add(Withdrawal_CurrentBalance);
 		
 		Withdrawal_AfterBalance = new JLabel("0.00");
 		Withdrawal_AfterBalance.setForeground(new Color(233, 98, 73));
 		Withdrawal_AfterBalance.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
 		Withdrawal_AfterBalance.setBounds(36, 83, 285, 29);
-		BalanceHolder_1.add(Withdrawal_AfterBalance);
+		BalanceHolder_Withdrawal.add(Withdrawal_AfterBalance);
 		
-		JLabel Withdrawal_MoneySignIcon_AfterBalance = new JLabel("$");
+		Withdrawal_MoneySignIcon_AfterBalance = new JLabel("$");
 		Withdrawal_MoneySignIcon_AfterBalance.setForeground(new Color(236, 119, 98));
 		Withdrawal_MoneySignIcon_AfterBalance.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
 		Withdrawal_MoneySignIcon_AfterBalance.setBounds(28, 85, 15, 18);
-		BalanceHolder_1.add(Withdrawal_MoneySignIcon_AfterBalance);
+		BalanceHolder_Withdrawal.add(Withdrawal_MoneySignIcon_AfterBalance);
 		
 		JLabel Withdrawal_AfterBalance_Title = new JLabel("After Balance:");
 		Withdrawal_AfterBalance_Title.setFont(new Font("Verdana", Font.BOLD, 14));
 		Withdrawal_AfterBalance_Title.setBounds(10, 64, 119, 18);
-		BalanceHolder_1.add(Withdrawal_AfterBalance_Title);
+		BalanceHolder_Withdrawal.add(Withdrawal_AfterBalance_Title);
 		
 		Withdrawal_AfterBalance_MinusSymbol = new JLabel("-");
 		Withdrawal_AfterBalance_MinusSymbol.setForeground(new Color(233, 98, 73));
 		Withdrawal_AfterBalance_MinusSymbol.setFont(new Font("Yu Gothic UI", Font.BOLD | Font.ITALIC, 20));
 		Withdrawal_AfterBalance_MinusSymbol.setBounds(15, 83, 15, 29);
-		BalanceHolder_1.add(Withdrawal_AfterBalance_MinusSymbol);
+		BalanceHolder_Withdrawal.add(Withdrawal_AfterBalance_MinusSymbol);
 		
 		Withdrawal_Balance_MinusSymbol = new JLabel("-");
 		Withdrawal_Balance_MinusSymbol.setForeground(new Color(233, 98, 73));
 		Withdrawal_Balance_MinusSymbol.setFont(new Font("Yu Gothic UI", Font.BOLD | Font.ITALIC, 20));
 		Withdrawal_Balance_MinusSymbol.setBounds(15, 35, 15, 29);
-		BalanceHolder_1.add(Withdrawal_Balance_MinusSymbol);
+		BalanceHolder_Withdrawal.add(Withdrawal_Balance_MinusSymbol);
+		
+		// Deposit
+		
+		JPanel BalanceHolder_Deposit = new JPanel();
+		BalanceHolder_Deposit.setBounds(154, 82, 342, 119);
+		BalanceHolder_Deposit.setLayout(null);
+		BalanceHolder_Deposit.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(255, 206, 206), null));
+		Deposit.add(BalanceHolder_Deposit);
+		
+		JLabel Deposit_Balance_Title = new JLabel("My Balance:");
+		Deposit_Balance_Title.setFont(new Font("Verdana", Font.BOLD, 14));
+		Deposit_Balance_Title.setBounds(10, 11, 119, 18);
+		BalanceHolder_Deposit.add(Deposit_Balance_Title);
+
+		Deposit_MoneySignIcon_Balance = new JLabel("$");
+		Deposit_MoneySignIcon_Balance.setForeground(new Color(236, 119, 98));
+		Deposit_MoneySignIcon_Balance.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		Deposit_MoneySignIcon_Balance.setBounds(28, 37, 15, 18);
+		BalanceHolder_Deposit.add(Deposit_MoneySignIcon_Balance);
+		
+		Deposit_CurrentBalance = new JLabel("0.00");
+		Deposit_CurrentBalance.setForeground(new Color(233, 98, 73));
+		Deposit_CurrentBalance.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Deposit_CurrentBalance.setBounds(36, 35, 285, 29);
+		BalanceHolder_Deposit.add(Deposit_CurrentBalance);
+		
+		Deposit_AfterBalance = new JLabel("0.00");
+		Deposit_AfterBalance.setForeground(new Color(233, 98, 73));
+		Deposit_AfterBalance.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Deposit_AfterBalance.setBounds(36, 83, 285, 29);
+		BalanceHolder_Deposit.add(Deposit_AfterBalance);
+		
+		Deposit_MoneySignIcon_AfterBalance = new JLabel("$");
+		Deposit_MoneySignIcon_AfterBalance.setForeground(new Color(236, 119, 98));
+		Deposit_MoneySignIcon_AfterBalance.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		Deposit_MoneySignIcon_AfterBalance.setBounds(28, 85, 15, 18);
+		BalanceHolder_Deposit.add(Deposit_MoneySignIcon_AfterBalance);
+		
+		JLabel Deposit_AfterBalance_Title = new JLabel("After Balance:");
+		Deposit_AfterBalance_Title.setFont(new Font("Verdana", Font.BOLD, 14));
+		Deposit_AfterBalance_Title.setBounds(10, 64, 119, 18);
+		BalanceHolder_Deposit.add(Deposit_AfterBalance_Title);
+		
+		Deposit_AfterBalance_MinusSymbol = new JLabel("-");
+		Deposit_AfterBalance_MinusSymbol.setVisible(false);
+		Deposit_AfterBalance_MinusSymbol.setForeground(new Color(233, 98, 73));
+		Deposit_AfterBalance_MinusSymbol.setFont(new Font("Yu Gothic UI", Font.BOLD | Font.ITALIC, 20));
+		Deposit_AfterBalance_MinusSymbol.setBounds(15, 83, 15, 29);
+		BalanceHolder_Deposit.add(Deposit_AfterBalance_MinusSymbol);
+		
+		Deposit_Balance_MinusSymbol = new JLabel("-");
+		Deposit_Balance_MinusSymbol.setVisible(false);
+		Deposit_Balance_MinusSymbol.setForeground(new Color(233, 98, 73));
+		Deposit_Balance_MinusSymbol.setFont(new Font("Yu Gothic UI", Font.BOLD | Font.ITALIC, 20));
+		Deposit_Balance_MinusSymbol.setBounds(15, 35, 15, 29);
+		BalanceHolder_Deposit.add(Deposit_Balance_MinusSymbol);
+		
+		// Withdrawal
 		
 		JButton Withdrawal_All = new JButton();
 		
@@ -296,6 +545,22 @@ public class LocalBankGUI {
 		Withdrawal_All.setAutoscrolls(false);
 		Withdrawal.add(Withdrawal_All);
 		
+		// Deposit
+		
+		JButton Deposit_All = new JButton();
+		
+		Deposit_All.setBounds(154, 265, 70, 27);
+		Deposit_All.setText("All");
+		Deposit_All.setInheritsPopupMenu(true);
+		Deposit_All.setForeground(Color.BLACK);
+		Deposit_All.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Deposit_All.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		Deposit_All.setBackground(new Color(255, 206, 206));
+		Deposit_All.setAutoscrolls(false);
+		Deposit.add(Deposit_All);
+		
+		// Withdrawal
+		
 		JButton Withdrawal_None = new JButton();
 		
 		Withdrawal_None.setBounds(426, 265, 70, 27);
@@ -307,6 +572,22 @@ public class LocalBankGUI {
 		Withdrawal_None.setBackground(new Color(255, 206, 206));
 		Withdrawal_None.setAutoscrolls(false);
 		Withdrawal.add(Withdrawal_None);
+		
+		// Deposit
+		
+		JButton Deposit_None = new JButton();
+		
+		Deposit_None.setBounds(426, 265, 70, 27);
+		Deposit_None.setText("None");
+		Deposit_None.setInheritsPopupMenu(true);
+		Deposit_None.setForeground(Color.BLACK);
+		Deposit_None.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Deposit_None.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		Deposit_None.setBackground(new Color(255, 206, 206));
+		Deposit_None.setAutoscrolls(false);
+		Deposit.add(Deposit_None);
+		
+		// Withdrawal
 		
 		JButton Withdrawal_SubmitAmount = new JButton();
 		Withdrawal_SubmitAmount.setBounds(500, 234, 70, 27);
@@ -320,6 +601,22 @@ public class LocalBankGUI {
 		Withdrawal_SubmitAmount.setAutoscrolls(false);
 		Withdrawal.add(Withdrawal_SubmitAmount);
 		
+		// Deposit
+		
+		JButton Deposit_SubmitAmount = new JButton();
+		Deposit_SubmitAmount.setBounds(500, 234, 70, 27);
+		
+		Deposit_SubmitAmount.setText("Submit");
+		Deposit_SubmitAmount.setInheritsPopupMenu(true);
+		Deposit_SubmitAmount.setForeground(Color.BLACK);
+		Deposit_SubmitAmount.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Deposit_SubmitAmount.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		Deposit_SubmitAmount.setBackground(new Color(255, 206, 206));
+		Deposit_SubmitAmount.setAutoscrolls(false);
+		Deposit.add(Deposit_SubmitAmount);
+		
+		// Withdrawal
+		
 		JPanel SideBar = new JPanel();
 		SideBar.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		SideBar.setBounds(648, 0, 236, 422);
@@ -331,11 +628,11 @@ public class LocalBankGUI {
 		Withdrawal_Trans_1.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
 		Withdrawal_Trans_1.setLayout(null);
 		
-		JLabel MoneySignIconWithdrawal = new JLabel("$");
-		MoneySignIconWithdrawal.setForeground(new Color(236, 119, 98));
-		MoneySignIconWithdrawal.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
-		MoneySignIconWithdrawal.setBounds(15, 19, 15, 18);
-		Withdrawal_Trans_1.add(MoneySignIconWithdrawal);
+		SideBar_MoneySignIconWithdrawal_1 = new JLabel("$");
+		SideBar_MoneySignIconWithdrawal_1.setForeground(new Color(236, 119, 98));
+		SideBar_MoneySignIconWithdrawal_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		SideBar_MoneySignIconWithdrawal_1.setBounds(15, 19, 15, 18);
+		Withdrawal_Trans_1.add(SideBar_MoneySignIconWithdrawal_1);
 		
 		Withdrawal_Amount_Trans_1 = new JLabel("0.00");
 		Withdrawal_Amount_Trans_1.setForeground(new Color(233, 98, 73));
@@ -376,11 +673,11 @@ public class LocalBankGUI {
 		Withdrawal_Trans_2.setLayout(null);
 		Withdrawal_Trans_2.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
 		
-		JLabel MoneySignIconWithdrawal_1 = new JLabel("$");
-		MoneySignIconWithdrawal_1.setForeground(new Color(236, 119, 98));
-		MoneySignIconWithdrawal_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
-		MoneySignIconWithdrawal_1.setBounds(15, 19, 15, 18);
-		Withdrawal_Trans_2.add(MoneySignIconWithdrawal_1);
+		SideBar_MoneySignIconWithdrawal_2 = new JLabel("$");
+		SideBar_MoneySignIconWithdrawal_2.setForeground(new Color(236, 119, 98));
+		SideBar_MoneySignIconWithdrawal_2.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		SideBar_MoneySignIconWithdrawal_2.setBounds(15, 19, 15, 18);
+		Withdrawal_Trans_2.add(SideBar_MoneySignIconWithdrawal_2);
 		
 		Withdrawal_Amount_Trans_2 = new JLabel("0.00");
 		Withdrawal_Amount_Trans_2.setForeground(new Color(233, 98, 73));
@@ -421,11 +718,11 @@ public class LocalBankGUI {
 		Withdrawal_Trans_3.setLayout(null);
 		Withdrawal_Trans_3.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
 		
-		JLabel MoneySignIconWithdrawal_1_1 = new JLabel("$");
-		MoneySignIconWithdrawal_1_1.setForeground(new Color(236, 119, 98));
-		MoneySignIconWithdrawal_1_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
-		MoneySignIconWithdrawal_1_1.setBounds(15, 19, 15, 18);
-		Withdrawal_Trans_3.add(MoneySignIconWithdrawal_1_1);
+		SideBar_MoneySignIconWithdrawal_3 = new JLabel("$");
+		SideBar_MoneySignIconWithdrawal_3.setForeground(new Color(236, 119, 98));
+		SideBar_MoneySignIconWithdrawal_3.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		SideBar_MoneySignIconWithdrawal_3.setBounds(15, 19, 15, 18);
+		Withdrawal_Trans_3.add(SideBar_MoneySignIconWithdrawal_3);
 		
 		Withdrawal_Amount_Trans_3 = new JLabel("0.00");
 		Withdrawal_Amount_Trans_3.setForeground(new Color(233, 98, 73));
@@ -534,6 +831,224 @@ public class LocalBankGUI {
 		panel.add(Withdrawal_PageCount);
 		SideBar.setLayout(gl_SideBar);
 		
+		// Deposit
+		
+		JPanel SideBar_Deposit = new JPanel();
+		SideBar_Deposit.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		SideBar_Deposit.setBounds(648, 0, 236, 422);
+		SideBar_Deposit.setBackground(new Color(255, 217, 217));
+		SideBar_Deposit.setForeground(new Color(252, 122, 122));
+		Deposit.add(SideBar_Deposit);
+		
+		Deposit_Trans_1 = new JPanel();
+		Deposit_Trans_1.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		Deposit_Trans_1.setLayout(null);
+		
+		SideBar_MoneySignIconDeposit_1 = new JLabel("$");
+		SideBar_MoneySignIconDeposit_1.setForeground(new Color(236, 119, 98));
+		SideBar_MoneySignIconDeposit_1.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		SideBar_MoneySignIconDeposit_1.setBounds(15, 19, 15, 18);
+		Deposit_Trans_1.add(SideBar_MoneySignIconDeposit_1);
+		
+		Deposit_Amount_Trans_1 = new JLabel("0.00");
+		Deposit_Amount_Trans_1.setForeground(new Color(233, 98, 73));
+		Deposit_Amount_Trans_1.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Deposit_Amount_Trans_1.setBounds(20, 25, 196, 29);
+		Deposit_Trans_1.add(Deposit_Amount_Trans_1);
+
+		JLabel MinusSymbol_Deposit = new JLabel("-");
+		MinusSymbol_Deposit.setForeground(new Color(236, 119, 98));
+		MinusSymbol_Deposit.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
+		MinusSymbol_Deposit.setBounds(4, 32, 15, 18);
+		Deposit_Trans_1.add(MinusSymbol_Deposit);
+
+		JPanel Bar_Deposit = new JPanel();
+		Bar_Deposit.setBackground(new Color(255, 217, 217));
+		Bar_Deposit.setBounds(0, 57, 216, 7);
+		Deposit_Trans_1.add(Bar_Deposit);
+		
+		Deposit_Amount_SelectedPerson_1 = new JLabel("For: ???");
+		Deposit_Amount_SelectedPerson_1.setForeground(new Color(233, 98, 73));
+		Deposit_Amount_SelectedPerson_1.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		Deposit_Amount_SelectedPerson_1.setBounds(4, 66, 208, 29);
+		Deposit_Trans_1.add(Deposit_Amount_SelectedPerson_1);
+
+		Deposit_Amount_Remove_1 = new JButton();
+		Deposit_Amount_Remove_1.setText("x");
+		Deposit_Amount_Remove_1.setInheritsPopupMenu(true);
+		Deposit_Amount_Remove_1.setForeground(Color.RED);
+		Deposit_Amount_Remove_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		Deposit_Amount_Remove_1.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(252, 218, 218), new Color(253, 227, 227), new Color(252, 216, 216), new Color(251, 200, 200)));
+		Deposit_Amount_Remove_1.setBackground(new Color(255, 217, 217));
+		Deposit_Amount_Remove_1.setAutoscrolls(false);
+		Deposit_Amount_Remove_1.setBounds(186, 3, 26, 26);
+		Deposit_Trans_1.add(Deposit_Amount_Remove_1);
+		
+		Deposit_Trans_2 = new JPanel();
+		Deposit_Trans_2.setVisible(false);
+		Deposit_Trans_2.setLayout(null);
+		Deposit_Trans_2.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		
+		SideBar_MoneySignIconDeposit_2 = new JLabel("$");
+		SideBar_MoneySignIconDeposit_2.setForeground(new Color(236, 119, 98));
+		SideBar_MoneySignIconDeposit_2.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		SideBar_MoneySignIconDeposit_2.setBounds(15, 19, 15, 18);
+		Deposit_Trans_2.add(SideBar_MoneySignIconDeposit_2);
+		
+		Deposit_Amount_Trans_2 = new JLabel("0.00");
+		Deposit_Amount_Trans_2.setForeground(new Color(233, 98, 73));
+		Deposit_Amount_Trans_2.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Deposit_Amount_Trans_2.setBounds(20, 25, 196, 29);
+		Deposit_Trans_2.add(Deposit_Amount_Trans_2);
+		
+		JLabel MinusSymbol_Deposit_2 = new JLabel("-");
+		MinusSymbol_Deposit_2.setForeground(new Color(236, 119, 98));
+		MinusSymbol_Deposit_2.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
+		MinusSymbol_Deposit_2.setBounds(4, 32, 15, 18);
+		Deposit_Trans_2.add(MinusSymbol_Deposit_2);
+		
+		JPanel Bar_Deposit_2 = new JPanel();
+		Bar_Deposit_2.setBackground(new Color(255, 217, 217));
+		Bar_Deposit_2.setBounds(0, 57, 216, 7);
+		Deposit_Trans_2.add(Bar_Deposit_2);
+		
+		Deposit_Amount_SelectedPerson_2 = new JLabel("For: ???");
+		Deposit_Amount_SelectedPerson_2.setForeground(new Color(233, 98, 73));
+		Deposit_Amount_SelectedPerson_2.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		Deposit_Amount_SelectedPerson_2.setBounds(4, 66, 208, 29);
+		Deposit_Trans_2.add(Deposit_Amount_SelectedPerson_2);
+		
+		Deposit_Amount_Remove_2 = new JButton();
+		Deposit_Amount_Remove_2.setText("x");
+		Deposit_Amount_Remove_2.setInheritsPopupMenu(true);
+		Deposit_Amount_Remove_2.setForeground(Color.RED);
+		Deposit_Amount_Remove_2.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		Deposit_Amount_Remove_2.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(252, 218, 218), new Color(253, 227, 227), new Color(252, 216, 216), new Color(251, 200, 200)));
+		Deposit_Amount_Remove_2.setBackground(new Color(255, 217, 217));
+		Deposit_Amount_Remove_2.setAutoscrolls(false);
+		Deposit_Amount_Remove_2.setBounds(186, 3, 26, 26);
+		Deposit_Trans_2.add(Deposit_Amount_Remove_2);
+		
+		Deposit_Trans_3 = new JPanel();
+		Deposit_Trans_3.setVisible(false);
+		Deposit_Trans_3.setLayout(null);
+		Deposit_Trans_3.setBorder(new CompoundBorder(new CompoundBorder(), new CompoundBorder()));
+		
+		SideBar_MoneySignIconDeposit_3 = new JLabel("$");
+		SideBar_MoneySignIconDeposit_3.setForeground(new Color(236, 119, 98));
+		SideBar_MoneySignIconDeposit_3.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		SideBar_MoneySignIconDeposit_3.setBounds(15, 19, 15, 18);
+		Deposit_Trans_3.add(SideBar_MoneySignIconDeposit_3);
+		
+		Deposit_Amount_Trans_3 = new JLabel("0.00");
+		Deposit_Amount_Trans_3.setForeground(new Color(233, 98, 73));
+		Deposit_Amount_Trans_3.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Deposit_Amount_Trans_3.setBounds(20, 25, 196, 29);
+		Deposit_Trans_3.add(Deposit_Amount_Trans_3);
+		
+		JLabel MinusSymbol_Deposit_3 = new JLabel("-");
+		MinusSymbol_Deposit_3.setForeground(new Color(236, 119, 98));
+		MinusSymbol_Deposit_3.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 17));
+		MinusSymbol_Deposit_3.setBounds(4, 32, 15, 18);
+		Deposit_Trans_3.add(MinusSymbol_Deposit_3);
+		
+		JPanel Bar_Deposit_3 = new JPanel();
+		Bar_Deposit_3.setBackground(new Color(255, 217, 217));
+		Bar_Deposit_3.setBounds(0, 57, 216, 7);
+		Deposit_Trans_3.add(Bar_Deposit_3);
+		
+		Deposit_Amount_SelectedPerson_3 = new JLabel("For: Joe");
+		Deposit_Amount_SelectedPerson_3.setForeground(new Color(233, 98, 73));
+		Deposit_Amount_SelectedPerson_3.setFont(new Font("Yu Gothic UI", Font.BOLD, 14));
+		Deposit_Amount_SelectedPerson_3.setBounds(4, 66, 208, 29);
+		Deposit_Trans_3.add(Deposit_Amount_SelectedPerson_3);
+		
+		Deposit_Amount_Remove_3 = new JButton();
+		Deposit_Amount_Remove_3.setText("x");
+		Deposit_Amount_Remove_3.setInheritsPopupMenu(true);
+		Deposit_Amount_Remove_3.setForeground(Color.RED);
+		Deposit_Amount_Remove_3.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		Deposit_Amount_Remove_3.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(252, 218, 218), new Color(253, 227, 227), new Color(252, 216, 216), new Color(251, 200, 200)));
+		Deposit_Amount_Remove_3.setBackground(new Color(255, 217, 217));
+		Deposit_Amount_Remove_3.setAutoscrolls(false);
+		Deposit_Amount_Remove_3.setBounds(186, 3, 26, 26);
+		Deposit_Trans_3.add(Deposit_Amount_Remove_3);
+		
+		JPanel panel_Deposit = new JPanel();
+		
+		JLabel lblChanges_Deposit = new JLabel("Changes");
+		lblChanges_Deposit.setHorizontalAlignment(SwingConstants.CENTER);
+		lblChanges_Deposit.setForeground(new Color(202, 119, 119));
+		lblChanges_Deposit.setFont(new Font("Times New Roman", Font.ITALIC, 20));
+		GroupLayout gl_SideBar_Deposit = new GroupLayout(SideBar_Deposit);
+		gl_SideBar_Deposit.setHonorsVisibility(false);
+		gl_SideBar_Deposit.setHorizontalGroup(
+				gl_SideBar_Deposit.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_SideBar_Deposit.createSequentialGroup()
+					.addGroup(gl_SideBar_Deposit.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_SideBar_Deposit.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_SideBar_Deposit.createParallelGroup(Alignment.TRAILING)
+								.addComponent(Withdrawal_Trans_1, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+								.addComponent(Withdrawal_Trans_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+								.addComponent(Withdrawal_Trans_3, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_SideBar_Deposit.createSequentialGroup()
+							.addGap(8)
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_SideBar_Deposit.createSequentialGroup()
+							.addGap(8)
+							.addComponent(lblChanges_Deposit, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_SideBar_Deposit.setVerticalGroup(
+				gl_SideBar_Deposit.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_SideBar_Deposit.createSequentialGroup()
+					.addGap(6)
+					.addComponent(lblChanges_Deposit, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+					.addGap(11)
+					.addComponent(Withdrawal_Trans_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(Withdrawal_Trans_2, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(Withdrawal_Trans_3, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		panel_Deposit.setLayout(null);
+		
+		Deposit_NextPage = new JButton();
+		Deposit_NextPage.setBounds(0, 0, 51, 36);
+		Deposit_NextPage.setText("←");
+		Deposit_NextPage.setInheritsPopupMenu(true);
+		Deposit_NextPage.setForeground(Color.RED);
+		Deposit_NextPage.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
+		Deposit_NextPage.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(253, 232, 232), new Color(253, 234, 234), new Color(252, 216, 216), new Color(251, 202, 202)));
+		Deposit_NextPage.setBackground(new Color(253, 234, 234));
+		Deposit_NextPage.setAutoscrolls(false);
+		panel_Deposit.add(Deposit_NextPage);
+		
+		Deposit_PreviousPage = new JButton();
+		Deposit_PreviousPage.setText("→");
+		Deposit_PreviousPage.setInheritsPopupMenu(true);
+		Deposit_PreviousPage.setForeground(Color.RED);
+		Deposit_PreviousPage.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
+		Deposit_PreviousPage.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(253, 232, 232), new Color(253, 234, 234), new Color(252, 216, 216), new Color(251, 202, 202)));
+		Deposit_PreviousPage.setBackground(new Color(253, 234, 234));
+		Deposit_PreviousPage.setAutoscrolls(false);
+		Deposit_PreviousPage.setBounds(169, 0, 51, 36);
+		panel_Deposit.add(Deposit_PreviousPage);
+		
+		Deposit_PageCount = new JLabel("Page: 1");
+		Deposit_PageCount.setHorizontalAlignment(SwingConstants.CENTER);
+		Deposit_PageCount.setForeground(new Color(233, 98, 73));
+		Deposit_PageCount.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD, 20));
+		Deposit_PageCount.setBounds(0, 1, 220, 32);
+		panel_Deposit.add(Deposit_PageCount);
+		SideBar_Deposit.setLayout(gl_SideBar_Deposit);
+		
+		// Withdrawal
+		
 		JButton Withdrawal_Exit = new JButton();
 		Withdrawal_Exit.setText("x");
 		Withdrawal_Exit.setInheritsPopupMenu(true);
@@ -544,6 +1059,36 @@ public class LocalBankGUI {
 		Withdrawal_Exit.setAutoscrolls(false);
 		Withdrawal_Exit.setBounds(10, 11, 27, 27);
 		Withdrawal.add(Withdrawal_Exit);
+		
+		// Deposit
+		
+		JButton Deposit_Exit = new JButton();
+		Deposit_Exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				
+			}
+		});
+		
+		Deposit_Exit.setText("x");
+		Deposit_Exit.setInheritsPopupMenu(true);
+		Deposit_Exit.setForeground(Color.BLACK);
+		Deposit_Exit.setFont(new Font("Verdana", Font.PLAIN, 16));
+		Deposit_Exit.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		Deposit_Exit.setBackground(new Color(255, 206, 206));
+		Deposit_Exit.setAutoscrolls(false);
+		Deposit_Exit.setBounds(10, 11, 27, 27);
+		Deposit.add(Deposit_Exit);
+		
+		// Confirm Transaction
+		ConfirmTransaction = new Panel();
+		ConfirmTransaction.setLayout(null);
+		ConfirmTransaction.setBackground(Color.PINK);
+		ConfirmTransaction.setBounds(0, 0, 650, 422);
+		frame.getContentPane().add(ConfirmTransaction);
+		ConfirmTransaction.setVisible(false);
+		
+		// Account View
 		
 		AccountView = new Panel();
 		AccountView.setLayout(null);
@@ -616,17 +1161,17 @@ public class LocalBankGUI {
 		Title.setBounds(10, 11, 119, 18);
 		BalanceHolder.add(Title);
 		
-		JLabel MoneySignIcon = new JLabel("$");
-		MoneySignIcon.setForeground(new Color(236, 119, 98));
-		MoneySignIcon.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
-		MoneySignIcon.setBounds(28, 37, 15, 18);
-		BalanceHolder.add(MoneySignIcon);
+		MoneySignIcon_AccountView = new JLabel("$");
+		MoneySignIcon_AccountView.setForeground(new Color(236, 119, 98));
+		MoneySignIcon_AccountView.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 12));
+		MoneySignIcon_AccountView.setBounds(28, 37, 15, 18);
+		BalanceHolder.add(MoneySignIcon_AccountView);
 		
-		MoneySignIcon_1 = new JLabel("0.00");
-		MoneySignIcon_1.setForeground(new Color(233, 98, 73));
-		MoneySignIcon_1.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
-		MoneySignIcon_1.setBounds(36, 35, 285, 29);
-		BalanceHolder.add(MoneySignIcon_1);
+		Balance_AccountView_2 = new JLabel("0.00");
+		Balance_AccountView_2.setForeground(new Color(233, 98, 73));
+		Balance_AccountView_2.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD | Font.ITALIC, 20));
+		Balance_AccountView_2.setBounds(36, 35, 285, 29);
+		BalanceHolder.add(Balance_AccountView_2);
 		
 		JButton AccountView_Transactions = new JButton();
 		AccountView_Transactions.setText("Transactions");
@@ -869,7 +1414,7 @@ public class LocalBankGUI {
 		AccountSettings_Currency.setBounds(208, 223, 246, 27);
 		AccountSettings.add(AccountSettings_Currency);
 		
-		JButton AccountSettings_Delete = new JButton();
+		AccountSettings_Delete = new JButton();
 		AccountSettings_Delete.setText("Delete Account");
 		AccountSettings_Delete.setInheritsPopupMenu(true);
 		AccountSettings_Delete.setForeground(Color.BLACK);
@@ -1068,6 +1613,9 @@ public class LocalBankGUI {
 					LoginScreen.setVisible(false);
 					SignUpScreen.setVisible(false);
 					
+					System.out.println(currentAccount.CreationDate);
+					
+					UpdateCurrencySymbols();
 					UpdateAccountViewBalance();
 				}
 			}
@@ -1207,6 +1755,16 @@ public class LocalBankGUI {
 			public void actionPerformed(ActionEvent e) {
 				Withdrawal.setVisible(true);
 				AccountView.setVisible(false);
+				
+				UpdateAccountViewBalance();
+			}
+		});
+		
+		AccountView_Deposit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Deposit.setVisible(true);
+				AccountView.setVisible(false);
+				
 				UpdateAccountViewBalance();
 			}
 		});
@@ -1225,7 +1783,7 @@ public class LocalBankGUI {
 			public void mouseClicked(MouseEvent e) 
 			{
 				double Currency = CurrencyFormatter.getAsDouble(Withdrawal_Amount.getText());
-				if (!(Withdrawal_Amount.getText().isEmpty() && Withdrawal_Recever.getText().isEmpty()) && Currency > 0) 
+				if (!((Withdrawal_Amount.getText().isEmpty() && Withdrawal_Recever.getText().isEmpty()) || Withdrawal_Recever.getText().equals("Recever")) && Currency > 0) 
 				{
 					LocalBankGUI_PageHandler.addSection(Withdrawal_Recever.getText(), Currency);
 					LocalBankGUI_PageHandler.CurrentPage = LocalBankGUI_PageHandler.getTotalPages();
@@ -1263,10 +1821,18 @@ public class LocalBankGUI {
 				Withdrawal.setVisible(false);
 				AccountView.setVisible(true);
 				
-				/*
 				frame.setBounds(100, 100, 666, 461);
 				Withdrawal.setBounds(0, 0, 650, 422);
-				*/
+			}
+		});
+		
+		Deposit_Exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Deposit.setVisible(false);
+				AccountView.setVisible(true);
+				
+				frame.setBounds(100, 100, 666, 461);
+				Withdrawal.setBounds(0, 0, 650, 422);
 			}
 		});
 		
@@ -1352,23 +1918,76 @@ public class LocalBankGUI {
 	
 	public static void UpdateAccountViewBalance() 
 	{
-		MoneySignIcon_1.setText(String.format("%,.2f", currentAccount.Balance));
-		Withdrawal_CurrentBalance.setText(String.format("%,.2f", currentAccount.Balance));
+		if (currentAccount.Balance < 0) 
+		{
+			Withdrawal_Balance_MinusSymbol.setVisible(true);
+			Withdrawal_AfterBalance_MinusSymbol.setVisible(true);
+		}
+		else
+		{
+			Withdrawal_Balance_MinusSymbol.setVisible(false);
+			Withdrawal_AfterBalance_MinusSymbol.setVisible(false);
+		}
+		
+		Withdrawal_AfterBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", ((currentAccount.Balance) > 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
+		Withdrawal_CurrentBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
+		
+		Deposit_CurrentBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", ((currentAccount.Balance) > 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
+		Deposit_AfterBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
+		
+		Balance_AccountView_2.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", ((currentAccount.Balance) > 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
+	}
+	
+	public static void UpdateCurrencySymbols() 
+	{
+		String Symbol = LocalBankGUI_CurrencyHandler.getExchangeRate(LocalBankGUI_CurrencyHandler.CurrentExchangeType).CurrencySymbol != "???" ? LocalBankGUI_CurrencyHandler.getExchangeRate(LocalBankGUI_CurrencyHandler.CurrentExchangeType).CurrencySymbol : "Failed" ;
+		
+		if (!Symbol.equals("Failed")) 
+		{
+			Withdrawal_MoneySignIcon_AfterBalance.setText(Symbol);
+			Withdrawal_MoneySignIcon_Balance.setText(Symbol);
+			
+			SideBar_MoneySignIconWithdrawal_1.setText(Symbol);
+			SideBar_MoneySignIconWithdrawal_2.setText(Symbol);
+			SideBar_MoneySignIconWithdrawal_3.setText(Symbol);
+			
+			Deposit_MoneySignIcon_AfterBalance.setText(Symbol);
+			Deposit_MoneySignIcon_AfterBalance.setText(Symbol);
+			
+			SideBar_MoneySignIconDeposit_1.setText(Symbol);
+			SideBar_MoneySignIconDeposit_2.setText(Symbol);
+			SideBar_MoneySignIconDeposit_3.setText(Symbol);
+		}
 	}
 	
 	public static void UpdateAfterAccountViewBalance() 
 	{
 		double Amount = 0.00;
+		int LoopAmount = 0;
+		
 		for (LocalBankGUI_PageHandler.Transaction Trans : LocalBankGUI_PageHandler.Pages) 
 		{
+			LoopAmount++;
 			Amount += Trans.Amount;
 		}
 		
-		if (Amount < 0) 
+		if (LoopAmount == 0) 
+		{
+			Amount = 0.00;
+			Withdrawal_Withdrawal.setEnabled(false);
+		}
+		else 
+		{
+			Withdrawal_Withdrawal.setEnabled(true);
+		}
+		
+		System.out.println("Amount: " + Amount + "\n" + "Balance: " + currentAccount.Balance);
+		
+		if (currentAccount.Balance - Amount < 0) 
 		{
 			Withdrawal_AfterBalance_MinusSymbol.setVisible(true);
 		}
-		else 
+		else
 		{
 			Withdrawal_AfterBalance_MinusSymbol.setVisible(false);
 		}
@@ -1383,7 +2002,7 @@ public class LocalBankGUI {
 		}
 		
 		Withdrawal_AfterBalance.setText(String.format("%,.2f", ((currentAccount.Balance - Amount) > 0 ? (currentAccount.Balance - Amount) : -(currentAccount.Balance - Amount))));
-		Withdrawal_CurrentBalance.setText(String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
+		Withdrawal_CurrentBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
 	}
 	
 	public static void UpdateWithdrawalTransactionSideBar() 
@@ -1431,40 +2050,43 @@ public class LocalBankGUI {
 
 		if (Sections == null) 
 		{
-		    System.err.println("Failed to get sections. [" + Sections + "]");
+		    //System.err.println("Failed to get sections. [" + Sections + "]");
 		    
 		    if (LocalBankGUI_PageHandler.CurrentPage > 1) 
 		    {
 		    	LocalBankGUI_PageHandler.CurrentPage -= 1;
-		    	UpdateWithdrawalTransactionSideBar(); // Recalls the function
+		    	UpdateWithdrawalTransactionSideBar(); // Recalls the function to reload the previous page.
 		    }
 		    else 
 		    {
+		    	UpdateAfterAccountViewBalance();
 		    	frame.setBounds(100, 100, 666, 461);
 				Withdrawal.setBounds(0, 0, 650, 422);
 		    }
-		    
+		   
 		    return;
 		}
+		
+		UpdateAfterAccountViewBalance();
 		
 		if (Sections == 3) 
 		{
 			Withdrawal_Trans_3.setVisible(true);
-			Withdrawal_Amount_Trans_3.setText(CurrencyFormatter.formatToCurrency("" + Transactions.get(2).Amount));
+			Withdrawal_Amount_Trans_3.setText(String.format("%,.2f", Transactions.get(2).Amount));
 			Withdrawal_Amount_SelectedPerson_3.setText(Transactions.get(2).Person);
 		}
 		
 		if (Sections >= 2) 
 		{
 			Withdrawal_Trans_2.setVisible(true);
-			Withdrawal_Amount_Trans_2.setText(CurrencyFormatter.formatToCurrency("" + Transactions.get(1).Amount));
+			Withdrawal_Amount_Trans_2.setText(String.format("%,.2f", Transactions.get(1).Amount));
 			Withdrawal_Amount_SelectedPerson_2.setText(Transactions.get(1).Person);
 		}
 		
 		if (Sections >= 1) 
 		{
 			Withdrawal_Trans_1.setVisible(true);
-			Withdrawal_Amount_Trans_1.setText(CurrencyFormatter.formatToCurrency("" + Transactions.get(0).Amount));
+			Withdrawal_Amount_Trans_1.setText(String.format("%,.2f", Transactions.get(0).Amount));
 			Withdrawal_Amount_SelectedPerson_1.setText(Transactions.get(0).Person);
 			sidebarOpen = true;
 		}
@@ -1478,7 +2100,6 @@ public class LocalBankGUI {
 		{
 			frame.setBounds(100, 100, 900, 461);
 			Withdrawal.setBounds(0, 0, 884, 422);
-			UpdateAfterAccountViewBalance();
 		}
 	}
 }

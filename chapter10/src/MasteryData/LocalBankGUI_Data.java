@@ -1,5 +1,6 @@
 package MasteryData;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import EasyKit.*;
@@ -13,15 +14,21 @@ public class LocalBankGUI_Data {
 		public String Password;
 		public double Balance;
 		
+		String Tick() 
+		{
+	        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy | HH:mm:ss");
+	        return formatter.format(new java.util.Date());
+	    }
+		
 		public String CreationDate;
 		
 		NewAccount(String Username, String Password) 
 		{
 			this.Username = Username;
 			this.Password = Password;
-			this.Balance = Math.random() * 10000;
+			this.Balance = Double.parseDouble(String.format("%,.2f", 10000 * Math.random()).replace(",", ""));
 			
-			CreationDate = Text.GetTime();
+			CreationDate = Tick();
 		}
 		
 		public List<NewTransaction> Transactions = new ArrayList<>();
@@ -34,7 +41,14 @@ public class LocalBankGUI_Data {
 	{
 		double Amount;
 		String Reason;
-		String Date = Text.GetTime();
+		
+		String Tick() 
+		{
+	        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        return formatter.format(new java.util.Date());
+	    }
+
+		String Date = Tick();
 		
 		NewTransaction(double Amount, String Reason) 
 		{
@@ -84,19 +98,23 @@ public class LocalBankGUI_Data {
 
 		for (NewAccount Account : Accounts) 
 		{
-			Console.error("Get Account", "Found Account: " + Account.Username + " | Usernames(" + Name + ")|Passowrds(" + Password + ") Same", Name.equals(Account.Username), Password.equals(Account.Password));
+			Console.error("Get Account", "Searching Account: " + Account.Username + " | Usernames(" + Name + ")|Passowrds(" + Password + ") Same", Name.equals(Account.Username), Password.equals(Account.Password));
 			
 			if (Name.equals(Account.Username) && Password.equals(Account.Password)) 
 			{
 				SearchedAccount = Account;
+				System.out.println("");
 				Console.error("Get Account", "Retreved Account.");
+				System.out.println("");
 				break;
 			}
 		}
 		
 		if (SearchedAccount == null) 
 		{
+			System.out.println("");
 			Console.error("Get Account", "Failed to Retreved Account. [" + Name + "]");
+			System.out.println("");
 		}
 		
 		return SearchedAccount;

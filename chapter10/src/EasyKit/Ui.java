@@ -36,7 +36,7 @@ public class Ui {
         textFieldType currentType;
         
         String DefaultText;
-        String DefaultName;//
+        String DefaultName;
         Color BackgroundColor;
         
         boolean AllowResize = false;
@@ -49,6 +49,8 @@ public class Ui {
         int MaxLength = -1; // New field for text limit
         double MinValue = Double.MIN_VALUE; // New field for number range
         double MaxValue = Double.MAX_VALUE; // New field for number range
+        
+        String SelectedForcedText; // For example (Unselected: "Enter Money Amount." | Selected: "$") This will allow it to have $ at the beginning even when the user attempts to delete it.
         
         TextFieldSettings(JTextField selected, textFieldType Type, Color SelectedTextColor, boolean AllowResize) 
         {
@@ -326,10 +328,7 @@ public class Ui {
 		
 		return vailed;
 	}
-	
-	// This is todo: Make this function so it takes in a class that will contain the char looking for and the amount and then it will fire a different function
-	// Looking to see if the string has the char and the amount.
-	// If it does then it will return true.
+
 	public static <b> Object hasVaildChars(JTextField TextField, List<OtherSystems.lookingForChar> checkingChars) // Check if it has a certain amount of a character.
 	{
 		char[] TotalCharacters = TextField.getText().toCharArray();

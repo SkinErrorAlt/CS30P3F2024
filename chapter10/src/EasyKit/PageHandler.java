@@ -1,22 +1,25 @@
-package MasteryData;
+package EasyKit;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalBankGUI_PageHandler {
+public class PageHandler {
 	public static int SectionLimit = 3;
 	public static int CurrentPage = 1;
 	private static boolean debug = false; // Shows pages and stuff
 	
-	public static class Transaction 
+	public static class PageHandlerPages
 	{
-		public double Amount;
-		public String Person;
-		
-		Transaction(String Person, double Amount) 
+		public List<Object> Pages = new ArrayList<>();
+	}
+	
+	@SafeVarargs
+	@SuppressWarnings("hiding")
+	<Objects> PageHandler(int SectionLimit, Objects... CurrentObject) 
+	{
+		for (Object CurObject : CurrentObject) 
 		{
-			this.Person = Person;
-			this.Amount = Amount;
+			System.out.println("Added new Item to page handler: ");
 		}
 	}
 	

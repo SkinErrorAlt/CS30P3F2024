@@ -38,7 +38,15 @@ public class IH {
 		}
 		else 
 		{
-			System.out.println("Not within a valid type: [" + Focus.getClass() + "]");
+			if (Focus != null) 
+			{
+				System.out.println("Not within a valid type: [" + Focus.getClass() + "]");
+			}
+			else 
+			{
+				System.out.println("Focus not set to a vaild type. No type given.");
+			}
+			
 		}
 	}
 	
