@@ -1,4 +1,4 @@
-package Mastery;
+package LocalBank_Mastery;
 
 import java.awt.EventQueue;
 
@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import java.awt.Cursor;
 import javax.swing.border.EtchedBorder;
 
-import EasyKit.Account;
 import EasyKit.Console;
 import EasyKit.Gui_Handler;
 import EasyKit.IH;
@@ -23,11 +22,11 @@ import EasyKit.OtherSystems;
 import EasyKit.Text;
 import EasyKit.Ui;
 import EasyKit.Gui_Handler.*;
-import MasteryData.LocalBankGUI_Data;
-import MasteryData.LocalBankGUI_Data.*;
-import MasteryData.LocalBankGUI_PageHandler;
+import LocalBank_MasteryData.LocalBankGUI_CurrencyHandler;
+import LocalBank_MasteryData.LocalBankGUI_Data;
+import LocalBank_MasteryData.LocalBankGUI_PageHandler;
+import LocalBank_MasteryData.LocalBankGUI_Data.*;
 import TextConfig.*;
-import MasteryData.LocalBankGUI_CurrencyHandler;
 
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -71,7 +70,7 @@ public class LocalBankGUI {
 	
 	public static boolean sidebarOpen = false;
 	
-	public static MasteryData.LocalBankGUI_Data.NewAccount currentAccount;
+	public static LocalBank_MasteryData.LocalBankGUI_Data.NewAccount currentAccount;
 	
 	// Password\Sign up stuff
 	private JTextField EnterUsername;
@@ -1263,7 +1262,6 @@ public class LocalBankGUI {
 		LoginButton.setAutoscrolls(false);
 		LoginButton.setBounds(257, 285, 136, 27);
 		LoginScreen.add(LoginButton);
-		
 		SignUpScreen.setLayout(null);
 		SignUpScreen.setBackground(Color.PINK);
 		SignUpScreen.setBounds(0, 0, 650, 422);
@@ -1355,19 +1353,9 @@ public class LocalBankGUI {
 		
 		Ui.TextFieldSetup(ConfirmPassword, Ui.textFieldType.Text, Color.DARK_GRAY, false);
 		
-		JLabel SignInLoginError = new JLabel();
-		SignInLoginError.setVisible(false);
-		SignInLoginError.setText("ACCOUNT ALREADY EXISTS.");
-		SignInLoginError.setForeground(Color.RED);
-		SignInLoginError.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
-		SignInLoginError.setBorder(null);
-		SignInLoginError.setBackground(Color.PINK);
-		SignInLoginError.setAutoscrolls(false);
-		SignInLoginError.setBounds(141, 118, 367, 27);
-		SignUpScreen.add(SignInLoginError);
-		
-		JLabel LoginError = new JLabel();
+		JButton LoginError = new JButton();
 		LoginError.setVisible(false);
+		LoginError.setBorderPainted(false);
 		LoginError.setText("ACCOUNT ALREADY EXISTS.");
 		LoginError.setForeground(Color.RED);
 		LoginError.setFont(new Font("Yu Gothic UI", Font.BOLD, 15));
@@ -1375,7 +1363,7 @@ public class LocalBankGUI {
 		LoginError.setBackground(Color.PINK);
 		LoginError.setAutoscrolls(false);
 		LoginError.setBounds(141, 118, 367, 27);
-		LoginScreen.add(LoginError);
+		SignUpScreen.add(LoginError);
 		
 		AccountSettings = new Panel();
 		AccountSettings.setLayout(null);
@@ -1497,7 +1485,6 @@ public class LocalBankGUI {
 					}
 				}
 				
-				SignInLoginError.setVisible(false);
 				LoginError.setVisible(false);
 			}
 		});
@@ -1526,7 +1513,6 @@ public class LocalBankGUI {
 					}
 				}
 				
-				SignInLoginError.setVisible(false);
 				LoginError.setVisible(false);
 			}
 		});
@@ -1550,7 +1536,6 @@ public class LocalBankGUI {
 					IH.ChangeFocus(ConfirmPassword);
 				}
 				
-				SignInLoginError.setVisible(false);
 				LoginError.setVisible(false);
 			}
 		});
@@ -1563,46 +1548,44 @@ public class LocalBankGUI {
 				boolean PasswordbeingUsed = Ui.UiBeingUsed(EnterPassword_SignUp, null);
 				boolean ConfirmPasswordbeingUsed = Ui.UiBeingUsed(ConfirmPassword, null);
 				
-				SignInLoginError.setVisible(false);
-				
 				if (!UsernamebeingUsed) 
 				{
-					SignInLoginError.setVisible(true);
-					SignInLoginError.setText("Please enter a Username.");
+					LoginError.setVisible(true);
+					LoginError.setText("Please enter a Username.");
 					return;
 				}
 				
 				if (!PasswordbeingUsed) 
 				{
-					SignInLoginError.setVisible(true);
-					SignInLoginError.setText("Please enter a Password.");
+					LoginError.setVisible(true);
+					LoginError.setText("Please enter a Password.");
 					return;
 				}
 				
 				if (!ConfirmPasswordbeingUsed) 
 				{
-					SignInLoginError.setVisible(true);
-					SignInLoginError.setText("Please re-enter the Password in Confirm Password.");
+					LoginError.setVisible(true);
+					LoginError.setText("Please re-enter the Password in Confirm Password.");
 					return;
 				}
 				
 				if (!ConfirmPassword.getText().equals(EnterPassword_SignUp.getText())) 
 				{
-					SignInLoginError.setVisible(true);
-					SignInLoginError.setText("Confirm Password isn't the same as Password.");
+					LoginError.setVisible(true);
+					LoginError.setText("Confirm Password isn't the same as Password.");
 					return;
 				}
 				
-				boolean AccountExists = MasteryData.LocalBankGUI_Data.createAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
+				boolean AccountExists = LocalBank_MasteryData.LocalBankGUI_Data.createAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
 				
 				if (AccountExists) 
 				{
-					SignInLoginError.setVisible(true);
-					SignInLoginError.setText("Account Already Exists.");
+					LoginError.setVisible(true);
+					LoginError.setText("Account Already Exists.");
 				}
 				else 
 				{
-					currentAccount = MasteryData.LocalBankGUI_Data.getAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
+					currentAccount = LocalBank_MasteryData.LocalBankGUI_Data.getAccount(EnterUsername_SignUp.getText(), EnterPassword_SignUp.getText());
 					
 					if (currentAccount == null) 
 					{
@@ -1905,40 +1888,6 @@ public class LocalBankGUI {
 			}
 		});
 		
-		// Withdrawal Button
-		Withdrawal_Withdrawal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				List<LocalBankGUI_PageHandler.Transaction> Transactions = LocalBankGUI_PageHandler.getSectionFromPage(LocalBankGUI_PageHandler.Pages, LocalBankGUI_PageHandler.CurrentPage - 1);
-
-				for (LocalBankGUI_PageHandler.Transaction Transaction : Transactions) 
-				{
-					currentAccount.Balance -= Transaction.Amount;
-				}
-				
-				LocalBankGUI_PageHandler.Pages.clear();
-				
-				Withdrawal_Trans_3.setVisible(false);
-				Withdrawal_Trans_2.setVisible(false);
-				Withdrawal_Trans_1.setVisible(false);
-				
-				Withdrawal_Amount_Trans_3.setText("0.00");
-				Withdrawal_Amount_Trans_2.setText("0.00");
-				Withdrawal_Amount_Trans_1.setText("0.00");
-				
-				LocalBankGUI_PageHandler.CurrentPage = 1;
-				
-				frame.setBounds(100, 100, 666, 461);
-				Withdrawal.setBounds(0, 0, 650, 422);
-				
-				sidebarOpen = false;
-				
-				Withdrawal.setVisible(false);
-				AccountView.setVisible(true);
-				
-				UpdateAccountViewBalance();
-			}
-		});
-		
 		Withdrawal_Amount_Remove_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -1980,14 +1929,13 @@ public class LocalBankGUI {
 			Withdrawal_AfterBalance_MinusSymbol.setVisible(false);
 		}
 		
-		Withdrawal_AfterBalance.setText(String.format("%,.2f", ((currentAccount.Balance) >= 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
-		Withdrawal_CurrentBalance.setText(String.format("%,.2f", ((currentAccount.Balance) >= 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
+		Withdrawal_AfterBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", ((currentAccount.Balance) > 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
+		Withdrawal_CurrentBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
 		
-		Deposit_CurrentBalance.setText(String.format("%,.2f", ((currentAccount.Balance) >= 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
-		Deposit_AfterBalance.setText(String.format("%,.2f", ((currentAccount.Balance) >= 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
+		Deposit_CurrentBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", ((currentAccount.Balance) > 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
+		Deposit_AfterBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
 		
-		Balance_AccountView_2.setText(String.format("%,.2f", ((currentAccount.Balance) >= 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
-		
+		Balance_AccountView_2.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", ((currentAccount.Balance) > 0 ? (currentAccount.Balance) : -(currentAccount.Balance))));
 	}
 	
 	public static void UpdateCurrencySymbols() 
@@ -2054,7 +2002,7 @@ public class LocalBankGUI {
 		}
 		
 		Withdrawal_AfterBalance.setText(String.format("%,.2f", ((currentAccount.Balance - Amount) > 0 ? (currentAccount.Balance - Amount) : -(currentAccount.Balance - Amount))));
-		Withdrawal_CurrentBalance.setText(String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
+		Withdrawal_CurrentBalance.setText((currentAccount.Balance > 0 ? "" : "-") + String.format("%,.2f", (currentAccount.Balance > 0 ? currentAccount.Balance : -currentAccount.Balance)));
 	}
 	
 	public static void UpdateWithdrawalTransactionSideBar() 

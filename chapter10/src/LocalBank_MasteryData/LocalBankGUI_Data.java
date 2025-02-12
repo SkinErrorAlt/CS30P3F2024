@@ -1,10 +1,10 @@
-package MasteryData;
+package LocalBank_MasteryData;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import EasyKit.*;
-import Mastery.LocalBankGUI;
+import LocalBank_Mastery.LocalBankGUI;
 
 public class LocalBankGUI_Data {
 
@@ -26,7 +26,7 @@ public class LocalBankGUI_Data {
 		{
 			this.Username = Username;
 			this.Password = Password;
-			this.Balance = Double.parseDouble(String.format("%,.2f", 10000 * Math.random()).replace(",", ""));
+			this.Balance = Math.random() * 10000;
 			
 			CreationDate = Tick();
 		}

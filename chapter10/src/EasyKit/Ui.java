@@ -10,12 +10,11 @@ import java.util.List;
 
 import EasyKit.*;
 import EasyKit.OtherSystems.lookingForChar;
+import LocalBank_MasteryData.LocalBankGUI_Data.NewAccount;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import MasteryData.LocalBankGUI_Data.NewAccount;
 
 import java.util.*;
 import java.lang.*;
