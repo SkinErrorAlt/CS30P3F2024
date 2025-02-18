@@ -17,11 +17,17 @@ import javax.swing.SwingConstants;
 import TicTacToe_Mastery.GameStates.BoardSpotStates;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.border.BevelBorder;
+import java.awt.Cursor;
+import javax.swing.UIManager;
 
 public class GameUi {
 
 	private static JFrame frame;
 	
+	// Box slots. (Aka the placement for the players X and O)
 	public static JButton Box_1;
 	public static JLabel PlayerSpot_1;
 	
@@ -48,6 +54,22 @@ public class GameUi {
 	
 	public static JButton Box_9;
 	public static JLabel PlayerSpot_9;
+	
+	// interface Buttons for the round system. | Difference between the two is play again reset all score between X and O and Rematch will restart the match up.
+	public static JButton Rematch;
+	public static JButton Restart;
+	
+	public static JPanel GameWindow;
+	public static JPanel Game;
+	public static JPanel Information;
+
+	// Score
+	public static JLabel Player_1_Score;
+	public static JLabel Player_2_Score;
+	public static JLabel Won;
+	
+	// Timer
+	public static JLabel Timer;
 	
 	public static class SelectionBox
 	{
@@ -95,14 +117,14 @@ public class GameUi {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel Game = new JPanel();
-		Game.setBackground(new Color(128, 64, 64));
+		Game = new JPanel();
+		Game.setBackground(new Color(165, 42, 42));
 		Game.setBounds(0, 0, 584, 497);
 		frame.getContentPane().add(Game);
 		Game.setLayout(null);
 		
-		JPanel GameWindow = new JPanel();
-		GameWindow.setBackground(new Color(128, 0, 0));
+		GameWindow = new JPanel();
+		GameWindow.setBackground(new Color(139, 0, 0));
 		GameWindow.setBounds(130, 37, 323, 323);
 		Game.add(GameWindow);
 		GameWindow.setLayout(null);
@@ -111,6 +133,7 @@ public class GameUi {
 //		\\//
 		
 		Box_1 = new JButton();
+		Box_1.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_1.setBackground(new Color(64, 0, 0));
 		Box_1.setBounds(10, 11, 79, 79);
 		GameWindow.add(Box_1);
@@ -127,6 +150,7 @@ public class GameUi {
 //		\\//
 		
 		Box_2 = new JButton();
+		Box_2.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_2.setBackground(new Color(64, 0, 0));
 		Box_2.setBounds(122, 11, 79, 79);
 		GameWindow.add(Box_2);
@@ -143,6 +167,7 @@ public class GameUi {
 //		\\//
 		
 		Box_3 = new JButton();
+		Box_3.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_3.setBackground(new Color(64, 0, 0));
 		Box_3.setBounds(234, 11, 79, 79);
 		GameWindow.add(Box_3);
@@ -159,6 +184,7 @@ public class GameUi {
 //		\\//
 		
 		Box_4 = new JButton();
+		Box_4.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_4.setBackground(new Color(64, 0, 0));
 		Box_4.setBounds(10, 122, 79, 79);
 		GameWindow.add(Box_4);
@@ -175,6 +201,7 @@ public class GameUi {
 //		\\//
 		
 		Box_5 = new JButton();
+		Box_5.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_5.setBackground(new Color(64, 0, 0));
 		Box_5.setBounds(122, 122, 79, 79);
 		GameWindow.add(Box_5);
@@ -191,6 +218,7 @@ public class GameUi {
 //		\\//
 		
 		Box_6 = new JButton();
+		Box_6.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_6.setBackground(new Color(64, 0, 0));
 		Box_6.setBounds(234, 122, 79, 79);
 		GameWindow.add(Box_6);
@@ -207,6 +235,7 @@ public class GameUi {
 //		\\//
 		
 		Box_7 = new JButton();
+		Box_7.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_7.setBackground(new Color(64, 0, 0));
 		Box_7.setBounds(10, 233, 79, 79);
 		GameWindow.add(Box_7);
@@ -223,6 +252,7 @@ public class GameUi {
 //		\\//
 		
 		Box_8 = new JButton();
+		Box_8.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_8.setBackground(new Color(64, 0, 0));
 		Box_8.setBounds(122, 233, 79, 79);
 		GameWindow.add(Box_8);
@@ -239,6 +269,7 @@ public class GameUi {
 //		\\//
 		
 		Box_9 = new JButton();
+		Box_9.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		Box_9.setBackground(new Color(64, 0, 0));
 		Box_9.setBounds(234, 233, 79, 79);
 		GameWindow.add(Box_9);
@@ -250,12 +281,77 @@ public class GameUi {
 		PlayerSpot_9.setFont(new Font("Verdana", Font.BOLD, 26));
 		PlayerSpot_9.setBounds(10, 11, 59, 57);
 		Box_9.add(PlayerSpot_9);
+		
+//		//\\
+//		\\//
+		
+		// Information panel | Contains the information of the game like score of the players and also round options.
 
-		JPanel Information = new JPanel();
-		Information.setBackground(new Color(255, 0, 0));
+		Information = new JPanel();
+		Information.setBackground(new Color(128, 0, 0));
 		Information.setBounds(40, 385, 504, 84);
 		Game.add(Information);
 		Information.setLayout(null);
+		
+		Won = new JLabel("[?] Won!");
+		Won.setFont(new Font("Verdana", Font.BOLD, 15));
+		Won.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		Won.setHorizontalAlignment(SwingConstants.CENTER);
+		Won.setHorizontalTextPosition(SwingConstants.CENTER);
+		Won.setForeground(new Color(255, 255, 255));
+		Won.setBorder(UIManager.getBorder("CheckBoxMenuItem.border"));
+		Won.setToolTipText("The player that one is...");
+		Won.setBackground(new Color(255, 255, 255));
+		Won.setBounds(212, 17, 80, 49);
+		Won.setVisible(false);
+		Information.add(Won);
+		
+		Rematch = new JButton("Rematch?");
+		Rematch.setEnabled(false);
+		Rematch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		Rematch.setBackground(new Color(255, 255, 255));
+		Rematch.setBounds(35, 17, 146, 23);
+		Information.add(Rematch);
+		
+		Restart = new JButton("Restart?");
+		Restart.setEnabled(false);
+		Restart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		Restart.setBackground(new Color(255, 255, 255));
+		Restart.setBounds(35, 43, 146, 23);
+		Information.add(Restart);
+		
+		JLabel Score_Title = new JLabel("Score:");
+		Score_Title.setToolTipText("The player that one is...");
+		Score_Title.setHorizontalTextPosition(SwingConstants.CENTER);
+		Score_Title.setHorizontalAlignment(SwingConstants.CENTER);
+		Score_Title.setForeground(Color.WHITE);
+		Score_Title.setFont(new Font("Verdana", Font.BOLD, 10));
+		Score_Title.setBorder(UIManager.getBorder("CheckBoxMenuItem.border"));
+		Score_Title.setBackground(Color.WHITE);
+		Score_Title.setBounds(396, 10, 80, 33);
+		Information.add(Score_Title);
+		
+		Player_1_Score = new JLabel("X = 0");
+		Player_1_Score.setToolTipText("The player that one is...");
+		Player_1_Score.setHorizontalTextPosition(SwingConstants.CENTER);
+		Player_1_Score.setHorizontalAlignment(SwingConstants.CENTER);
+		Player_1_Score.setForeground(Color.WHITE);
+		Player_1_Score.setFont(new Font("Verdana", Font.BOLD, 10));
+		Player_1_Score.setBorder(UIManager.getBorder("CheckBoxMenuItem.border"));
+		Player_1_Score.setBackground(Color.WHITE);
+		Player_1_Score.setBounds(416, 23, 80, 33);
+		Information.add(Player_1_Score);
+		
+		Player_2_Score = new JLabel("O = 0");
+		Player_2_Score.setToolTipText("The player that one is...");
+		Player_2_Score.setHorizontalTextPosition(SwingConstants.CENTER);
+		Player_2_Score.setHorizontalAlignment(SwingConstants.CENTER);
+		Player_2_Score.setForeground(Color.WHITE);
+		Player_2_Score.setFont(new Font("Verdana", Font.BOLD, 10));
+		Player_2_Score.setBorder(UIManager.getBorder("CheckBoxMenuItem.border"));
+		Player_2_Score.setBackground(Color.WHITE);
+		Player_2_Score.setBounds(416, 42, 80, 33);
+		Information.add(Player_2_Score);
 
 		SelectionBox NewSelectionBox_1 = new SelectionBox(Box_1, PlayerSpot_1);
 		UiBoard.put(1, NewSelectionBox_1);
@@ -282,9 +378,52 @@ public class GameUi {
 		UiBoard.put(8, NewSelectionBox_8);
 		
 		SelectionBox NewSelectionBox_9 = new SelectionBox(Box_9, PlayerSpot_9);
+		
+		Timer = new JLabel("Time Played: 0");
+		Timer.setBounds(131, 2, 322, 33);
+		Game.add(Timer);
+		Timer.setToolTipText("How long the game has been active.");
+		Timer.setHorizontalTextPosition(SwingConstants.CENTER);
+		Timer.setHorizontalAlignment(SwingConstants.CENTER);
+		Timer.setForeground(Color.WHITE);
+		Timer.setFont(new Font("Verdana", Font.BOLD, 10));
+		Timer.setBorder(UIManager.getBorder("CheckBoxMenuItem.border"));
+		Timer.setBackground(Color.WHITE);
 		UiBoard.put(9, NewSelectionBox_9);
 		
 		GameStates.BoardUiSetup = true;
 		frame.setVisible(true);
+		
+		Restart.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				Restart.setEnabled(false);
+				Rematch.setEnabled(false);
+				
+				GameStates.Player_1.Score = 0;
+				GameStates.Player_2.Score = 0;
+				
+				GameUi.Player_1_Score.setText("X = " + GameStates.Player_1.Score);
+				GameUi.Player_2_Score.setText("O = " + GameStates.Player_2.Score);
+				
+				GameFunctions.InMatch = true;
+				GameFunctions.ActivateButtons();
+			}
+		});
+		
+		Rematch.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				Rematch.setEnabled(false);
+				Restart.setEnabled(false);
+				
+				GameFunctions.InMatch = true;
+				GameFunctions.ActivateButtons();
+			}
+		});
 	}
 }

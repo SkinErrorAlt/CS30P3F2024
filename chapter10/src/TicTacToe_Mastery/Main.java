@@ -7,10 +7,7 @@ public class Main
 {
 	public static void main(String[] args) throws InterruptedException 
 	{
-		ExecutorService executorService = Executors.newFixedThreadPool(3);
-		
-		TicTacToe_Mastery.GameStates States = new TicTacToe_Mastery.GameStates();
-		TicTacToe_Mastery.GameFunctions Functions = new TicTacToe_Mastery.GameFunctions();
+		ExecutorService executorService = Executors.newFixedThreadPool(4);
 		
 		executorService.submit(() -> 
 		{
@@ -19,12 +16,17 @@ public class Main
 		
 		executorService.submit(() -> 
 		{
-			States.MainStart();
+			TicTacToe_Mastery.GameStates.MainStart();
 		});
 		
 		executorService.submit(() -> 
 		{
-			Functions.MainStart();
+			TicTacToe_Mastery.GameFunctions.MainStart();
+		});
+		
+		executorService.submit(() -> 
+		{
+			TicTacToe_Mastery.GameStates.StartTimer();
 		});
 		
 		executorService.shutdown();
